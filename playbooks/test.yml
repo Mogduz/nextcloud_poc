@@ -12,6 +12,15 @@
       vars:
         hostname: "{{ domain }}"
 
+    - name: Nur Netzwerk-Facts sammeln (liefert fqdn/hostname)
+      ansible.builtin.setup:
+        gather_subset: [network]
+
+    - name: debug
+      debug:
+        var: ansible_facts.hostname
+    
+
   vars:
     domain: "testcloud.leikam-barz.de"
         
