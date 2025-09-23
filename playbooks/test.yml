@@ -6,12 +6,12 @@
     - name: debug
       debug:
         var: os_dir
+    
+    - name: set domain as hostname
+      include_tasks: "{{ tasks_dir }}/set_hostname/{{ os_dir }}/main.yml"
+      vars:
+        hostname: "{{ domain }}"
 
-    - name: debug
-      debug:
-        msg: "{{ (ansible_facts['distribution'] | lower) }}/{{ (ansible_facts['distribution_version']) }}"
-    #- name: set domain as hostname
-    #  include_tasks: "{{ self_tasks_dir }}/users.yml"
-    #  vars:
-    #    user_name: "{{ item }}"
+  vars:
+    domain: "testcloud.leikam-barz.de"
         
