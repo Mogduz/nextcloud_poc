@@ -1,0 +1,8 @@
+all:
+  hosts:
+    owncloud_test:
+      ansible_host: 91.99.213.68
+
+owncloud:
+  hosts:
+    owncloud_test:
