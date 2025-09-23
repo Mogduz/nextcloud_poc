@@ -5,7 +5,7 @@
   tasks:
     - name: debug
       debug:
-        var: ansible_facts
+        var: os_dir
 
     - name: debug
       debug:
