@@ -1,0 +1,7 @@
+- name: base_test
+  hosts: owncloud
+  gather_facts: true
+  remote_user: root
+  tasks:
+    - name: Who am I?
+      ansible.builtin.command: whoami
