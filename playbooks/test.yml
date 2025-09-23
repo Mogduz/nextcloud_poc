@@ -17,7 +17,7 @@
     #  vars:
     #    reboot_enabled: "{{ upgrade_reboot }}"
   roles:
-    - php
+    php
 
   vars:
     domain: "testcloud.leikam-barz.de"
