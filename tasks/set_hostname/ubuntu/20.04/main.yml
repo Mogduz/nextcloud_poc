@@ -1,7 +1,11 @@
-- name: check server hostname var
-  ansible.builtin.set_fact:
-    new_hostname: "{{ hostname | default('unnamed.server') }}"
+- name: assert hostname var is set
+  ansible.builtin.assert:
+      that:
+        - hostname is defined
+        - (hostname | trim | length) > 0
+      fail_msg: "BREAK: var 'hostname' is not defined or empty."
+      success_msg: "hostname={{ hostname }} asseration passed"
 
 - name: Set hostname
   ansible.builtin.hostname:
-    name: "{{ new_hostname }}"
+    name: "{{ hostname }}"
