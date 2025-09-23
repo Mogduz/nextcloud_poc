@@ -1,7 +1,0 @@
-- name: check server hostname var
-  ansible.builtin.set_fact:
-    new_hostname: "{{ hostname | default('unnamed.server') }}"
-
-- name: Set hostname
-  ansible.builtin.hostname:
-    name: "{{ new_hostname }}"
