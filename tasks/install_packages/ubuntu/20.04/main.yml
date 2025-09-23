@@ -4,13 +4,15 @@
       update_cache: true
       cache_valid_time: 3600
 
+  - name: installing following packages
+    debug:
+      var: packages 
+
   - name: installing packages
     ansible.builtin.apt:
       name: "{{ packages }}"          
       autoremove: true
       autoclean: true
-    debug:
-      var: packages
   when: packages | default([]) | length > 0
 
 - block:
