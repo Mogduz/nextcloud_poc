@@ -1,0 +1,26 @@
+- block:
+  - name: upgrading cache (Cache lifetime 1h )
+    ansible.builtin.apt:
+      update_cache: true
+      cache_valid_time: 3600
+
+  - name: install packages
+    ansible.builtin.apt:
+      name: "{{ packages }}"          
+      autoremove: true
+      autoclean: true
+  when: packages | default([]) | length > 0
+
+- block:
+  - name: Check if reboot is necessary
+    ansible.builtin.stat:
+      path: /var/run/reboot-required
+    register: reboot_flag
+
+  - name: Reboot (if necessary)
+    ansible.builtin.reboot:
+      msg: "Reboot after kernel/lib upgrade"
+      reboot_timeout: 900
+    when: reboot_flag.stat.exists
+  when: reboot_enabled | default(false) | bool
+  
