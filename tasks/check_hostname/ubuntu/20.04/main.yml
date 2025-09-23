@@ -10,3 +10,10 @@
   ansible.builtin.setup:
     gather_subset: [network]
 
+- name: Check if short name is identical (hostname can be FQDN)
+  ansible.builtin.assert:
+    that:
+      - (hostname | default('') | trim | length) > 0
+      - ((hostname | trim | lower).split('.')[0]) == (ansible_facts.hostname | lower)
+    fail_msg: "Mismatch: runtime short='{{ ansible_facts.hostname }}', provided='{{ hostname }}'"
+    success_msg: hostname match! success
