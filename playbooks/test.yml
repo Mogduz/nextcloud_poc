@@ -5,4 +5,4 @@
   tasks:
     - name: Who am I?
       debug:
-        var: base_dir
+        var: playbook_dir
