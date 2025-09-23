@@ -6,7 +6,9 @@
     - name: debug
       debug:
         var: os_dir
-    
+  roles:
+    - php
+
     #- name: set domain as hostname
     #  include_tasks: "{{ tasks_dir }}/set_hostname/{{ os_dir }}/main.yml"
     #  vars:
@@ -16,8 +18,6 @@
     #  include_tasks: "{{ tasks_dir }}/update_system/{{ os_dir }}/main.yml"
     #  vars:
     #    reboot_enabled: "{{ upgrade_reboot }}"
-  roles:
-    php
 
   vars:
     domain: "testcloud.leikam-barz.de"
