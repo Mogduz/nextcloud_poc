@@ -3,4 +3,4 @@ roles_dir: "{{ base_dir }}/roles"
 vars_dir: "{{ base_dir }}/vars"
 tasks_dir: "{{ base_dir }}/tasks"
 
-os_dir: "{{ (ansible_facts['distribution'] | lower) }}-{{ (ansible_facts['distribution_version']) }}"
+os_dir: "{{ (ansible_facts['distribution'] | lower) }}/{{ (ansible_facts['distribution_version']) }}"
