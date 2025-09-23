@@ -4,4 +4,5 @@
   remote_user: root
   tasks:
     - name: Who am I?
-      ansible.builtin.command: whoami
+      debug:
+        var: base_dir
