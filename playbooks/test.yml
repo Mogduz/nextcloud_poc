@@ -1,9 +1,13 @@
 - name: base_test
-  hosts: localhost
+  hosts: ownlcoud
   gather_facts: true
   remote_user: root
   tasks:
-    - name: Who am I?
+    - name: debug
       debug:
-        var: roles_dir
+        var: ansible_facts
+    #- name: set domain as hostname
+    #  include_tasks: "{{ self_tasks_dir }}/users.yml"
+    #  vars:
+    #    user_name: "{{ item }}"
         
