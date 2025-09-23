@@ -14,4 +14,4 @@
   include_tasks: "{{ tasks_dir }}/check_hostname/{{ os_dir }}/main.yml"
   vars:
     hostname: "{{ domain }}"
-  when: "{{ check_hostname | default(true) }}"
+  when: check_hostname | default(true) | bool
