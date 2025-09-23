@@ -1,0 +1,22 @@
+self_role: php
+php_apt_packages:
+  - libapache2-mod-php
+  - php-imagick
+  - php-common
+  - php-curl
+  - php-gd 
+  - php-gmp 
+  - php-bcmath
+  - php-imap
+  - php-intl 
+  - php-json 
+  - php-mbstring 
+  - php-mysql 
+  - php-ssh2 
+  - php-xml
+  - php-zip 
+  - php-apcu 
+  - php-redis 
+  - php-ldap 
+  - php-phpseclib
+reboot_enabled: true
