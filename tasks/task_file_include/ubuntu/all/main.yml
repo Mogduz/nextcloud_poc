@@ -1,0 +1,24 @@
+- name: Detect tasks file
+  ansible.builtin.stat:
+    path: "{{ file}}"
+  register: tasks_file_stat
+  changed_when: false
+
+- name: Tasks file not found — skipping
+  ansible.builtin.debug:
+    msg: "Tasks file '{{ file }}' not found — skipping."
+  when: not (tasks_file_stat.stat.exists | default(false))
+
+- name: Tasks path exists but is not a regular file — skipping
+  ansible.builtin.debug:
+    msg: "Tasks path '{{ file }}' exists but is not a regular file — skipping."
+  when:
+    - tasks_file_stat.stat.exists | default(false)
+    - not (tasks_file_stat.stat.isreg | default(false))
+
+- name: including tasks
+  ansible.builtin.include_tasks: 
+    file: "{{ file }}"
+  when: 
+    - tasks_file_stat.exists | default(false)
+    - tasks_file_stat.stat.isreg | default(false)
