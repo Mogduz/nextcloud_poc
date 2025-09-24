@@ -1,6 +1,6 @@
 - name: update repo
   hosts: localhost
-  gather_facts: false
+  gather_facts: true
 
   tasks:
     - name: debug
