@@ -1,10 +1,6 @@
 - name: update repo
   hosts: localhost
   gather_facts: false
-  vars:
-    git_local_change_policy: "skip"
-    stash_include_untracked: false
-    reset_clean_untracked: true
 
   tasks:
     - name: Detect existing git repo
