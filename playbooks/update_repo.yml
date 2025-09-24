@@ -3,6 +3,9 @@
   gather_facts: false
 
   tasks:
-    - name: updating local ansible git repo
-      ansible.builtin.include_tasks: 
-        file: "{{ tasks_dir }}/git_pull_repo/{{ os_dir }}/main.yml"
+    - name: debug
+      debug:
+        var: tasks_dir
+    #- name: updating local ansible git repo
+    #  ansible.builtin.include_tasks: 
+    #    file: "{{ tasks_dir }}/git_pull_repo/{{ os_dir }}/main.yml"
