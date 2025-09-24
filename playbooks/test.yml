@@ -1,30 +1,31 @@
-- name: update repo
-  hosts: localhost
-  gather_facts: false
+- import_playbook: update_repo.yml
+#- name: update repo
+#  hosts: localhost
+#  gather_facts: false
 
-  tasks:
-    - name: Detect existing git repo
-      ansible.builtin.stat:
-        path: "{{ base_dir }}/.git"
-      register: repo_git_dir
+#  tasks:
+#    - name: Detect existing git repo
+#      ansible.builtin.stat:
+#        path: "{{ base_dir }}/.git"
+#      register: repo_git_dir
 
-    - name: Update existing repo (pull)
-      ansible.builtin.command: "git -C {{ base_dir }} pull"
-      register: git_update
-      changed_when: false
-      failed_when: false
+#    - name: Update existing repo (pull)
+#      ansible.builtin.command: "git -C {{ base_dir }} pull"
+#      register: git_update
+#      changed_when: false
+#      failed_when: false
 
-    - name: Status
-      ansible.builtin.debug:
-        msg: >-
-          {{
-            'Pulled latest changes.' if (git_update is defined and git_update.changed) 
-            else 'Repository already up-to-date. Nothing to do.' 
-          }}
-  
-    - name: git stdout
-      ansible.builtin.debug:
-        var: git_update.stdout_lines
+#    - name: Status
+#      ansible.builtin.debug:
+#        msg: >-
+#          {{
+#           'Pulled latest changes.' if (git_update is defined and git_update.changed) 
+#            else 'Repository already up-to-date. Nothing to do.' 
+#          }}
+#  
+#    - name: git stdout
+#      ansible.builtin.debug:
+#        var: git_update.stdout_lines
 
 - name: base_test
   hosts: owncloud
@@ -72,11 +73,15 @@
       loop_control:
         label: "{{ (item.name if (item is mapping and 'name' in item) else item) }}"
 
+    - name: Run deployment pre tasks
+      ansible.builtin.include_tasks: 
+        file: "{{ tasks_dir }}/{{ item.name }}/{{ os_dir }}/main.yml"
+      loop: "{{ dyn_pre_tasks }}"
+      loop_control:
+        label: "{{ item.name }}"
+      when: (dyn_pre_tasks | length > 0) and (item.when | default(true))
 
   tasks:
-    - name: debug
-      debug:
-        var: host_cfg
 
     - name: running deployment roles
       ansible.builtin.include_role:
