@@ -1,5 +1,6 @@
 type: hetzner
 name: owncloud_test
+hostname: testcloud
 fqdn: testcloud.leikam-barz.de
 network:
   public:
@@ -11,8 +12,10 @@ deployment:
     - ufw
     - php
   pre_tasks:
-    - update_system
+    - set_hostname
   reg_tasks:
     - update_system
   fin_tasks:
     - update_system
+options:
+  enable_hostname_check: true
