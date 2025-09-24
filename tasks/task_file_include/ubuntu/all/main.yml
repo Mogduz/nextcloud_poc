@@ -1,6 +1,6 @@
 - name: Detect tasks file
   ansible.builtin.stat:
-    path: "{{ file}}"
+    path: "{{ file }}"
   register: tasks_file_stat
   changed_when: false
 
