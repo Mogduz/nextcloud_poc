@@ -26,7 +26,7 @@
       {{
         (check_hostname)
         if (check_hostname is defined)
-        else host_cfg.get('options', {}).get('enable_hostname_check', false)
+        else host_cfg.optionsenable_hostname_check, false)
       | bool }}
 
 - name: debug
