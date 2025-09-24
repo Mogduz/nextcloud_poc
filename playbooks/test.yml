@@ -1,31 +1,5 @@
 - import_playbook: update_repo.yml
-#- name: update repo
-#  hosts: localhost
-#  gather_facts: false
 
-#  tasks:
-#    - name: Detect existing git repo
-#      ansible.builtin.stat:
-#        path: "{{ base_dir }}/.git"
-#      register: repo_git_dir
-
-#    - name: Update existing repo (pull)
-#      ansible.builtin.command: "git -C {{ base_dir }} pull"
-#      register: git_update
-#      changed_when: false
-#      failed_when: false
-
-#    - name: Status
-#      ansible.builtin.debug:
-#        msg: >-
-#          {{
-#           'Pulled latest changes.' if (git_update is defined and git_update.changed) 
-#            else 'Repository already up-to-date. Nothing to do.' 
-#          }}
-#  
-#    - name: git stdout
-#      ansible.builtin.debug:
-#        var: git_update.stdout_lines
 
 - name: base_test
   hosts: owncloud
