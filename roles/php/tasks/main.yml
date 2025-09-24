@@ -6,4 +6,4 @@
 - name: installing php packages
   include_tasks: "{{ roles_dir }}/{{ self_role }}/tasks/install.yml"
   vars:
-    reboot_enabled: "{{ upgrade_reboot }}"
+    upgrade_reboot: "{{ enable_reboot }}"
