@@ -26,7 +26,8 @@
           }}
   vars:
     git_local_change_policy: "skip"
-
+    stash_include_untracked: false
+    reset_clean_untracked: true
 
 - name: base_test
   hosts: owncloud
