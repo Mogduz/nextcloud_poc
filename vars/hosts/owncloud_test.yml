@@ -18,4 +18,4 @@ deployment:
   fin_tasks:
     - update_system
 options:
-  enable_hostname_check: false
+  enable_hostname_check: true
