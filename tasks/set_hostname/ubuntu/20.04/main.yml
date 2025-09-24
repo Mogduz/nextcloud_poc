@@ -24,10 +24,8 @@
   ansible.builtin.set_fact:
     enable_hostname_check: >-
       {{
-        'input var "check_hostname"'
-        if (check_hostname is defined)
-        else 'host_cfg.options.enable_hostname_check'
-        if (host_cfg.options.enable_hostname_check is defined) 
+        check_hostname if (check_hostname is defined)
+        else 'host_cfg.options.enable_hostname_check' if (host_cfg.options.enable_hostname_check is defined) 
         else 'default:false'
       }}
 
