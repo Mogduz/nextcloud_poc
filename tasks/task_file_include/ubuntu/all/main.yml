@@ -4,6 +4,14 @@
   register: tasks_file_stat
   changed_when: false
 
+- name: debug
+  ansible.builtin.debug:
+    var: tasks_file_stat
+
+- name: debug
+  ansible.builtin.debug:
+    var: file
+
 - name: Tasks file not found — skipping
   ansible.builtin.debug:
     msg: "Tasks file '{{ file }}' not found — skipping."
