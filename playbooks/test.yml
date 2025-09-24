@@ -5,7 +5,7 @@
   tasks:
     - name: debug
       debug:
-        var: ansible_host
+        var: inventory_hostname
   #roles:
   #  - ufw
   #  - php
