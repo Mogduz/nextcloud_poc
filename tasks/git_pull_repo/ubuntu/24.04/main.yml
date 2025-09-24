@@ -16,9 +16,9 @@
         'Pulled latest changes.' if (git_update is defined and git_update.changed) 
         else 'Repository already up-to-date. Nothing to do.' 
       }}
-  whren: debug_enabled | default(true)
+  when: debug_enabled | default(true)
 
 - name: git stdout
   ansible.builtin.debug:
     var: git_update.stdout_lines
-  whren: debug_enabled | default(true)
+  when: debug_enabled | default(true)
