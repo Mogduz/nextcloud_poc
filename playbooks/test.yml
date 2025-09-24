@@ -27,10 +27,6 @@
     - name: running deployment roles
       ansible.builtin.include_role:
         name: "{{ item.name }}"
-        apply:
-          become: "{{ item.become | default(true) }}"
-          vars: "{{ item.vars | default({}) }}"
-          tags: "{{ item.tags | default(omit) }}"
       loop: "{{ dyn_roles }}"
       when: (dyn_roles | length > 0) and (item.when | default(true))
       loop_control:
