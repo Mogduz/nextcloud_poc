@@ -2,12 +2,29 @@
   hosts: localhost
   gather_facts: false
   tasks:
-    - name: updating repo
+    - name: Detect existing git repo
+      ansible.builtin.stat:
+        path: "{{ base_dir }}/.git"
+      register: repo_git_dir
+
+    - name: Update existing repo (pull)
       ansible.builtin.git:
         repo: "{{ repo_url }}"
         dest: "{{ base_dir }}"
         version: "{{ branch }}"
-        update: true
+        update: true          # zieht nur, wenn es remote Änderungen gibt
+        single_branch: true
+      when: repo_git_dir.stat.exists
+      register: git_update
+
+    - name: Status
+      ansible.builtin.debug:
+        msg: >-
+          {{
+            'Pulled latest changes.' if (git_update is defined and git_update.changed)
+            else 'Repository already up-to-date. Nothing to do.'
+          }}
+
 
 - name: base_test
   hosts: owncloud
