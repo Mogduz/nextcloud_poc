@@ -11,7 +11,7 @@
     - name: debug
       debug:
         var: host_cfg
-  roles: "{{ host_cfg.roles }}"
+  roles: host_cfg.deployment.roles
   #roles:
   #  - ufw
   #  - php
