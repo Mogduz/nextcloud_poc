@@ -10,7 +10,6 @@ deployment:
   roles:
     - ufw
     - php
-  
   pre_tasks:
     - update_system
   reg_tasks:
