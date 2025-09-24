@@ -33,16 +33,6 @@
         label: "{{ item.name }}"
  
 
-    #- name: set domain as hostname
-    #  include_tasks: "{{ tasks_dir }}/set_hostname/{{ os_dir }}/main.yml"
-    #  vars:
-    #    hostname: "{{ domain }}"
-
-    #- name: update system
-    #  include_tasks: "{{ tasks_dir }}/update_system/{{ os_dir }}/main.yml"
-    #  vars:
-    #    reboot_enabled: "{{ upgrade_reboot }}"
-
   vars:
     domain: "testcloud.leikam-barz.de"
     check_hostname: true
