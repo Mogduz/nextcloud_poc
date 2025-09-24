@@ -14,6 +14,7 @@
         version: "{{ branch }}"
         update: true          # zieht nur, wenn es remote Änderungen gibt
         single_branch: true
+        git_local_change_policy: "skip"
       when: repo_git_dir.stat.exists
       register: git_update
 
