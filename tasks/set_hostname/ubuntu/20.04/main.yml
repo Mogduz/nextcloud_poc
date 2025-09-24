@@ -2,12 +2,12 @@
 - name: Normalize input hostname (string, trimmed)
   ansible.builtin.set_fact:
     _hostname_in: "{{ hostname | default('', true) | trim }}"
-    _enabale_check_in: "{{ check_hostname | default('', true) | trim }}"
+    
 
 - name: Normalize host_cfg.hostname (string, trimmed, safe if host_cfg undefined)
   ansible.builtin.set_fact:
     _hostname_cfg: "{{ (host_cfg.hostname | trim) if (host_cfg is defined and host_cfg.hostname is defined) else '' }}"
-    _enbale_check_cfg: "{{ host_cfg.options.enable_hostname_check if (host_cfg is defined and host_cfg.options.enable_hostname_check is defined) else '' }}"
+   
 
 # --- Pick first non-empty: hostname -> host_cfg.hostname -> 'unnamed'
 - name: Set final hostname with fallbacks
@@ -25,7 +25,7 @@
     enable_hostname_check: >-
       {{
         check_hostname if (check_hostname is defined)
-        else 'host_cfg.options.enable_hostname_check' if (host_cfg.options.enable_hostname_check is defined) 
+        else host_cfg.options.enable_hostname_check if (host_cfg.options.enable_hostname_check is defined) 
         else 'default:false'
       }}
 
