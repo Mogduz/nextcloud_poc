@@ -104,5 +104,4 @@
 
   vars:
     domain: "testcloud.leikam-barz.de"
-    check_hostname: true
     upgrade_reboot: true
