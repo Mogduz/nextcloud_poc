@@ -1,6 +1,11 @@
 - name: update repo
   hosts: localhost
   gather_facts: false
+  vars:
+    git_local_change_policy: "skip"
+    stash_include_untracked: false
+    reset_clean_untracked: true
+
   tasks:
     - name: Detect existing git repo
       ansible.builtin.stat:
@@ -24,10 +29,7 @@
             'Pulled latest changes.' if (git_update is defined and git_update.changed)
             else 'Repository already up-to-date. Nothing to do.'
           }}
-  vars:
-    git_local_change_policy: "skip"
-    stash_include_untracked: false
-    reset_clean_untracked: true
+  
 
 - name: base_test
   hosts: owncloud
