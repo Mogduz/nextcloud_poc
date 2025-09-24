@@ -7,6 +7,7 @@
       debug:
         var: os_dir
   roles:
+    - ufw
     - php
 
     #- name: set domain as hostname
