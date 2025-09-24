@@ -30,6 +30,9 @@
             else 'Repository already up-to-date. Nothing to do.' 
           }}
   
+    - name: git stdout
+      ansible.builtin.debug:
+        var: git_update.stdout_lines
 
 - name: base_test
   hosts: owncloud
