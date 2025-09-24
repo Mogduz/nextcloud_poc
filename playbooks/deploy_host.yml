@@ -69,8 +69,10 @@
       ansible.builtin.meta: flush_handlers
 
     - name: Run dynamic reg_tasks
-      ansible.builtin.include_tasks: 
-        file: "{{ tasks_dir }}/{{ item.name }}/{{ os_dir }}/main.yml"
+      ansible.builtin.include_tasks:
+        file: "{{ tasks_dir }}/task_file_include/{{ os_dir }}/main.yml" 
+        vars:
+          task_file: "{{ tasks_dir }}/{{ item.name }}/{{ os_dir }}/main.yml"
       loop: "{{ dyn_reg_tasks }}"
       loop_control:
         label: "{{ item.name }}"
