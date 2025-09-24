@@ -2,10 +2,6 @@ all:
   hosts:
     owncloud_test:
       ansible_host: 91.99.213.68
-      fqdn: testcloud.leikam-barz.de
-      public_ip: 91.99.213.68
-      internal_ip: 10.2.0.3 
-
 
 owncloud:
   hosts:
