@@ -26,7 +26,9 @@
       {{
         (check_hostname)
         if (check_hostname is defined)
-        else host_cfg.optionsenable_hostname_check, false)
+        else host_cfg.optionsenable_hostname_check
+        if (host_cfg.optionsenable_hostname_check is defined) 
+        else false)
       | bool }}
 
 - name: debug
