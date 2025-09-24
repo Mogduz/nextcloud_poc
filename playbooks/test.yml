@@ -5,10 +5,10 @@
   tasks:
     - name: debug
       debug:
-        var: os_dir
-  roles:
-    - ufw
-    - php
+        var: ansible_host
+  #roles:
+  #  - ufw
+  #  - php
 
     #- name: set domain as hostname
     #  include_tasks: "{{ tasks_dir }}/set_hostname/{{ os_dir }}/main.yml"
