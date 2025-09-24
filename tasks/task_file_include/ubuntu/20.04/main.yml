@@ -1,0 +1,5 @@
+- name: loading tasks
+  ansible.builtin.include_tasks: 
+    file: "{{ tasks_dir }}/task_file_include/ubuntu/all/main.yml"
+    vars:
+      - file: "{{ task_file }}"
