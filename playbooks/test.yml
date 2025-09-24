@@ -3,6 +3,15 @@
   gather_facts: true
   remote_user: root
   pre_tasks:
+
+    - name: updating repo
+      ansible.builtin.git:
+        repo: "{{ repo_url }}"
+        dest: "{{ base_dir }}"
+        version: "{{ branch }}"
+        update: true
+      delgate_to: localhost               
+
     - name: load host deployment congfig for host "{{ inventory_hostname }}"
       ansible.builtin.include_vars:
         file: "{{ vars_dir }}/hosts/{{ inventory_hostname }}.yml"
