@@ -1,0 +1,96 @@
+- name: base_test
+  hosts: owncloud
+  gather_facts: true
+  remote_user: root
+  pre_tasks: 
+
+    - name: load host deployment congfig for host "{{ inventory_hostname }}"
+      ansible.builtin.include_vars:
+        file: "{{ vars_dir }}/hosts/{{ inventory_hostname }}.yml"
+        name: host_cfg
+
+    - name: Initialize dynamic lists
+      ansible.builtin.set_fact:
+        dyn_roles: []
+        dyn_pre_tasks: []
+        dyn_reg_tasks: []
+        dyn_fin_tasks: []
+
+    - name: Normalize pre_tasks
+      ansible.builtin.set_fact:
+        dyn_pre_tasks: "{{ dyn_pre_tasks + [ (item if (item is mapping) else {'name': item}) ] }}"
+      loop: "{{ host_cfg.deployment.pre_tasks | default([], true) }}"
+      loop_control:
+        label: "{{ (item.name if (item is mapping and 'name' in item) else item) }}"
+
+    - name: Normalize roles
+      ansible.builtin.set_fact:
+        dyn_roles: "{{ dyn_roles + [ (item if (item is mapping) else {'name': item}) ] }}"
+      loop: "{{ host_cfg.deployment.roles | default([], true) }}"
+      loop_control:
+        label: "{{ (item.name if (item is mapping and 'name' in item) else item) }}"
+
+    - name: Normalize reg_tasks
+      ansible.builtin.set_fact:
+        dyn_reg_tasks: "{{ dyn_reg_tasks + [ (item if (item is mapping) else {'name': item}) ] }}"
+      loop: "{{ host_cfg.deployment.reg_tasks | default([], true) }}"
+      loop_control:
+        label: "{{ (item.name if (item is mapping and 'name' in item) else item) }}"
+
+    - name: Normalize fin_tasks
+      ansible.builtin.set_fact:
+        dyn_fin_tasks: "{{ dyn_fin_tasks + [ (item if (item is mapping) else {'name': item}) ] }}"
+      loop: "{{ host_cfg.deployment.fin_tasks | default([], true) }}"
+      loop_control:
+        label: "{{ (item.name if (item is mapping and 'name' in item) else item) }}"
+
+    - name: Run deployment pre tasks
+      ansible.builtin.include_tasks: 
+        file: "{{ tasks_dir }}/{{ item.name }}/{{ os_dir }}/main.yml"
+      loop: "{{ dyn_pre_tasks }}"
+      loop_control:
+        label: "{{ item.name }}"
+      when: (dyn_pre_tasks | length > 0) and (item.when | default(true))
+
+    - name: Flush handlers (if roles/tasks notified any)
+      ansible.builtin.meta: flush_handlers
+
+  tasks:
+
+    - name: running deployment roles
+      ansible.builtin.include_role:
+        name: "{{ item.name }}"
+      loop: "{{ dyn_roles }}"
+      loop_control:
+        label: "{{ item.name }}"
+      when: (dyn_roles | length > 0) and (item.when | default(true))
+
+    - name: Flush handlers (if roles/tasks notified any)
+      ansible.builtin.meta: flush_handlers
+
+    - name: Run dynamic reg_tasks
+      ansible.builtin.include_tasks: 
+        file: "{{ tasks_dir }}/{{ item.name }}/{{ os_dir }}/main.yml"
+      loop: "{{ dyn_reg_tasks }}"
+      loop_control:
+        label: "{{ item.name }}"
+      when: (dyn_reg_tasks | length > 0) and (item.when | default(true))
+
+    - name: Flush handlers (if roles/tasks notified any)
+      ansible.builtin.meta: flush_handlers
+
+    - name: Run dynamic fin_tasks
+      ansible.builtin.include_tasks: 
+        file: "{{ tasks_dir }}/{{ item.name }}/{{ os_dir }}/main.yml"
+      loop: "{{ dyn_fin_tasks }}"
+      loop_control:
+        label: "{{ item.name }}"
+      when: (dyn_fin_tasks | length > 0) and (item.when | default(true))
+
+    - name: Flush handlers (if roles/tasks notified any)
+      ansible.builtin.meta: flush_handlers
+
+  vars:
+    domain: "testcloud.leikam-barz.de"
+    check_hostname: true
+    upgrade_reboot: true
