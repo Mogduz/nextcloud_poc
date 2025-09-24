@@ -6,12 +6,35 @@
     - name: load host deployment congfig for host "{{ inventory_hostname }}"
       ansible.builtin.include_vars:
         file: "{{ vars_dir }}/hosts/{{ inventory_hostname }}.yml"
-        name: host_cfg  
+        name: host_cfg
+
+    - name: initiate new roles list
+      ansible.builtin.set_fact:
+        dyn_roles: []
+
+    - name: normalize roles (strings -> {name: …}, dicts)
+      ansible.builtin.set_fact:
+        dyn_roles: "{{ dyn_roles + [ (item if (item is mapping) else {'name': item}) ] }}"
+      loop: "{{ (host_cfg.deployment.roles | default([], true)) }}"
+      loop_control:
+        label: "{{ (item.name if (item is mapping and 'name' in item) else item) }}"
+    
   tasks:
     - name: debug
       debug:
         var: host_cfg
-  roles: host_cfg.deployment.roles
+
+    - name: running deployment roles
+      ansible.builtin.include_role:
+        name: "{{ item.name }}"
+        apply:
+          become: "{{ item.become | default(true) }}"
+          vars: "{{ item.vars | default({}) }}"
+          tags: "{{ item.tags | default(omit) }}"
+      loop: "{{ dyn_roles }}"
+      when: (dyn_roles | length > 0) and (item.when | default(true))
+      loop_control:
+        label: "{{ item.name }}"
   #roles:
   #  - ufw
   #  - php
