@@ -8,17 +8,42 @@
         file: "{{ vars_dir }}/hosts/{{ inventory_hostname }}.yml"
         name: host_cfg
 
-    - name: initiate new roles list
+    - name: Initialize dynamic lists
       ansible.builtin.set_fact:
         dyn_roles: []
+        dyn_pre_tasks: []
+        dyn_reg_tasks: []
+        dyn_fin_tasks: []
 
-    - name: normalize roles
+    - name: Normalize pre_tasks
       ansible.builtin.set_fact:
-        dyn_roles: "{{ dyn_roles + [ (item if (item is mapping) else {'name': item}) ] }}"
-      loop: "{{ (host_cfg.deployment.roles | default([], true)) }}"
+        dyn_pre_tasks: "{{ dyn_pre_tasks + [ (item if (item is mapping) else {'name': item}) ] }}"
+      loop: "{{ host_cfg.deployment.pre_tasks | default([], true) }}"
       loop_control:
         label: "{{ (item.name if (item is mapping and 'name' in item) else item) }}"
-    
+
+    - name: Normalize roles
+      ansible.builtin.set_fact:
+        dyn_roles: "{{ dyn_roles + [ (item if (item is mapping) else {'name': item}) ] }}"
+      loop: "{{ host_cfg.deployment.roles | default([], true) }}"
+      loop_control:
+        label: "{{ (item.name if (item is mapping and 'name' in item) else item) }}"
+
+    - name: Normalize reg_tasks
+      ansible.builtin.set_fact:
+        dyn_reg_tasks: "{{ dyn_reg_tasks + [ (item if (item is mapping) else {'name': item}) ] }}"
+      loop: "{{ host_cfg.deployment.reg_tasks | default([], true) }}"
+      loop_control:
+        label: "{{ (item.name if (item is mapping and 'name' in item) else item) }}"
+
+    - name: Normalize fin_tasks
+      ansible.builtin.set_fact:
+        dyn_fin_tasks: "{{ dyn_fin_tasks + [ (item if (item is mapping) else {'name': item}) ] }}"
+      loop: "{{ host_cfg.deployment.fin_tasks | default([], true) }}"
+      loop_control:
+        label: "{{ (item.name if (item is mapping and 'name' in item) else item) }}"
+
+
   tasks:
     - name: debug
       debug:
@@ -28,10 +53,18 @@
       ansible.builtin.include_role:
         name: "{{ item.name }}"
       loop: "{{ dyn_roles }}"
-      when: (dyn_roles | length > 0) and (item.when | default(true))
       loop_control:
         label: "{{ item.name }}"
- 
+      when: (dyn_roles | length > 0) and (item.when | default(true))
+
+    - name: Run dynamic tasks
+      ansible.builtin.include_tasks: 
+        file: "{{ tasks_dir }}/{{ item.name }}/{{ os_dir }}/main.yml"
+      loop: "{{ dyn_reg_tasks }}"
+      loop_control:
+        label: "{{ item.name }}"
+      when: (dyn_reg_tasks | length > 0) and (item.when | default(true))
+
 
   vars:
     domain: "testcloud.leikam-barz.de"
