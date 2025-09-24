@@ -9,3 +9,4 @@ network:
 deployment:
   roles:
     - ufw
+    - php
