@@ -1,0 +1,9 @@
+- name: update system
+  include_tasks: "{{ tasks_dir }}/update_system/{{ os_dir }}/main.yml"
+  vars:
+    reboot_enabled: "{{ upgrade_reboot }}"
+
+- name: installing php packages
+  include_tasks: "{{ roles_dir }}/{{ self_role }}/tasks/install.yml"
+  vars:
+    reboot_enabled: "{{ upgrade_reboot }}"
