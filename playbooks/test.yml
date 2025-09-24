@@ -2,10 +2,15 @@
   hosts: owncloud
   gather_facts: true
   remote_user: root
+  pre_tasks:
+    - name: load host deployment congfig for host "{{ inventory_hostname }}"
+      ansible.builtin.include_vars:
+        file: "{{ vars_dir }}/hosts/{{ inventory_hostname }}.yml"
+        name: host_cfg  
   tasks:
     - name: debug
       debug:
-        var: inventory_hostname
+        var: host_cfg
   #roles:
   #  - ufw
   #  - php
