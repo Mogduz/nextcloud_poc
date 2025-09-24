@@ -24,7 +24,11 @@
 
     - name: Status
       ansible.builtin.debug:
-        msg: {{  'Pulled latest changes.' if (git_update is defined and git_update.changed) else 'Repository already up-to-date. Nothing to do.' }}
+        msg: >-
+        {{
+          'Pulled latest changes.' if (git_update is defined and git_update.changed) 
+          else 'Repository already up-to-date. Nothing to do.' 
+        }}
   
 
 - name: base_test
