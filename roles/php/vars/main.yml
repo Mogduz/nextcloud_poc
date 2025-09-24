@@ -19,4 +19,4 @@ php_apt_packages:
   - php-redis 
   - php-ldap 
   - php-phpseclib
-reboot_enabled: true
+enable_reboot: true
