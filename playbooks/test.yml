@@ -1,16 +1,19 @@
-- name: base_test
-  hosts: owncloud
-  gather_facts: true
-  remote_user: root
-  pre_tasks:
-
+- name: update repo
+  hosts: localhost
+  gather_facts: false
+  tasks:
     - name: updating repo
       ansible.builtin.git:
         repo: "{{ repo_url }}"
         dest: "{{ base_dir }}"
         version: "{{ branch }}"
         update: true
-      delgate_to: localhost               
+
+- name: base_test
+  hosts: owncloud
+  gather_facts: true
+  remote_user: root
+  pre_tasks: 
 
     - name: load host deployment congfig for host "{{ inventory_hostname }}"
       ansible.builtin.include_vars:
