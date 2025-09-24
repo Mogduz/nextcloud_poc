@@ -14,7 +14,6 @@
         version: "{{ branch }}"
         update: true          # zieht nur, wenn es remote Änderungen gibt
         single_branch: true
-        git_local_change_policy: "skip"
       when: repo_git_dir.stat.exists
       register: git_update
 
@@ -25,6 +24,8 @@
             'Pulled latest changes.' if (git_update is defined and git_update.changed)
             else 'Repository already up-to-date. Nothing to do.'
           }}
+  vars:
+    git_local_change_policy: "skip"
 
 
 - name: base_test
