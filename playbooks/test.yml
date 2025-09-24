@@ -20,7 +20,7 @@
 
     - name: debug
       debug:
-        var: git_status
+        var: git_update
 
     - name: Status
       ansible.builtin.debug:
