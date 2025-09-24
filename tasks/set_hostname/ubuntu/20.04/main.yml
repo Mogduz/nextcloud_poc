@@ -29,6 +29,10 @@
         else host_cfg.get('options', {}).get('enable_hostname_check', false)
       | bool }}
 
+- name: debug
+  ansible.builtin.debug:
+    var: enable_hostname_check
+
 # --- Pick first non-empty: hostname -> host_cfg.hostname -> 'unnamed'
 - name: Set final  with fallbacks
   ansible.builtin.set_fact:
