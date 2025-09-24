@@ -13,7 +13,7 @@ deployment:
   
   pre_tasks:
     - update_system
-  tasks:
+  reg_tasks:
     - update_system
   fin_tasks:
     - update_system
