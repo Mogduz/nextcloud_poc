@@ -6,6 +6,10 @@
     - name: debug
       debug:
         var: tasks_dir
+
+    - name: debug
+      debug:
+        var: os_dir
     #- name: updating local ansible git repo
     #  ansible.builtin.include_tasks: 
     #    file: "{{ tasks_dir }}/git_pull_repo/{{ os_dir }}/main.yml"
