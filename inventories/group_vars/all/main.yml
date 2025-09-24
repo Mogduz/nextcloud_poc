@@ -1,3 +1,6 @@
+repo_url: "https://github.com/Mogduz/nextcloud_poc.git"
+branch: "main"
+
 base_dir: "{{ playbook_dir.split('/playbooks')[0] }}"
 roles_dir: "{{ base_dir }}/roles"
 #roles_path: "{{ base_dir }}/roles"
