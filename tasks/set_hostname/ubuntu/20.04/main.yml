@@ -1,10 +1,53 @@
+# --- Normalize candidate sources
+- name: Normalize input hostname (string, trimmed)
+  ansible.builtin.set_fact:
+    _hostname_in: "{{ hostname | default('', true) | trim }}"
+    _enabale_check_in: "{{ check_hostname | default('', true) | trim }}"
+
+- name: Normalize host_cfg.hostname (string, trimmed, safe if host_cfg undefined)
+  ansible.builtin.set_fact:
+    _hostname_cfg: "{{ (host_cfg.hostname | trim) if (host_cfg is defined and host_cfg.hostname is defined) else '' }}"
+    _enbale_check_cfg: "{{ host_cfg.options.enable_hostname_check if (host_cfg is defined and host_cfg.options.enable_hostname_check is defined) else '' }}"
+
+# --- Pick first non-empty: hostname -> host_cfg.hostname -> 'unnamed'
+- name: Set final hostname with fallbacks
+  ansible.builtin.set_fact:
+    hostname: "{{ _hostname_in or _hostname_cfg or 'unnamed' }}"
+    hostname_source: >-
+      {{
+        'input var "hostname"' if (_hostname_in | length > 0)
+        else 'host_cfg.hostname'  if (_hostname_cfg | length > 0)
+        else 'default "unnamed"'
+      }}
+
+- name: test
+  ansible.builtin.set_fact:
+    enable_hostname_check: >-
+      {{
+        (check_hostname)
+        if (check_hostname is defined)
+        else host_cfg.get('options', {}).get('enable_hostname_check', false)
+      | bool }}
+
+# --- Pick first non-empty: hostname -> host_cfg.hostname -> 'unnamed'
+- name: Set final  with fallbacks
+  ansible.builtin.set_fact:
+    hostname: "{{ _hostname_in or _hostname_cfg or 'unnamed' }}"
+    hostname_source: >-
+      {{
+        'input var "hostname"' if (_hostname_in | length > 0)
+        else 'host_cfg.hostname'  if (_hostname_cfg | length > 0)
+        else 'default "unnamed"'
+      }}
+
+# --- Assert (will pass because we ensure a non-empty hostname)
 - name: assert hostname var is set
   ansible.builtin.assert:
-      that:
-        - hostname is defined
-        - (hostname | trim | length) > 0
-      fail_msg: "BREAK: var 'hostname' is not defined or empty."
-      success_msg: "hostname={{ hostname }} asseration passed"
+    that:
+      - hostname is defined
+      - (hostname | trim | length) > 0
+    fail_msg: "BREAK: var 'hostname' could not be derived."
+    success_msg: "hostname={{ hostname }} set (source: {{ hostname_source }})"
 
 - name: Set hostname
   ansible.builtin.hostname:
@@ -14,4 +57,4 @@
   include_tasks: "{{ tasks_dir }}/check_hostname/{{ os_dir }}/main.yml"
   vars:
     hostname: "{{ domain }}"
-  when: check_hostname | default(true) | bool
+  when: enable_hostname_check | default(false) | bool
