@@ -12,7 +12,7 @@
       ansible.builtin.set_fact:
         dyn_roles: []
 
-    - name: normalize roles (strings -> {name: …}, dicts)
+    - name: normalize roles
       ansible.builtin.set_fact:
         dyn_roles: "{{ dyn_roles + [ (item if (item is mapping) else {'name': item}) ] }}"
       loop: "{{ (host_cfg.deployment.roles | default([], true)) }}"
