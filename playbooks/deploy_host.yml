@@ -44,53 +44,63 @@
       loop_control:
         label: "{{ (item.name if (item is mapping and 'name' in item) else item) }}"
 
-    - name: Run deployment pre tasks
-      ansible.builtin.include_tasks: 
-        file: "{{ tasks_dir }}/{{ item.name }}/{{ os_dir }}/main.yml"
-      loop: "{{ dyn_pre_tasks }}"
-      loop_control:
-        label: "{{ item.name }}"
-      when: (dyn_pre_tasks | length > 0) and (item.when | default(true))
+    - block:
 
-    - name: Flush handlers (if roles/tasks notified any)
-      ansible.builtin.meta: flush_handlers
-
-  tasks:
-
-    - block: 
-      - name: running deployment roles
-        ansible.builtin.include_role:
-          name: "{{ item.name }}"
-        loop: "{{ dyn_roles }}"
+      - name: Run deployment pre tasks
+        ansible.builtin.include_tasks: 
+          file: "{{ tasks_dir }}/{{ item.name }}/{{ os_dir }}/main.yml"
+        loop: "{{ dyn_pre_tasks }}"
         loop_control:
           label: "{{ item.name }}"
 
       - name: Flush handlers (if roles/tasks notified any)
         ansible.builtin.meta: flush_handlers
 
+      when: (dyn_pre_tasks | length > 0) and (item.when | default(true))
+
+  tasks:
+
+    - block: 
+
+      - name: running deployment roles
+        ansible.builtin.include_role:
+          name: "{{ item.name }}"
+        loop: "{{ dyn_roles }}"
+        loop_control:
+          label: "{{ item.name }}"
+      
+      - name: Flush handlers (if roles/tasks notified any)
+        ansible.builtin.meta: flush_handlers
+      
       when: (dyn_roles | length > 0) and (item.when | default(true))
 
-    - name: Run dynamic reg_tasks
-      ansible.builtin.include_tasks:
-        file: "{{ tasks_dir }}/{{ item.name }}/{{ os_dir }}/main.yml"
-      loop: "{{ dyn_reg_tasks }}"
-      loop_control:
-        label: "{{ item.name }}"
+    - block:
+
+      - name: Run dynamic reg_tasks
+        ansible.builtin.include_tasks:
+          file: "{{ tasks_dir }}/{{ item.name }}/{{ os_dir }}/main.yml"
+        loop: "{{ dyn_reg_tasks }}"
+        loop_control:
+          label: "{{ item.name }}"
+
+      - name: Flush handlers (if roles/tasks notified any)
+        ansible.builtin.meta: flush_handlers
+
       when: (dyn_reg_tasks | length > 0) and (item.when | default(true))
 
-    - name: Flush handlers (if roles/tasks notified any)
-      ansible.builtin.meta: flush_handlers
+    - block:
+      - name: Run dynamic fin_tasks
+        ansible.builtin.include_tasks: 
+          file: "{{ tasks_dir }}/{{ item.name }}/{{ os_dir }}/main.yml"
+        loop: "{{ dyn_fin_tasks }}"
+        loop_control:
+          label: "{{ item.name }}"
 
-    - name: Run dynamic fin_tasks
-      ansible.builtin.include_tasks: 
-        file: "{{ tasks_dir }}/{{ item.name }}/{{ os_dir }}/main.yml"
-      loop: "{{ dyn_fin_tasks }}"
-      loop_control:
-        label: "{{ item.name }}"
+      - name: Flush handlers (if roles/tasks notified any)
+        ansible.builtin.meta: flush_handlers
+
       when: (dyn_fin_tasks | length > 0) and (item.when | default(true))
 
-    - name: Flush handlers (if roles/tasks notified any)
-      ansible.builtin.meta: flush_handlers
 
   vars:
     domain: "testcloud.leikam-barz.de"
