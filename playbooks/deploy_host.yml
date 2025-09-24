@@ -57,22 +57,22 @@
 
   tasks:
 
-    - name: running deployment roles
-      ansible.builtin.include_role:
-        name: "{{ item.name }}"
-      loop: "{{ dyn_roles }}"
-      loop_control:
-        label: "{{ item.name }}"
-      when: (dyn_roles | length > 0) and (item.when | default(true))
+    - block: 
+      - name: running deployment roles
+        ansible.builtin.include_role:
+          name: "{{ item.name }}"
+        loop: "{{ dyn_roles }}"
+        loop_control:
+          label: "{{ item.name }}"
 
-    - name: Flush handlers (if roles/tasks notified any)
-      ansible.builtin.meta: flush_handlers
+      - name: Flush handlers (if roles/tasks notified any)
+        ansible.builtin.meta: flush_handlers
+
+      when: (dyn_roles | length > 0) and (item.when | default(true))
 
     - name: Run dynamic reg_tasks
       ansible.builtin.include_tasks:
-        file: "{{ tasks_dir }}/task_file_include/{{ os_dir }}/main.yml" 
-      vars:
-        task_file: "{{ tasks_dir }}/{{ item.name }}/{{ os_dir }}/main.yml"
+        file: "{{ tasks_dir }}/{{ item.name }}/{{ os_dir }}/main.yml"
       loop: "{{ dyn_reg_tasks }}"
       loop_control:
         label: "{{ item.name }}"
