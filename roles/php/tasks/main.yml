@@ -7,3 +7,7 @@
   include_tasks: "{{ roles_dir }}/{{ self_role }}/tasks/install.yml"
   vars:
     upgrade_reboot: "{{ enable_reboot }}"
+
+- name: debug
+  debug:
+    var: host_cfg
