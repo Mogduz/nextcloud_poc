@@ -1,3 +1,4 @@
 self_role: ufw
 ufw_apt_packages:
   - ufw
+enable_reboot: true
