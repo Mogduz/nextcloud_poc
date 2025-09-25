@@ -4,10 +4,30 @@
   remote_user: root
   pre_tasks: 
 
-    - name: load host deployment congfig for host "{{ inventory_hostname }}"
+    #- name: load host deployment congfig for host "{{ inventory_hostname }}"
+    #  ansible.builtin.include_vars:
+    #    file: "{{ vars_dir }}/hosts/{{ inventory_hostname }}.yml"
+    #    name: host_cfg
+
+    - name: Servermodell laden (alle YAMLs des Hosts, sortiert)
       ansible.builtin.include_vars:
-        file: "{{ vars_dir }}/hosts/{{ inventory_hostname }}.yml"
-        name: host_cfg
+        dir: "{{ vars_dir }}/vars/hosts/{{ inventory_hostname }}"
+        extensions: ["yml", "yaml"]
+        depth: 1
+        ignore_unknown_extensions: true
+      register: _server_vars_loaded
+
+    - name: Effective host_cfg bilden
+      ansible.builtin.set_fact:
+        host_cfg: >-
+          {{
+            host_cfg_defaults | default({}) 
+            | ansible.builtin.combine(host_cfg | default({}), recursive=true, list_merge='replace')
+          }}
+
+    - name: debug
+      ansible.builtin.debug:
+        var: host_cfg
 
     - name: Initialize dynamic lists
       ansible.builtin.set_fact:
