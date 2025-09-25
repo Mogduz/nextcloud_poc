@@ -50,10 +50,6 @@
           loop: "{{ _host_model_files }}"
           loop_control: { label: "{{ item | basename }}" }
 
-    - name: debug
-      ansible.builtin.debug:
-        var: host_cfg
-
     - name: Build host_cfg_effective (deep; append lists)
       ansible.builtin.set_fact:
         host_cfg_effective: >-
@@ -62,9 +58,14 @@
             ansible.builtin.combine(host_cfg | default({}), recursive=true, list_merge='append')
           }}
 
+    - name: set host_cfg var
+      ansible.builtin.set_fact:
+        host_cfg: "{{ host_cfg_effective }}"
+
     - name: debug
       ansible.builtin.debug:
-        var: host_cfg_effective
+        var: host_cfg
+
 
     - name: Initialize dynamic lists
       ansible.builtin.set_fact:
