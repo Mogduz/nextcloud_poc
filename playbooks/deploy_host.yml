@@ -27,7 +27,11 @@
         extensions: ["yml", "yaml"]
         depth: 1
         ignore_unknown_extensions: true
-      register: host_cfg
+      register: _temp_host_cfg
+
+    - name: set host_cfg var
+      ansible.builtin.set_fact:
+        host_cfg: "{{ _temp_host_cfg.ansible_facts }}"
 
     #- name: Effective host_cfg bilden
     #  ansible.builtin.set_fact:
