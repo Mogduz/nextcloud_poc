@@ -101,6 +101,25 @@
 
       when: (dyn_fin_tasks | length > 0) and (item.when | default(true))
 
+#############################################################################
+#                          Test                                             #
+#############################################################################
+
+    - block:
+      - name: Run test
+        ansible.builtin.include_tasks: 
+          file: "{{ tasks_dir }}/run_task/{{ os_dir }}/main.yml"
+        vars:
+          - task_name: "{{item.name}}"
+        loop: "{{ dyn_reg_tasks }}"
+        loop_control:
+          label: "{{ item.name }}"
+
+      - name: Flush handlers (if roles/tasks notified any)
+        ansible.builtin.meta: flush_handlers
+
+      when: (dyn_reg_tasks | length > 0) and (item.when | default(true))
+
   vars:
     domain: "testcloud.leikam-barz.de"
     upgrade_reboot: true
