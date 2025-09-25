@@ -5,3 +5,15 @@
 - name: debug
   ansible.builtin.debug:
     var: task_name
+
+- name: verify task exists
+  ansible.builtin.stat:
+    path: "{{ tasks_dir }}/{{ task_name }}/{{ os_dir }}/main.yml"
+  register: local_art
+  delegate_to: localhost
+  vars:
+    ansible_connection: local
+
+- name: debug
+  ansible.builtin.debug:
+    var: local_art
