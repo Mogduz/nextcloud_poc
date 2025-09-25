@@ -51,12 +51,14 @@
           loop_control: { label: "{{ item | basename }}" }
 
         - name: Merge into host_cfg aggregator (only if dict)
+          vars:
+            _file_cur: "{{ lookup('ansible.builtin.file', item) | from_yaml | default({}, true) }}"
           ansible.builtin.set_fact:
             host_cfg: >-
               {{
                 host_cfg | default({}) |
                 ansible.builtin.combine(
-                  _cur.host_cfg | default({}),
+                  _file_cur.host_cfg | default(_file_cur),
                   recursive=true,
                   list_merge='append'
                 )
@@ -121,8 +123,21 @@
       loop_control:
         label: "{{ (item.name if (item is mapping and 'name' in item) else item) }}"
 
+    - name: debug normalized lists
+      ansible.builtin.debug:
+        msg: |
+          dyn_pre_tasks: {{ dyn_pre_tasks | length }}
+          dyn_roles:     {{ dyn_roles | length }}
+          dyn_reg_tasks: {{ dyn_reg_tasks | length }}
+          dyn_fin_tasks: {{ dyn_fin_tasks | length }}
+
+  roles:
+
+  tasks:
+
     - block:
-      - name: Run deployment pre tasks
+
+      - name: Run dynamic pre_tasks
         ansible.builtin.include_tasks:
           file: "{{ tasks_dir }}/run_task/{{ os_dir }}/main.yml"
         vars:
@@ -138,22 +153,17 @@
 
       when: dyn_pre_tasks | length > 0
 
-  tasks:
-
-    - block: 
-      - name: running deployment roles
-        ansible.builtin.include_role:
-          name: "{{ item.name }}"
-        loop: "{{ dyn_roles }}"
-        loop_control:
-          label: "{{ item.name }}"
-      
-      - name: Flush handlers (if roles/tasks notified any)
-        ansible.builtin.meta: flush_handlers
-      
-      when: (dyn_roles | length > 0) and (item.when | default(true))
+    - name: Run dynamic roles
+      ansible.builtin.include_role:
+        name: "{{ role.name }}"
+      when: role.when | default(true)         
+      loop: "{{ dyn_roles }}"
+      loop_control:
+        label: "{{ role.name }}"
+        loop_var: role
 
     - block:
+
       - name: Run dynamic reg_tasks
         ansible.builtin.include_tasks:
           file: "{{ tasks_dir }}/run_task/{{ os_dir }}/main.yml"
@@ -171,6 +181,7 @@
       when: dyn_reg_tasks | length > 0
 
     - block:
+
       - name: Run dynamic fin_tasks
         ansible.builtin.include_tasks:
           file: "{{ tasks_dir }}/run_task/{{ os_dir }}/main.yml"
