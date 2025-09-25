@@ -1,0 +1,16 @@
+- name: set hostname var
+  ansible.builtin.set_fact:
+    hostname: "{{ host_cfg.hostname | default('unnamed', true) }}"
+
+- name: Set hostname
+  ansible.builtin.hostname:
+    name: "{{ hostname }}"
+
+- name: Check Hostname
+  include_tasks: "{{ tasks_dir }}/check_hostname/{{ os_dir }}/main.yml"
+  vars:
+    hostname: "{{ hostname }}"
+  when: (
+        (host_cfg.options.enable_hostname_check | default(false)) or
+        (enable_hostname_check | default(false))
+      ) | bool
