@@ -1,4 +1,4 @@
-- name: verify task exists
+- name: verify task "{{ task_name }}" exists
   ansible.builtin.stat:
     path: "{{ tasks_dir }}/{{ task_name }}/{{ os_dir }}/main.yml"
   register: local_art
