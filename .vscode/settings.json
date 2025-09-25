@@ -1,6 +1,0 @@
-{
-  "ansible.python.interpreterPath": "/mnt/c/Users/Gerald/Documents/GitHub/nextcloud_poc/.venv/bin/python",
-  "ansible.ansiblePath": "/mnt/c/Users/Gerald/Documents/GitHub/nextcloud_poc/.venv/bin/ansible",
-  "ansible.validation.lint.enabled": true,
-  "ansible.validation.lint.path": "/mnt/c/Users/Gerald/Documents/GitHub/nextcloud_poc/.venv/bin/ansible-lint"
-}
