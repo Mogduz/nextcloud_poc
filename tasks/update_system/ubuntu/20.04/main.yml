@@ -12,3 +12,6 @@
 - name: debug
   ansible.builtin.debug:
     var: host_cfg
+
+- name: test
+  
