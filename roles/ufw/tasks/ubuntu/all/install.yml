@@ -1,0 +1,14 @@
+- name: install required ufw packages
+  include_tasks: "{{ tasks_dir }}/install_packages/{{ os_dir }}/main.yml"
+  vars:
+    packages: >-
+      {{
+        host_cfg.packages.roles.ufw
+        if (host_cfg is defined
+            and host_cfg.packages is defined
+            and host_cfg.packages.roles is defined
+            and host_cfg.packages.roles.ufw is defined
+            and (host_cfg.packages.roles.ufw | length > 0))
+        else (ufw_packages.apt | default([]))
+      }}
+    reboot_enabled: "{{ host_cfg.options.enable_reboot | default(false) | bool }}"
