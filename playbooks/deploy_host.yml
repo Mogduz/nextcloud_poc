@@ -14,22 +14,6 @@
       ansible.builtin.meta: end_host
       when: not local_art.stat.exists
 
-    #- name: Servermodell laden (alle YAMLs des Hosts, sortiert)
-    #  ansible.builtin.include_vars:
-    #    dir: "{{ vars_dir }}/hosts/{{ inventory_hostname }}/"
-    #    extensions: ["yml", "yaml"]
-    #    depth: 1
-    #    ignore_unknown_extensions: true
-    #  register: _temp_host_cfg
-
-    #- name: host_cfg_effective bauen (Listen anhängen)
-    #  ansible.builtin.set_fact:
-    #    host_cfg_effective: >-
-    #      {{
-    #        host_cfg_defaults | default({}) |
-    #        combine(host_cfg | default({}), recursive=true, list_merge='append')
-    #      }}
-
     - name: Gather host model files (sorted)
       ansible.builtin.set_fact:
         _host_model_files: >-
@@ -70,8 +54,6 @@
       ansible.builtin.debug:
         var: host_cfg
 
-
-    # 2) Effective Sicht aus Defaults + aggregiertem host_cfg aufbauen
     - name: Build host_cfg_effective (deep; append lists)
       ansible.builtin.set_fact:
         host_cfg_effective: >-
@@ -83,10 +65,6 @@
     - name: debug
       ansible.builtin.debug:
         var: host_cfg_effective
-
-    #- name: set host_cfg var
-    #  ansible.builtin.set_fact:
-    #     host_cfg: "{{ _temp_host_cfg.ansible_facts }}"
 
     - name: Initialize dynamic lists
       ansible.builtin.set_fact:
