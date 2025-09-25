@@ -1,0 +1,3 @@
+- name: redirecting to "{{ tasks_dir }}/run_task/ubuntu/all/main.yml"  
+  ansible.builtin.include_tasks: 
+    file: "{{ tasks_dir }}/run_task/ubuntu/all/main.yml"
