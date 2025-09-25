@@ -4,6 +4,6 @@
     reboot_enabled: "{{ upgrade_reboot }}"
 
 - name: installing ufw packages
-  include_tasks: "{{ roles_dir }}/{{ self_role }}/tasks/install.yml"
+  include_tasks: "{{ roles_dir }}/{{ self_role }}/tasks/{{ os_dir }}/install.yml"
   vars:
     upgrade_reboot: "{{ enable_reboot }}"
