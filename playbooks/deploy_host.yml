@@ -11,7 +11,7 @@
 
     - name: Servermodell laden (alle YAMLs des Hosts, sortiert)
       ansible.builtin.include_vars:
-        dir: "{{ vars_dir }}/vars/hosts/{{ inventory_hostname }}"
+        dir: "{{ vars_dir }}/hosts/{{ inventory_hostname }}/"
         extensions: ["yml", "yaml"]
         depth: 1
         ignore_unknown_extensions: true
