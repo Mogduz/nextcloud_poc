@@ -1,5 +1,8 @@
 type: hetzner
 name: owncloud_test
+os:
+  exp_version: 20.04
+  exp_distro: ubuntu
 hostname: testcloud
 fqdn: testcloud.leikam-barz.de
 network:
