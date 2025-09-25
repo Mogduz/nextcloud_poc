@@ -54,7 +54,7 @@
           loop: "{{ dyn_pre_tasks }}"
           loop_control:
             label: "{{ pre_task.name }}"
-            loop_var: reg_task 
+            loop_var: pre_task 
 
         - name: Flush handlers (if roles/tasks notified any)
           ansible.builtin.meta: flush_handlers
