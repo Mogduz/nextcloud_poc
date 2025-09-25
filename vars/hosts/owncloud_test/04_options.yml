@@ -1,0 +1,3 @@
+options:
+  enable_reboot: true
+  enable_hostname_check: true
