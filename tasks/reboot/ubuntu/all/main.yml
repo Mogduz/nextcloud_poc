@@ -1,0 +1,13 @@
+- block:
+  - name: Check if reboot is necessary
+    ansible.builtin.stat:
+      path: /var/run/reboot-required
+    register: reboot_flag
+
+  - name: Reboot (if necessary)
+    ansible.builtin.reboot:
+      msg: "Reboot after kernel/lib upgrade"
+      reboot_timeout: 900
+    when: reboot_flag.stat.exists
+  
+  when: reboot_enabled | default(false) | bool
