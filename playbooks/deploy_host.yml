@@ -9,6 +9,18 @@
     #    file: "{{ vars_dir }}/hosts/{{ inventory_hostname }}.yml"
     #    name: host_cfg
 
+    - name: get stat for host folder
+      ansible.builtin.stat:
+        path: "{{ vars_dir }}/hosts/{{ inventory_hostname }}"
+      register: local_art
+      delegate_to: localhost
+      vars:
+        ansible_connection: local
+
+    - name: debug
+      debug:
+        var: local_art
+
     - name: Servermodell laden (alle YAMLs des Hosts, sortiert)
       ansible.builtin.include_vars:
         dir: "{{ vars_dir }}/hosts/{{ inventory_hostname }}/"
