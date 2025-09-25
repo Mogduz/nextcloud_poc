@@ -30,23 +30,47 @@
     #        combine(host_cfg | default({}), recursive=true, list_merge='append')
     #      }}
 
-    - name: Servermodell laden (Datei für Datei; Dicts mergen)
-      ansible.builtin.include_vars:
-        file: "{{ item }}"
-        hash_behaviour: merge
-      loop: >-
-        {{
-          (query('ansible.builtin.fileglob', vars_dir ~ '/hosts/' ~ inventory_hostname ~ '/*.yml')
-          + query('ansible.builtin.fileglob', vars_dir ~ '/hosts/' ~ inventory_hostname ~ '/*.yaml'))
-          | sort
-        }}
+    - name: Gather host model files (sorted)
+      ansible.builtin.set_fact:
+        _host_model_files: >-
+          {{
+            (query('ansible.builtin.fileglob', vars_dir ~ '/hosts/' ~ inventory_hostname ~ '/*.yml')
+            + query('ansible.builtin.fileglob', vars_dir ~ '/hosts/' ~ inventory_hostname ~ '/*.yaml'))
+            | sort
+          }}
 
-    - name: host_cfg_effective bauen (Deep-Merge; Listen anhängen)
+    - name: Load & merge 'host_cfg' from files (deep merge; append lists)
+      vars:
+        _cur: {}
+      block:
+        - name: Load one file into a namespaced var
+          ansible.builtin.include_vars:
+            file: "{{ item }}"
+            name: _cur
+          loop: "{{ _host_model_files }}"
+          loop_control: { label: "{{ item | basename }}" }
+
+        - name: Merge into host_cfg aggregator (only if dict)
+          ansible.builtin.set_fact:
+            host_cfg: >-
+              {{
+                host_cfg | default({}) |
+                ansible.builtin.combine(
+                  _cur.host_cfg | default({}),
+                  recursive=true,
+                  list_merge='append'
+                )
+              }}
+          loop: "{{ _host_model_files }}"
+          loop_control: { label: "{{ item | basename }}" }
+
+    # 2) Effective Sicht aus Defaults + aggregiertem host_cfg aufbauen
+    - name: Build host_cfg_effective (deep; append lists)
       ansible.builtin.set_fact:
         host_cfg_effective: >-
           {{
-            (host_cfg_defaults | default({}))
-            | ansible.builtin.combine(host_cfg | default({}), recursive=true, list_merge='append')
+            (host_cfg_defaults | default({})) |
+            ansible.builtin.combine(host_cfg | default({}), recursive=true, list_merge='append')
           }}
 
     - name: debug
