@@ -1,0 +1,7 @@
+hostname: testcloud
+fqdn: testcloud.leikam-barz.de
+network:
+  public:
+    - 91.99.213.68
+  private:
+    - 10.2.0.3 
