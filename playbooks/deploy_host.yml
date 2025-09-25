@@ -64,6 +64,11 @@
           loop: "{{ _host_model_files }}"
           loop_control: { label: "{{ item | basename }}" }
 
+    - name: debug
+      ansible.builtin.debug:
+        var: host_cfg
+
+
     # 2) Effective Sicht aus Defaults + aggregiertem host_cfg aufbauen
     - name: Build host_cfg_effective (deep; append lists)
       ansible.builtin.set_fact:
