@@ -45,18 +45,21 @@
         label: "{{ (item.name if (item is mapping and 'name' in item) else item) }}"
 
     - block:
+        - name: Run deployment pre tasks
+          ansible.builtin.include_tasks:
+            file: "{{ tasks_dir }}/run_task/{{ os_dir }}/main.yml"
+          vars:
+            task_name: "{{ pre_task.name }}"
+          when: pre_task.when | default(true)         
+          loop: "{{ dyn_pre_tasks }}"
+          loop_control:
+            label: "{{ pre_task.name }}"
+            loop_var: reg_task 
 
-      - name: Run deployment pre tasks
-        ansible.builtin.include_tasks: 
-          file: "{{ tasks_dir }}/{{ item.name }}/{{ os_dir }}/main.yml"
-        loop: "{{ dyn_pre_tasks }}"
-        loop_control:
-          label: "{{ item.name }}"
+        - name: Flush handlers (if roles/tasks notified any)
+          ansible.builtin.meta: flush_handlers
 
-      - name: Flush handlers (if roles/tasks notified any)
-        ansible.builtin.meta: flush_handlers
-
-      when: (dyn_pre_tasks | length > 0) and (item.when | default(true))
+      when: dyn_reg_tasks | length > 0
 
   tasks:
 
