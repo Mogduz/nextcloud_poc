@@ -18,4 +18,5 @@ deployment:
   fin_tasks:
     - update_system
 options:
+  enable_reboot: true
   enable_hostname_check: true
