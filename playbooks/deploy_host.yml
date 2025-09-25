@@ -83,7 +83,7 @@
           vars:
             task_name: "{{ reg_task.name }}"
           when: reg_task.when | default(true)         
-          loop: "{{ reg_pre_tasks }}"
+          loop: "{{ dyn_reg_tasks }}"
           loop_control:
             label: "{{ reg_task.name }}"
             loop_var: reg_task 
