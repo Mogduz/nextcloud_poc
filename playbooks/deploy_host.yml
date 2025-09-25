@@ -101,7 +101,6 @@
 
       when: (dyn_fin_tasks | length > 0) and (item.when | default(true))
 
-
   vars:
     domain: "testcloud.leikam-barz.de"
     upgrade_reboot: true
