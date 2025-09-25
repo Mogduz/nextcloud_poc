@@ -1,8 +1,8 @@
-- name: update repo
+- name: Update Repo
   hosts: localhost
   gather_facts: true
 
   tasks:
-    - name: updating local ansible git repo
-      ansible.builtin.include_tasks: 
+    - name: Updating Local Ansible Git Repo
+      ansible.builtin.include_tasks:
         file: "{{ tasks_dir }}/git_pull_repo/{{ os_dir }}/main.yml"
