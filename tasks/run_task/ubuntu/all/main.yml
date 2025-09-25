@@ -12,5 +12,5 @@
 
 - name: run task "{{ task_name }}" 
   ansible.builtin.include_tasks: 
-    file: local_art.stat.path
+    file: "{{ local_art.stat.path }}"
   when: local_art.stat.exists | default(false) | bool
