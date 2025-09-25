@@ -59,7 +59,7 @@
         - name: Flush handlers (if roles/tasks notified any)
           ansible.builtin.meta: flush_handlers
 
-      when: dyn_reg_tasks | length > 0
+      when: dyn_pre_tasks | length > 0
 
   tasks:
 
