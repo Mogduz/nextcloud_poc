@@ -1,0 +1,10 @@
+deployment:
+  roles:
+    - ufw
+    - php
+  pre_tasks:
+    - set_hostname
+  reg_tasks:
+    - update_system
+  fin_tasks:
+    - update_system
