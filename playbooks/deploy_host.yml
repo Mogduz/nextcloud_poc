@@ -14,8 +14,10 @@
         path: "{{ vars_dir }}/hosts/{{ inventory_hostname }}"
       register: local_art
       delegate_to: localhost
-      vars:
-        ansible_connection: local
+      
+    - name: skip this host if model folder is missing
+      ansible.builtin.meta: end_host
+      when: not local_art.stat.exists
 
     - name: debug
       debug:
