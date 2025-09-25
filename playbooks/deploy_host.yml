@@ -14,17 +14,48 @@
       ansible.builtin.meta: end_host
       when: not local_art.stat.exists
 
-    - name: Servermodell laden (alle YAMLs des Hosts, sortiert)
-      ansible.builtin.include_vars:
-        dir: "{{ vars_dir }}/hosts/{{ inventory_hostname }}/"
-        extensions: ["yml", "yaml"]
-        depth: 1
-        ignore_unknown_extensions: true
-      register: _temp_host_cfg
+    #- name: Servermodell laden (alle YAMLs des Hosts, sortiert)
+    #  ansible.builtin.include_vars:
+    #    dir: "{{ vars_dir }}/hosts/{{ inventory_hostname }}/"
+    #    extensions: ["yml", "yaml"]
+    #    depth: 1
+    #    ignore_unknown_extensions: true
+    #  register: _temp_host_cfg
 
-    - name: set host_cfg var
+    #- name: host_cfg_effective bauen (Listen anhängen)
+    #  ansible.builtin.set_fact:
+    #    host_cfg_effective: >-
+    #      {{
+    #        host_cfg_defaults | default({}) |
+    #        combine(host_cfg | default({}), recursive=true, list_merge='append')
+    #      }}
+
+    - name: Servermodell laden (Datei für Datei; Dicts mergen)
+      ansible.builtin.include_vars:
+        file: "{{ item }}"
+        hash_behaviour: merge
+      loop: >-
+        {{
+          (query('ansible.builtin.fileglob', vars_dir ~ '/hosts/' ~ inventory_hostname ~ '/*.yml')
+          + query('ansible.builtin.fileglob', vars_dir ~ '/hosts/' ~ inventory_hostname ~ '/*.yaml'))
+          | sort
+        }}
+
+    - name: host_cfg_effective bauen (Deep-Merge; Listen anhängen)
       ansible.builtin.set_fact:
-        host_cfg: "{{ _temp_host_cfg.ansible_facts }}"
+        host_cfg_effective: >-
+          {{
+            (host_cfg_defaults | default({}))
+            | ansible.builtin.combine(host_cfg | default({}), recursive=true, list_merge='append')
+          }}
+
+    - name: debug
+      ansible.builtin.debug:
+        var: host_cfg_effective
+
+    #- name: set host_cfg var
+    #  ansible.builtin.set_fact:
+    #     host_cfg: "{{ _temp_host_cfg.ansible_facts }}"
 
     - name: Initialize dynamic lists
       ansible.builtin.set_fact:
