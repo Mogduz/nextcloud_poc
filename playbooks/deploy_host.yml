@@ -111,5 +111,4 @@
       when: dyn_fin_tasks | length > 0
 
   vars:
-    domain: "testcloud.leikam-barz.de"
     upgrade_reboot: true
