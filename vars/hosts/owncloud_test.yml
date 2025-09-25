@@ -23,3 +23,7 @@ deployment:
 options:
   enable_reboot: true
   enable_hostname_check: true
+packages:
+  roles:
+    ufw:
+      - ufw
