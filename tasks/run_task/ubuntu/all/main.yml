@@ -1,0 +1,7 @@
+- name: debug
+  ansible.builtin.debug:
+    msg: redirect work
+
+- name: debug
+  ansible.builtin.debug:
+    var: task_name
