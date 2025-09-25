@@ -6,10 +6,6 @@
   vars:
     ansible_connection: local
 
-#- name: debug
-#  ansible.builtin.debug:
-#    var: local_art
-
 - name: run task "{{ task_name }}" 
   ansible.builtin.include_tasks: 
     file: "{{ local_art.stat.path }}"
