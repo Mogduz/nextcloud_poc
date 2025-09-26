@@ -1,3 +1,25 @@
+# =============================================================================
+# File Documentation (auto-inserted)
+# Generated: 2025-09-26T23:01:52
+# Path: roles/ufw/tasks/ubuntu/all/install.yml
+# Purpose: TBD
+# Notes: This header was added automatically based on the comment schema.
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+
+# Task: install required ufw packages
+
+# Description: TBD
+
+# When: n/a
+
+# Tags: n/a
+
+# Changed by: auto-commenter
+
+# -----------------------------------------------------------------------------
+
 - name: install required ufw packages
   include_tasks: "{{ tasks_dir }}/install_packages/{{ os_dir }}/main.yml"
   vars:
