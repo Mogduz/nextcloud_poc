@@ -1,13 +1,63 @@
+# =============================================================================
+# File Documentation (auto-inserted)
+# Generated: 2025-09-26T23:01:52
+# Path: tasks/git_pull_repo/ubuntu/20.04/main.yml
+# Purpose: TBD
+# Notes: This header was added automatically based on the comment schema.
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+
+# Task: Detect existing git repo
+
+# Description: TBD
+
+# When: debug_enabled | default(true)
+
+# Tags: n/a
+
+# Changed by: auto-commenter
+
+# -----------------------------------------------------------------------------
+
 - name: Detect existing git repo
   ansible.builtin.stat:
     path: "{{ repo_dir }}/.git"
   register: repo_git_dir
+
+# -----------------------------------------------------------------------------
+
+# Task: Update existing repo (pull)
+
+# Description: TBD
+
+# When: debug_enabled | default(true)
+
+# Tags: n/a
+
+# Changed by: auto-commenter
+
+# -----------------------------------------------------------------------------
 
 - name: Update existing repo (pull)
   ansible.builtin.command: "git -C {{ base_dir }} pull"
   register: git_update
   changed_when: false
   failed_when: false
+
+# -----------------------------------------------------------------------------
+
+# Task: Status
+
+# Description: TBD
+
+# When: debug_enabled | default(true)
+
+# Tags: n/a
+
+# Changed by: auto-commenter
+
+# -----------------------------------------------------------------------------
 
 - name: Status
   ansible.builtin.debug:
@@ -17,6 +67,20 @@
         else 'Repository already up-to-date. Nothing to do.' 
       }}
   when: debug_enabled | default(true)
+
+# -----------------------------------------------------------------------------
+
+# Task: git stdout
+
+# Description: TBD
+
+# When: debug_enabled | default(true)
+
+# Tags: n/a
+
+# Changed by: auto-commenter
+
+# -----------------------------------------------------------------------------
 
 - name: git stdout
   ansible.builtin.debug:
