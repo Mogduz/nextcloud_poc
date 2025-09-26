@@ -1,2 +1,10 @@
+# =============================================================================
+# File Documentation (auto-inserted)
+# Generated: 2025-09-26T23:01:52
+# Path: playbooks/test.yml
+# Purpose: TBD
+# Notes: This header was added automatically based on the comment schema.
+# =============================================================================
+
 - import_playbook: update_repo.yml
 - import_playbook: deploy_host.yml
