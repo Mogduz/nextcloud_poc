@@ -1,3 +1,11 @@
+# =============================================================================
+# File Documentation (auto-inserted)
+# Generated: 2025-09-26T23:01:52
+# Path: inventories/inventory.yml
+# Purpose: TBD
+# Notes: This header was added automatically based on the comment schema.
+# =============================================================================
+
 all:
   hosts:
     owncloud_test:
