@@ -1,8 +1,37 @@
+# =============================================================================
+# File Documentation (auto-inserted)
+# Generated: 2025-09-26T23:01:52
+# Path: tasks/reboot/ubuntu/all/main.yml
+# Purpose: TBD
+# Notes: This header was added automatically based on the comment schema.
+# =============================================================================
+
 - block:
+  # -----------------------------------------------------------------------------
+  # Task: Check if reboot is necessary
+  # Description: TBD
+  # When: reboot_flag.stat.exists
+  # Tags: n/a
+  # Changed by: auto-commenter
+  # -----------------------------------------------------------------------------
   - name: Check if reboot is necessary
     ansible.builtin.stat:
       path: /var/run/reboot-required
     register: reboot_flag
+
+  # -----------------------------------------------------------------------------
+
+  # Task: Reboot (if necessary)
+
+  # Description: TBD
+
+  # When: reboot_flag.stat.exists
+
+  # Tags: n/a
+
+  # Changed by: auto-commenter
+
+  # -----------------------------------------------------------------------------
 
   - name: Reboot (if necessary)
     ansible.builtin.reboot:
