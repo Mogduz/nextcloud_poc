@@ -1,8 +1,37 @@
+# =============================================================================
+# File Documentation (auto-inserted)
+# Generated: 2025-09-26T23:01:52
+# Path: tasks/install_packages/ubuntu/20.04/main.yml
+# Purpose: TBD
+# Notes: This header was added automatically based on the comment schema.
+# =============================================================================
+
 - block:
+  # -----------------------------------------------------------------------------
+  # Task: upgrading cache (Cache lifetime 1h )
+  # Description: TBD
+  # When: packages | default([]) | length > 0
+  # Tags: n/a
+  # Changed by: auto-commenter
+  # -----------------------------------------------------------------------------
   - name: upgrading cache (Cache lifetime 1h )
     ansible.builtin.apt:
       update_cache: true
       cache_valid_time: 3600
+
+  # -----------------------------------------------------------------------------
+
+  # Task: installing packages
+
+  # Description: TBD
+
+  # When: packages | default([]) | length > 0
+
+  # Tags: n/a
+
+  # Changed by: auto-commenter
+
+  # -----------------------------------------------------------------------------
 
   - name: installing packages
     ansible.builtin.apt:
@@ -12,10 +41,31 @@
   when: packages | default([]) | length > 0
 
 - block:
+  # -----------------------------------------------------------------------------
+  # Task: Check if reboot is necessary
+  # Description: TBD
+  # When: reboot_flag.stat.exists
+  # Tags: n/a
+  # Changed by: auto-commenter
+  # -----------------------------------------------------------------------------
   - name: Check if reboot is necessary
     ansible.builtin.stat:
       path: /var/run/reboot-required
     register: reboot_flag
+
+  # -----------------------------------------------------------------------------
+
+  # Task: Reboot (if necessary)
+
+  # Description: TBD
+
+  # When: reboot_flag.stat.exists
+
+  # Tags: n/a
+
+  # Changed by: auto-commenter
+
+  # -----------------------------------------------------------------------------
 
   - name: Reboot (if necessary)
     ansible.builtin.reboot:
