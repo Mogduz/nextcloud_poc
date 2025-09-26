@@ -1,3 +1,25 @@
+# =============================================================================
+# File Documentation (auto-inserted)
+# Generated: 2025-09-26T23:01:52
+# Path: tasks/check_hostname/ubuntu/20.04/main.yml
+# Purpose: TBD
+# Notes: This header was added automatically based on the comment schema.
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+
+# Task: assert hostname var is set
+
+# Description: TBD
+
+# When: n/a
+
+# Tags: n/a
+
+# Changed by: auto-commenter
+
+# -----------------------------------------------------------------------------
+
 - name: assert hostname var is set
   ansible.builtin.assert:
       that:
@@ -6,9 +28,37 @@
       fail_msg: "BREAK: var 'hostname' is not defined or empty."
       success_msg: "hostname={{ hostname }} asseration passed"
 
+# -----------------------------------------------------------------------------
+
+# Task: gahter network facts
+
+# Description: TBD
+
+# When: n/a
+
+# Tags: n/a
+
+# Changed by: auto-commenter
+
+# -----------------------------------------------------------------------------
+
 - name: gahter network facts
   ansible.builtin.setup:
     gather_subset: [network]
+
+# -----------------------------------------------------------------------------
+
+# Task: Check if short name is identical (hostname can be FQDN)
+
+# Description: TBD
+
+# When: n/a
+
+# Tags: n/a
+
+# Changed by: auto-commenter
+
+# -----------------------------------------------------------------------------
 
 - name: Check if short name is identical (hostname can be FQDN)
   ansible.builtin.assert:
