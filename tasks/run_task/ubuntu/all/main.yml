@@ -1,3 +1,25 @@
+# =============================================================================
+# File Documentation (auto-inserted)
+# Generated: 2025-09-26T23:01:52
+# Path: tasks/run_task/ubuntu/all/main.yml
+# Purpose: TBD
+# Notes: This header was added automatically based on the comment schema.
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+
+# Task: verify task "{{ task_name }}" exists
+
+# Description: TBD
+
+# When: local_art.stat.exists | default(false) | bool
+
+# Tags: n/a
+
+# Changed by: auto-commenter
+
+# -----------------------------------------------------------------------------
+
 - name: verify task "{{ task_name }}" exists
   ansible.builtin.stat:
     path: "{{ tasks_dir }}/{{ task_name }}/{{ os_dir }}/main.yml"
@@ -5,6 +27,20 @@
   delegate_to: localhost
   vars:
     ansible_connection: local
+
+# -----------------------------------------------------------------------------
+
+# Task: run task "{{ task_name }}"
+
+# Description: TBD
+
+# When: local_art.stat.exists | default(false) | bool
+
+# Tags: n/a
+
+# Changed by: auto-commenter
+
+# -----------------------------------------------------------------------------
 
 - name: run task "{{ task_name }}" 
   ansible.builtin.include_tasks: 
