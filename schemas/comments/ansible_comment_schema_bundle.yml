@@ -1,0 +1,169 @@
+# Ansible Comment Schema Bundle v1
+# This single file contains both the schema (structure & rules) and reusable
+# comment templates for consistent, block-style documentation in Ansible YAML.
+#
+# How you'll use this with me later:
+#   • Upload this bundle file + your source file(s).
+#   • Tell me: "Apply the bundle to <source.yml>" and I'll render comments
+#     according to 'schema' and 'templates' below.
+#
+bundle:
+  name: ansible_comment_schema_bundle
+  version: 1
+  language: en
+
+  schema:
+    style:
+      line_prefix: "# "
+      max_line_length: 100
+      empty_line_between_blocks: true
+      wrap_indent: 2
+
+    # Conventions apply across all comment blocks
+    conventions:
+      - "Prefer imperative mood (e.g., 'Validate', 'Update')."
+      - "Focus comments on intent, constraints, and side-effects; avoid restating code."
+      - "Keep lines under 100 characters; wrap with indentation."
+      - "Place task blocks immediately above '- name:' entries."
+      - "Use section headers to document non-task YAML sections (e.g., vars:, environment:)."
+
+    blocks:
+      file_header:
+        required: true
+        single_instance: true
+        attach_to: "file_start"
+        order: [title, summary, flow_overview, rationale, metadata]
+        fields:
+          title:
+            type: string
+            required: true
+            example: "File: main.yml"
+          summary:
+            type: multiline
+            required: true
+            example: |
+              Summary: Ansible task file to refresh APT cache and upgrade packages
+                       with strict input validation and optional cleanup.
+          flow_overview:
+            type: list
+            required: true
+            example:
+              - Validate required variables.
+              - Update APT cache within a bounded validity window.
+              - Upgrade packages; optionally autoremove and autoclean.
+          rationale:
+            type: list
+            required: false
+            example:
+              - Fail-fast assertions surface configuration errors early.
+              - cache_valid_time reduces unnecessary network calls.
+              - Noninteractive APT ensures unattended behavior.
+          metadata:
+            type: mapping
+            required: false
+            fields:
+              author: { type: string, required: false }
+              version: { type: string, required: false }
+              last_updated: { type: string, required: false }
+
+      section_header:
+        required: false
+        repeatable: true
+        attach_to: "section"   # e.g., before 'vars:' or 'environment:'
+        fields:
+          title:
+            type: string
+            required: true
+            example: "Section: Compute effective inputs"
+          description:
+            type: multiline
+            required: false
+            example: "Loads defaults and applies overrides for derived variables."
+
+      task_block:
+        required: true
+        repeatable: true
+        attach_to: "task"      # immediately before a task '- name:'
+        order: [intent, preconditions, effects, idempotency, error_handling, security, performance, related_vars]
+        fields:
+          intent:
+            type: multiline
+            required: true
+            example: |
+              Task: Refresh APT package index if the local cache is older than
+                    the configured cache_valid_time (cachetime).
+          preconditions:
+            type: list
+            required: false
+            example: [ "cachetime is defined", "quiet is defined" ]
+          effects:
+            type: list
+            required: false
+            example: [ "APT cache may be updated", "Subsequent installs see latest metadata" ]
+          idempotency:
+            type: multiline
+            required: false
+            example: "Relies on apt's cache_valid_time and idempotent operations."
+          error_handling:
+            type: multiline
+            required: false
+            example: "Fail-fast via ansible.builtin.assert if required vars are missing."
+          security:
+            type: list
+            required: false
+            example: [ "Runs with become if needed", "Avoid interactive prompts" ]
+          performance:
+            type: list
+            required: false
+            example: [ "cache_valid_time prevents redundant network calls" ]
+          related_vars:
+            type: list
+            required: false
+            example: [ "cachetime", "autoremove", "autoclean", "quiet" ]
+
+  # Ready-to-paste templates that already include '# ' prefixes.
+  templates:
+    file_header: |
+      # ==============================================================================
+      # File: <filename>
+      # Summary: <what this file does in 1–2 lines>
+      # Flow overview:
+      #   • <step 1>
+      #   • <step 2>
+      #   • <step 3>
+      # Rationale:
+      #   • <reason 1>
+      #   • <reason 2>
+      # Metadata:
+      #   • Author: <name>
+      #   • Version: <semver>
+      #   • Last updated: <YYYY-MM-DD>
+      # ==============================================================================
+
+    section_header: |
+      # Section: <name>
+      # <short description of this non-task section>
+
+    task_block: |
+      # Task: <short what/why>
+      # Preconditions: <var1> is defined; <var2> is defined
+      # Effects: <state changes / side effects>
+      # Idempotency: <why safe to rerun>
+      # Error handling: <asserts/guards>
+      # Security: <privilege/secrets notes>
+      # Performance: <caching/batching notes>
+      # Related vars: <var1>, <var2>, <var3>
+
+  # Heuristics to help automatic placement (for future automation by me)
+  placement_rules:
+    task_identifier:
+      kind: regex
+      pattern: "^\s*-\s*name:\s*.+$"
+    section_identifiers:
+      - kind: exact
+        value: "vars:"
+      - kind: exact
+        value: "environment:"
+    file_header:
+      place_at_top: true
+      ensure_separator_line: true
