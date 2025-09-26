@@ -1,0 +1,4 @@
+cache_valid_time: 3600
+auto_remove: true
+auto_clean: true
+task_quiet: false
