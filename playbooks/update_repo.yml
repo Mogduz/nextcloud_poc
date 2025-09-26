@@ -1,8 +1,37 @@
+# =============================================================================
+# File Documentation (auto-inserted)
+# Generated: 2025-09-26T23:01:52
+# Path: playbooks/update_repo.yml
+# Purpose: TBD
+# Notes: This header was added automatically based on the comment schema.
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+
+# Task: Update Repo
+
+# Description: TBD
+
+# When: n/a
+
+# Tags: n/a
+
+# Changed by: auto-commenter
+
+# -----------------------------------------------------------------------------
+
 - name: Update Repo
   hosts: localhost
   gather_facts: true
 
   tasks:
+    # -----------------------------------------------------------------------------
+    # Task: Updating Local Ansible Git Repo
+    # Description: TBD
+    # When: n/a
+    # Tags: n/a
+    # Changed by: auto-commenter
+    # -----------------------------------------------------------------------------
     - name: Updating Local Ansible Git Repo
       ansible.builtin.include_tasks:
         file: "{{ tasks_dir }}/git_pull_repo/{{ os_dir }}/main.yml"
