@@ -1,16 +1,28 @@
-- name: upgrading cache (Cache lifetime 1h )
-  ansible.builtin.apt:
-    update_cache: true
-    cache_valid_time: 3600
+# ==============================================================================
+# File: main.yml
+# Summary: Delegates execution to the OS-unified task list for system updates
+#          to keep logic centralized and DRY.
+# Flow overview:
+#   • Dispatch to 'update_system/ubuntu/all/main.yml' via include_tasks.
+#   • The included file performs the real update/upgrade workflow.
+# Rationale:
+#   • Centralize logic for all Ubuntu versions to reduce duplication.
+#   • Make per-OS entrypoints thin and easy to maintain.
+# Metadata:
+#   • Author: Gerald Leikam
+#   • E-mail: gerald@leikam-barz.de
+#   • Last updated: 2025-09-26
+# ==============================================================================
 
-- name: Upgrade Packages
-  ansible.builtin.apt:
-    upgrade: yes          
-    autoremove: true
-    autoclean: true
-
-- name: debug
-  ansible.builtin.debug:
-    var: host_cfg
-
-  
+# Task: Include OS-generic Ubuntu update workflow
+# Preconditions: 'tasks_dir' is defined; target include file exists and is readable.
+# Effects: Control transfers into the included task file; no changes by this stub.
+# Idempotency: The include itself is idempotent; idempotency is enforced within
+#              the included tasks.
+# Error handling: Will fail if the referenced file path is wrong or missing.
+# Security: This stub does not escalate privileges; included tasks may use 'become'.
+# Performance: Negligible overhead; include avoids duplicate logic across versions.
+# Related vars: tasks_dir
+- name: redirecting to "{{ tasks_dir }}/update_system/ubuntu/all/main.yml"  
+  ansible.builtin.include_tasks: 
+    file: "{{ tasks_dir }}/update_system/ubuntu/all/main.yml"
