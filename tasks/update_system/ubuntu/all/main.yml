@@ -1,0 +1,75 @@
+# ==============================================================================
+# Task: update_hostname
+# File: main.yml
+# Summary: Ansible task file to refresh APT cache and upgrade packages
+#           with strict input validation and optional cleanup.
+# Flow overview:
+#   • Validate required variables (cachetime, autoremove, autoclean, quiet).
+#   • Update APT cache within a bounded validity window.
+#   • Upgrade packages, optionally autoremove and autoclean.
+# Rationale:
+#   • Fail-fast assertions convert template-time issues into explicit runtime errors.
+#   • cache_valid_time reduces unnecessary network calls on frequent runs.
+#   • DEBIAN_FRONTEND=noninteractive ensures unattended behavior in CI/automation.
+# Metadata:
+#   • Author: Gerald Leikam
+#   • E-mail: gerald@leikam-barz.de
+#   • Last updated: 2025-09-26
+# ==============================================================================
+
+# Main block: performs a strict pre-check of inputs, then executes the
+# two operational tasks (APT cache refresh and package upgrade).
+# The inner tasks must remain idempotent and safe to re-run.
+- block:
+    # Task: Validate required inputs using ansible.builtin.assert.
+    # Ensures the following are defined: cachetime, autoremove, autoclean, quiet.
+    # Prevents partial/inconsistent updates due to missing variables.
+    - name: assert required vars for update_system tasks
+      ansible.builtin.assert:
+        that:
+          - cachetime is defined
+          - autoremove is defined
+          - autoclean is defined
+          - quiet is defined
+        fail_msg: >-
+          Missing mandatory variables for update_system: {{
+            (
+              (['cachetime'] if (cachetime is not defined) else []) +
+              (['autoremove'] if (autoremove is not defined) else []) +
+              (['autoclean'] if (autoclean is not defined) else []) +
+              (['quiet'] if (quiet is not defined) else [])
+            ) | join(', ')
+          }}.
+        success_msg: "update_system: all mandatory vars ok"
+        quiet: "{{ quiet }}"
+
+    # Task: Refresh APT package index if the local cache is older than
+    # the configured cache_valid_time (cachetime).
+    # Optimizes network usage and keeps the package index current.
+    - name: upgrading Cache (Cache lifetime {{ cachetime }}s)
+      ansible.builtin.apt:
+        update_cache: true
+        cache_valid_time: "{{ cachetime }}"
+
+    # Task: Upgrade installed packages (upgrade: yes).
+    # Optionally remove no-longer-needed dependencies (autoremove) and
+    # clean stale package files (autoclean). Relies on APT idempotency.
+    - name: Upgrade Packages
+      ansible.builtin.apt:
+        upgrade: yes
+        autoremove: "{{ autoremove }}"
+        autoclean: "{{ autoclean }}"
+  # Section: Compute effective inputs.
+  # Loads defaults from a YAML file and applies overrides for
+  # cachetime/autoremove/autoclean/quiet if provided.
+
+  vars:
+    defaults: "{{ lookup('file', tasks_dir ~ '/update_system/defaults/main.yml') | from_yaml }}"
+    cachetime: "{{ cache_valid_time | default(defaults.cache_valid_time) | int }}"
+    autoremove: "{{ auto_remove | default(defaults.auto_remove) | bool }}"
+    autoclean: "{{ auto_clean | default(defaults.auto_clean) | bool }}"
+    quiet: "{{ task_quiet | default(defaults.task_quiet) | bool }}"
+
+  # Section: Force non-interactive APT behavior to avoid prompts in unattended runs.
+  environment:
+    DEBIAN_FRONTEND: noninteractive
