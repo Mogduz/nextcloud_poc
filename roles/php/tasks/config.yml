@@ -1,3 +1,25 @@
+# =============================================================================
+# File Documentation (auto-inserted)
+# Generated: 2025-09-26T23:01:52
+# Path: roles/php/tasks/config.yml
+# Purpose: TBD
+# Notes: This header was added automatically based on the comment schema.
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+
+# Task: Ensure IPv6 mode in /etc/default/ufw
+
+# Description: TBD
+
+# When: n/a
+
+# Tags: n/a
+
+# Changed by: auto-commenter
+
+# -----------------------------------------------------------------------------
+
 - name: Ensure IPv6 mode in /etc/default/ufw
   become: true
   ansible.builtin.lineinfile:
@@ -7,11 +29,39 @@
     backup: true
   notify: Reload UFW
 
+# -----------------------------------------------------------------------------
+
+# Task: Set default incoming policy
+
+# Description: TBD
+
+# When: n/a
+
+# Tags: n/a
+
+# Changed by: auto-commenter
+
+# -----------------------------------------------------------------------------
+
 - name: Set default incoming policy
   become: true
   community.general.ufw:
     direction: incoming
     policy: "{{ ufw_default_incoming }}"
+
+# -----------------------------------------------------------------------------
+
+# Task: Set default outgoing policy
+
+# Description: TBD
+
+# When: n/a
+
+# Tags: n/a
+
+# Changed by: auto-commenter
+
+# -----------------------------------------------------------------------------
 
 - name: Set default outgoing policy
   become: true
@@ -19,11 +69,39 @@
     direction: outgoing
     policy: "{{ ufw_default_outgoing }}"
 
+# -----------------------------------------------------------------------------
+
+# Task: Set default routed policy
+
+# Description: TBD
+
+# When: n/a
+
+# Tags: n/a
+
+# Changed by: auto-commenter
+
+# -----------------------------------------------------------------------------
+
 - name: Set default routed policy
   become: true
   community.general.ufw:
     direction: routed
     policy: "{{ ufw_default_routed }}"
+
+# -----------------------------------------------------------------------------
+
+# Task: Set logging level
+
+# Description: TBD
+
+# When: n/a
+
+# Tags: n/a
+
+# Changed by: auto-commenter
+
+# -----------------------------------------------------------------------------
 
 - name: Set logging level
   become: true
