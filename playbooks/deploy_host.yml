@@ -1,8 +1,44 @@
+# =============================================================================
+# File Documentation (auto-inserted)
+# Generated: 2025-09-26T23:01:52
+# Path: playbooks/deploy_host.yml
+# Purpose: TBD
+# Notes: This header was added automatically based on the comment schema.
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+
+# Task: deploy_host
+
+# Description: TBD
+
+# When: not local_art.stat.exists
+
+# Tags: n/a
+
+# Changed by: auto-commenter
+
+# -----------------------------------------------------------------------------
+
 - name: deploy_host
   hosts: owncloud
   gather_facts: true
   remote_user: root
   pre_tasks: 
+
+    # -----------------------------------------------------------------------------
+
+    # Task: get stat for host folder
+
+    # Description: TBD
+
+    # When: not local_art.stat.exists
+
+    # Tags: n/a
+
+    # Changed by: auto-commenter
+
+    # -----------------------------------------------------------------------------
 
     - name: get stat for host folder
       ansible.builtin.stat:
@@ -10,9 +46,37 @@
       register: local_art
       delegate_to: localhost
       
+    # -----------------------------------------------------------------------------
+      
+    # Task: skip this host if model folder is missing
+      
+    # Description: TBD
+      
+    # When: not local_art.stat.exists
+      
+    # Tags: n/a
+      
+    # Changed by: auto-commenter
+      
+    # -----------------------------------------------------------------------------
+      
     - name: skip this host if model folder is missing
       ansible.builtin.meta: end_host
       when: not local_art.stat.exists
+
+    # -----------------------------------------------------------------------------
+
+    # Task: Gather host model files (sorted)
+
+    # Description: TBD
+
+    # When: pre_task.when | default(true)
+
+    # Tags: n/a
+
+    # Changed by: auto-commenter
+
+    # -----------------------------------------------------------------------------
 
     - name: Gather host model files (sorted)
       ansible.builtin.set_fact:
@@ -23,16 +87,51 @@
             | sort
           }}
 
+    # -----------------------------------------------------------------------------
+
+    # Task: Load & merge 'host_cfg' from files (deep merge; append lists)
+
+    # Description: TBD
+
+    # When: pre_task.when | default(true)
+
+    # Tags: n/a
+
+    # Changed by: auto-commenter
+
+    # -----------------------------------------------------------------------------
+
     - name: Load & merge 'host_cfg' from files (deep merge; append lists)
       vars:
         _cur: {}
       block:
+        # -----------------------------------------------------------------------------
+        # Task: Load one file into a namespaced var
+        # Description: TBD
+        # When: pre_task.when | default(true)
+        # Tags: n/a
+        # Changed by: auto-commenter
+        # -----------------------------------------------------------------------------
         - name: Load one file into a namespaced var
           ansible.builtin.include_vars:
             file: "{{ item }}"
             name: _cur
           loop: "{{ _host_model_files }}"
           loop_control: { label: "{{ item | basename }}" }
+
+        # -----------------------------------------------------------------------------
+
+        # Task: Merge into host_cfg aggregator (only if dict)
+
+        # Description: TBD
+
+        # When: pre_task.when | default(true)
+
+        # Tags: n/a
+
+        # Changed by: auto-commenter
+
+        # -----------------------------------------------------------------------------
 
         - name: Merge into host_cfg aggregator (only if dict)
           vars:
@@ -50,6 +149,20 @@
           loop: "{{ _host_model_files }}"
           loop_control: { label: "{{ item | basename }}" }
 
+    # -----------------------------------------------------------------------------
+
+    # Task: Build host_cfg_effective (deep; append lists)
+
+    # Description: TBD
+
+    # When: pre_task.when | default(true)
+
+    # Tags: n/a
+
+    # Changed by: auto-commenter
+
+    # -----------------------------------------------------------------------------
+
     - name: Build host_cfg_effective (deep; append lists)
       ansible.builtin.set_fact:
         host_cfg_effective: >-
@@ -58,13 +171,62 @@
             ansible.builtin.combine(host_cfg | default({}), recursive=true, list_merge='append')
           }}
 
+    # -----------------------------------------------------------------------------
+
+    # Task: set host_cfg var
+
+    # Description: TBD
+
+    # When: pre_task.when | default(true)
+
+    # Tags: n/a
+
+    # Changed by: auto-commenter
+
+    # -----------------------------------------------------------------------------
+
     - name: set host_cfg var
       ansible.builtin.set_fact:
         host_cfg: "{{ host_cfg_effective }}"
 
+    # -----------------------------------------------------------------------------
+
+    # Task: debug
+
+    # Description: TBD
+
+    # When: pre_task.when | default(true)
+
+    # Tags: n/a
+
+    # Changed by: auto-commenter
+
+    # -----------------------------------------------------------------------------
+
     - name: debug
       ansible.builtin.debug:
         var: host_cfg
+
+
+    # -----------------------------------------------------------------------------
+
+
+    # Task: Initialize dynamic lists
+
+
+    # Description: TBD
+
+
+    # When: pre_task.when | default(true)
+
+
+    # Tags: n/a
+
+
+    # Changed by: auto-commenter
+
+
+    # -----------------------------------------------------------------------------
 
 
     - name: Initialize dynamic lists
@@ -74,12 +236,40 @@
         dyn_reg_tasks: []
         dyn_fin_tasks: []
 
+    # -----------------------------------------------------------------------------
+
+    # Task: Normalize pre_tasks
+
+    # Description: TBD
+
+    # When: pre_task.when | default(true)
+
+    # Tags: n/a
+
+    # Changed by: auto-commenter
+
+    # -----------------------------------------------------------------------------
+
     - name: Normalize pre_tasks
       ansible.builtin.set_fact:
         dyn_pre_tasks: "{{ dyn_pre_tasks + [ (item if (item is mapping) else {'name': item}) ] }}"
       loop: "{{ host_cfg.deployment.pre_tasks | default([], true) }}"
       loop_control:
         label: "{{ (item.name if (item is mapping and 'name' in item) else item) }}"
+
+    # -----------------------------------------------------------------------------
+
+    # Task: Normalize roles
+
+    # Description: TBD
+
+    # When: pre_task.when | default(true)
+
+    # Tags: n/a
+
+    # Changed by: auto-commenter
+
+    # -----------------------------------------------------------------------------
 
     - name: Normalize roles
       ansible.builtin.set_fact:
@@ -88,6 +278,20 @@
       loop_control:
         label: "{{ (item.name if (item is mapping and 'name' in item) else item) }}"
 
+    # -----------------------------------------------------------------------------
+
+    # Task: Normalize reg_tasks
+
+    # Description: TBD
+
+    # When: pre_task.when | default(true)
+
+    # Tags: n/a
+
+    # Changed by: auto-commenter
+
+    # -----------------------------------------------------------------------------
+
     - name: Normalize reg_tasks
       ansible.builtin.set_fact:
         dyn_reg_tasks: "{{ dyn_reg_tasks + [ (item if (item is mapping) else {'name': item}) ] }}"
@@ -95,12 +299,40 @@
       loop_control:
         label: "{{ (item.name if (item is mapping and 'name' in item) else item) }}"
 
+    # -----------------------------------------------------------------------------
+
+    # Task: Normalize fin_tasks
+
+    # Description: TBD
+
+    # When: pre_task.when | default(true)
+
+    # Tags: n/a
+
+    # Changed by: auto-commenter
+
+    # -----------------------------------------------------------------------------
+
     - name: Normalize fin_tasks
       ansible.builtin.set_fact:
         dyn_fin_tasks: "{{ dyn_fin_tasks + [ (item if (item is mapping) else {'name': item}) ] }}"
       loop: "{{ host_cfg.deployment.fin_tasks | default([], true) }}"
       loop_control:
         label: "{{ (item.name if (item is mapping and 'name' in item) else item) }}"
+
+    # -----------------------------------------------------------------------------
+
+    # Task: debug normalized lists
+
+    # Description: TBD
+
+    # When: pre_task.when | default(true)
+
+    # Tags: n/a
+
+    # Changed by: auto-commenter
+
+    # -----------------------------------------------------------------------------
 
     - name: debug normalized lists
       ansible.builtin.debug:
@@ -116,6 +348,20 @@
 
     - block:
 
+      # -----------------------------------------------------------------------------
+
+      # Task: Run dynamic pre_tasks
+
+      # Description: TBD
+
+      # When: pre_task.when | default(true)
+
+      # Tags: n/a
+
+      # Changed by: auto-commenter
+
+      # -----------------------------------------------------------------------------
+
       - name: Run dynamic pre_tasks
         ansible.builtin.include_tasks:
           file: "{{ tasks_dir }}/run_task/{{ os_dir }}/main.yml"
@@ -127,10 +373,38 @@
           label: "{{ pre_task.name }}"
           loop_var: pre_task 
 
+      # -----------------------------------------------------------------------------
+
+      # Task: Flush handlers (if roles/tasks notified any)
+
+      # Description: TBD
+
+      # When: dyn_pre_tasks | length > 0
+
+      # Tags: n/a
+
+      # Changed by: auto-commenter
+
+      # -----------------------------------------------------------------------------
+
       - name: Flush handlers (if roles/tasks notified any)
         ansible.builtin.meta: flush_handlers
 
       when: dyn_pre_tasks | length > 0
+
+    # -----------------------------------------------------------------------------
+
+    # Task: Run dynamic roles
+
+    # Description: TBD
+
+    # When: role.when | default(true)
+
+    # Tags: n/a
+
+    # Changed by: auto-commenter
+
+    # -----------------------------------------------------------------------------
 
     - name: Run dynamic roles
       ansible.builtin.include_role:
@@ -143,6 +417,20 @@
 
     - block:
 
+      # -----------------------------------------------------------------------------
+
+      # Task: Run dynamic reg_tasks
+
+      # Description: TBD
+
+      # When: reg_task.when | default(true)
+
+      # Tags: n/a
+
+      # Changed by: auto-commenter
+
+      # -----------------------------------------------------------------------------
+
       - name: Run dynamic reg_tasks
         ansible.builtin.include_tasks:
           file: "{{ tasks_dir }}/run_task/{{ os_dir }}/main.yml"
@@ -154,12 +442,40 @@
           label: "{{ reg_task.name }}"
           loop_var: reg_task 
 
+      # -----------------------------------------------------------------------------
+
+      # Task: Flush handlers (if roles/tasks notified any)
+
+      # Description: TBD
+
+      # When: dyn_reg_tasks | length > 0
+
+      # Tags: n/a
+
+      # Changed by: auto-commenter
+
+      # -----------------------------------------------------------------------------
+
       - name: Flush handlers (if roles/tasks notified any)
         ansible.builtin.meta: flush_handlers
 
       when: dyn_reg_tasks | length > 0
 
     - block:
+
+      # -----------------------------------------------------------------------------
+
+      # Task: Run dynamic fin_tasks
+
+      # Description: TBD
+
+      # When: fin_task.when | default(true)
+
+      # Tags: n/a
+
+      # Changed by: auto-commenter
+
+      # -----------------------------------------------------------------------------
 
       - name: Run dynamic fin_tasks
         ansible.builtin.include_tasks:
@@ -171,6 +487,20 @@
         loop_control:
           label: "{{ fin_task.name }}"
           loop_var: fin_task 
+
+      # -----------------------------------------------------------------------------
+
+      # Task: Flush handlers (if roles/tasks notified any)
+
+      # Description: TBD
+
+      # When: dyn_fin_tasks | length > 0
+
+      # Tags: n/a
+
+      # Changed by: auto-commenter
+
+      # -----------------------------------------------------------------------------
 
       - name: Flush handlers (if roles/tasks notified any)
         ansible.builtin.meta: flush_handlers
