@@ -1,0 +1,653 @@
+schema_version: '2.0'
+kind: ansible_comment_schema
+name: v1
+language: en
+
+# -----------------------------------------------------------------------------
+# About
+# Universal, idempotent schema to document Ansible YAML files with:
+#  - Repository header (Generated/Modified/Path/Purpose/Notes)
+#  - Profile-aware file Summary (counts/sets/flags/risk)
+#  - File-level Narrative (flowing text explainer)
+#  - Per-task Structured Block (key fields)
+#  - Per-task Narrative (flowing text explainer) — LAST comment before each task
+# Works across roles, playbooks, group_vars/host_vars, inventory, molecule, etc.
+# Safe defaults: vault files are skipped; Jinja templates opt-in.
+# -----------------------------------------------------------------------------
+
+################################################################################
+# GLOBALS
+################################################################################
+settings:
+  include_jinja_templates: false               # set true to also process *.yml.j2/*.yaml.j2
+  task_blocks_enabled: true                    # structured per-task blocks
+  task_narratives_enabled: true                # flowing per-task narratives
+  file_narrative_enabled: true                 # flowing file-level narrative
+  profile_detection: auto                      # auto|off
+
+# Timestamps
+time:
+  timezone: Europe/Berlin
+  format: '%Y-%m-%dT%H:%M:%S'                  # e.g., 2025-09-26T23:01:52 (no TZ suffix)
+
+# Targets
+apply_to:
+  file_globs: ['**/*.yml', '**/*.yaml']
+  jinja_globs: ['**/*.yml.j2', '**/*.yaml.j2']
+  skip_paths_glob:
+    - '**/.**/*'
+    - '**/.git/**'
+    - '**/node_modules/**'
+    - '**/.venv/**'
+    - '**/dist/**'
+    - '**/build/**'
+  skip_if_file_startswith_regex: '^\$ANSIBLE_VAULT;'
+
+# Enforce order of blocks when inserting. Last two are per-task, rendered in this order
+# so that Task Narrative is the last comment before each task mapping.
+render_order: [header, summary, narrative, task_block, task_narrative]
+
+################################################################################
+# PROFILES (universal categorization by path)
+################################################################################
+profiles:
+  role_tasks:
+    match_globs: ['roles/*/tasks/**/*.yml', 'roles/*/tasks/**/*.yaml']
+    path_regex: '^roles/(?P<role>[^/]+)/tasks/'
+  role_handlers:
+    match_globs: ['roles/*/handlers/**/*.yml', 'roles/*/handlers/**/*.yaml']
+    path_regex: '^roles/(?P<role>[^/]+)/handlers/'
+  role_vars:
+    match_globs: ['roles/*/vars/**/*.yml', 'roles/*/vars/**/*.yaml']
+    path_regex: '^roles/(?P<role>[^/]+)/vars/'
+  role_defaults:
+    match_globs: ['roles/*/defaults/**/*.yml', 'roles/*/defaults/**/*.yaml']
+    path_regex: '^roles/(?P<role>[^/]+)/defaults/'
+  role_meta:
+    match_globs: ['roles/*/meta/**/*.yml', 'roles/*/meta/**/*.yaml']
+    path_regex: '^roles/(?P<role>[^/]+)/meta/'
+  tasks_root:
+    match_globs: ['tasks/**/*.yml', 'tasks/**/*.yaml']
+    path_regex: '^tasks/'
+  playbook:
+    match_globs: ['*.yml', '*.yaml', 'playbooks/**/*.yml', 'playbooks/**/*.yaml', 'plays/**/*.yml', 'plays/**/*.yaml', 'site.yml', 'site.yaml']
+    path_regex: '^(?P<root>.*)$'
+  group_vars:
+    match_globs: ['group_vars/**/*.yml', 'group_vars/**/*.yaml']
+    path_regex: '^group_vars/(?P<group>.+?)\.(yml|yaml)$|^group_vars/(?P<group_dir>[^/]+)/'
+  host_vars:
+    match_globs: ['host_vars/**/*.yml', 'host_vars/**/*.yaml']
+    path_regex: '^host_vars/(?P<host>.+?)\.(yml|yaml)$|^host_vars/(?P<host_dir>[^/]+)/'
+  inventory:
+    match_globs: ['inventory/**/*.yml', 'inventory/**/*.yaml']
+    path_regex: '^inventory/'
+  collections_requirements:
+    match_globs: ['collections/requirements.yml', 'collections/requirements.yaml', 'roles/requirements.yml', 'roles/requirements.yaml']
+    path_regex: '^(?P<req>.*requirements\.ya?ml)$'
+  molecule:
+    match_globs: ['molecule/**/molecule.yml', 'molecule/**/molecule.yaml']
+    path_regex: '^molecule/(?P<scenario>[^/]+)/molecule\.ya?ml$'
+  generic_yaml:
+    match_globs: ['**/*.yml', '**/*.yaml']
+    path_regex: '^(?P<path>.*)$'
+
+################################################################################
+# BLOCKS
+################################################################################
+blocks:
+  ##############################################################################
+  # HEADER (repository-aware)
+  ##############################################################################
+  header:
+    enabled: true
+    position: top
+    line_prefix: '# '
+    border_line: '# ============================================================================='
+    template: |
+      # =============================================================================
+      # File Documentation (auto-inserted)
+      # Generated: {{ time.generated }}
+      # Modified: {{ time.modified }}
+      # Path: {{ file.rel_path }}
+      # Purpose: {{ meta.purpose }}
+      # Notes: {{ meta.notes }}
+      # =============================================================================
+    defaults:
+      meta:
+        purpose: 'TBD'
+        notes: 'This header was added automatically based on the comment schema.'
+    fill_strategies:
+      time:
+        generated: { source: now, format: '%Y-%m-%dT%H:%M:%S', on_existing: keep }
+        modified:  { source: now, format: '%Y-%m-%dT%H:%M:%S', on_existing: replace }
+      file:
+        rel_path:  { source: context, on_existing: update_if_differs }
+      meta:
+        purpose:   { source: default, on_existing: { keep_if_not_equal_to: 'TBD' } }
+        notes:     { source: default, on_existing: keep }
+    detection:
+      begin_regex: '^#\s*=+\s*$'
+      title_regex: '^#\s*File Documentation \((?i:auto-inserted)\)\s*$'
+      end_regex: '^#\s*=+\s*$'
+      fields:
+        generated: '^#\s*Generated:\s*(?P<value>.+)$'
+        modified:  '^#\s*Modified:\s*(?P<value>.+)$'
+        path:      '^#\s*Path:\s*(?P<value>.+)$'
+        purpose:   '^#\s*Purpose:\s*(?P<value>.+)$'
+        notes:     '^#\s*Notes:\s*(?P<value>.+)$'
+    insertion_rules:
+      if_missing: insert_at_top
+      if_present: update_in_place
+      ensure_blank_line_after: true
+      normalize_spacing: true
+      idempotent: true
+
+  ##############################################################################
+  # FILE SUMMARY (profile-aware)
+  ##############################################################################
+  summary:
+    enabled: true
+    position: { after_block: header }
+    line_prefix: '# '
+    border_line: '# ============================================================================='
+    template_selector:
+      by_profile:
+        role_tasks: task_like
+        tasks_root: task_like
+        role_handlers: handler_like
+        role_vars: vars_like
+        role_defaults: vars_like
+        group_vars: vars_like
+        host_vars: vars_like
+        inventory: inventory_like
+        playbook: playbook_like
+        collections_requirements: requirements_like
+        role_meta: meta_like
+        molecule: molecule_like
+        generic_yaml: generic_like
+      default: generic_like
+    alt_templates:
+      task_like: |
+        # =============================================================================
+        # File Summary (auto-inserted)
+        # Overview:
+        #   Role        : {{ summary.role | default(derived.role | default('n/a')) }}
+        #   Purpose     : {{ summary.purpose | default(meta.purpose | default('TBD')) }}
+        #   OS Scope    : {{ summary.os | default(derived.os | default('generic')) }} ({{ summary.os_scope | default(derived.os_scope | default('all')) }})
+        # Counts:
+        #   Tasks       : {{ summary.tasks_total | default('?') }}
+        #   Includes    : {{ summary.includes_total | default('?') }}
+        #   Handlers    : {{ summary.handlers_total | default('?') }}
+        #   Imports     : {{ summary.imports_total | default('?') }}
+        # Sets:
+        #   Modules     : {{ (summary.modules | default([])) | join(', ') | default('none') }}
+        #   Tags        : {{ (summary.tags | default([])) | join(', ') | default('none') }}
+        #   Guards      : {{ (summary.guards | default([])) | join(', ') | default('none') }}
+        # Flags:
+        #   Become      : {{ summary.become | default(derived.become | default('false')) }}
+        #   Idempotency : {{ summary.idempotency | default('convergent/guarded') }}
+        # Risk:
+        #   Level       : {{ summary.risk | default('medium') }}
+        #   Downtime    : {{ summary.downtime | default('n/a') }}
+        # Description: {{ summary.description | default('TBD') }}
+        # =============================================================================
+      handler_like: |
+        # =============================================================================
+        # File Summary (auto-inserted)
+        # Overview:
+        #   Role        : {{ summary.role | default(derived.role | default('n/a')) }}
+        #   Purpose     : {{ summary.purpose | default(meta.purpose | default('Handlers for role')) }}
+        # Counts:
+        #   Handlers    : {{ summary.handlers_total | default('?') }}
+        # Sets:
+        #   Names       : {{ (summary.handler_names | default([])) | join(', ') | default('none') }}
+        # Flags:
+        #   Become      : {{ summary.become | default(derived.become | default('false')) }}
+        # Description: {{ summary.description | default('Event-driven actions triggered by notify') }}
+        # =============================================================================
+      vars_like: |
+        # =============================================================================
+        # File Summary (auto-inserted)
+        # Overview:
+        #   Scope       : {{ summary.scope | default(derived.scope | default('vars/defaults')) }}
+        # Counts:
+        #   Keys        : {{ summary.keys_total | default('?') }}
+        # Keys (top): {{ (summary.top_keys | default([])) | join(', ') | default('n/a') }}
+        # Description: {{ summary.description | default('Variable definitions applied by Ansible') }}
+        # =============================================================================
+      inventory_like: |
+        # =============================================================================
+        # File Summary (auto-inserted)
+        # Overview:
+        #   Type        : inventory(yaml)
+        # Counts:
+        #   Groups      : {{ summary.groups_total | default('?') }}
+        #   Hosts       : {{ summary.hosts_total | default('?') }}
+        # Sets:
+        #   Top Groups  : {{ (summary.top_groups | default([])) | join(', ') | default('n/a') }}
+        # Description: {{ summary.description | default('Inventory groups/hosts definition') }}
+        # =============================================================================
+      requirements_like: |
+        # =============================================================================
+        # File Summary (auto-inserted)
+        # Overview:
+        #   Type        : requirements
+        # Counts:
+        #   Roles       : {{ summary.roles_total | default('0') }}
+        #   Collections : {{ summary.collections_total | default('0') }}
+        # Sets:
+        #   Role Names  : {{ (summary.role_names | default([])) | join(', ') | default('none') }}
+        #   Collections : {{ (summary.collection_names | default([])) | join(', ') | default('none') }}
+        # Description: {{ summary.description | default('Dependencies for roles/collections') }}
+        # =============================================================================
+      playbook_like: |
+        # =============================================================================
+        # File Summary (auto-inserted)
+        # Overview:
+        #   Type        : playbook
+        # Counts:
+        #   Plays       : {{ summary.plays_total | default('?') }}
+        #   Roles       : {{ summary.roles_total | default('?') }}
+        #   Imports     : {{ summary.imports_total | default('?') }}
+        # Sets:
+        #   Target Hosts: {{ (summary.hosts | default([])) | join(', ') | default('various') }}
+        #   Roles       : {{ (summary.roles | default([])) | join(', ') | default('none') }}
+        #   Tags        : {{ (summary.tags | default([])) | join(', ') | default('none') }}
+        # Description: {{ summary.description | default('Top-level orchestration of tasks/roles') }}
+        # =============================================================================
+      meta_like: |
+        # =============================================================================
+        # File Summary (auto-inserted)
+        # Overview:
+        #   Role        : {{ summary.role | default(derived.role | default('n/a')) }}
+        #   Type        : role meta
+        # Counts:
+        #   Dependencies: {{ summary.dependencies_total | default('0') }}
+        # Sets:
+        #   Depends on  : {{ (summary.dependencies | default([])) | join(', ') | default('none') }}
+        # Description: {{ summary.description | default('Role metadata (dependencies, galaxy info)') }}
+        # =============================================================================
+      molecule_like: |
+        # =============================================================================
+        # File Summary (auto-inserted)
+        # Overview:
+        #   Scenario    : {{ summary.scenario | default(derived.scenario | default('default')) }}
+        # Counts:
+        #   Platforms   : {{ summary.platforms_total | default('?') }}
+        #   Provisioner : {{ summary.provisioner | default('n/a') }}
+        # Description: {{ summary.description | default('Molecule test scenario configuration') }}
+        # =============================================================================
+      generic_like: |
+        # =============================================================================
+        # File Summary (auto-inserted)
+        # Overview:
+        #   Kind        : yaml (generic)
+        # Counts:
+        #   Top Keys    : {{ summary.keys_total | default('?') }}
+        # Keys (top): {{ (summary.top_keys | default([])) | join(', ') | default('n/a') }}
+        # Description: {{ summary.description | default('Generic YAML file') }}
+        # =============================================================================
+    defaults:
+      summary:
+        description: 'TBD'
+        idempotency: 'convergent/guarded'
+        risk: 'medium'
+        downtime: 'n/a'
+    fill_strategies:
+      summary:
+        role:        { source: derived_or_default, derived: { from: [derived.role] }, on_existing: keep }
+        os:          { source: derived_or_default, derived: { from: [derived.os] }, on_existing: keep }
+        os_scope:    { source: derived_or_default, derived: { from: [derived.os_scope] }, on_existing: keep }
+        purpose:     { source: derived_or_default, derived: { from: [meta.purpose, derived.intent_guess] }, on_existing: { keep_if_not_equal_to: 'TBD' } }
+        modules:         { source: metrics, on_existing: keep }
+        tasks_total:     { source: metrics, on_existing: keep }
+        includes_total:  { source: metrics, on_existing: keep }
+        handlers_total:  { source: metrics, on_existing: keep }
+        imports_total:   { source: metrics, on_existing: keep }
+        tags:            { source: metrics, on_existing: keep }
+        guards:          { source: metrics, on_existing: keep }
+        become:      { source: derived_or_default, derived: { from: [derived.become] }, on_existing: keep }
+        handler_names:       { source: metrics, on_existing: keep }
+        keys_total:          { source: metrics, on_existing: keep }
+        top_keys:            { source: metrics, on_existing: keep }
+        groups_total:        { source: metrics, on_existing: keep }
+        hosts_total:         { source: metrics, on_existing: keep }
+        top_groups:          { source: metrics, on_existing: keep }
+        roles_total:         { source: metrics, on_existing: keep }
+        collections_total:   { source: metrics, on_existing: keep }
+        role_names:          { source: metrics, on_existing: keep }
+        collection_names:    { source: metrics, on_existing: keep }
+        plays_total:         { source: metrics, on_existing: keep }
+        hosts:               { source: metrics, on_existing: keep }
+        roles:               { source: metrics, on_existing: keep }
+        dependencies_total:  { source: metrics, on_existing: keep }
+        dependencies:        { source: metrics, on_existing: keep }
+        scenario:            { source: derived_or_default, derived: { from: [derived.scenario] }, on_existing: keep }
+        platforms_total:     { source: metrics, on_existing: keep }
+        provisioner:         { source: metrics, on_existing: keep }
+    detection:
+      begin_regex: '^#\s*=+\s*$'
+      title_regex: '^#\s*File Summary \((?i:auto-inserted)\)\s*$'
+      end_regex: '^#\s*=+\s*$'
+      fields:
+        description: '^#\s*Description:\s*(?P<value>.+)$'
+    insertion_rules:
+      if_missing: { insert_after_detected_block: header }
+      if_present: update_in_place
+      replace_block_on_schema_change: true
+      ensure_blank_line_after: true
+      normalize_spacing: true
+      idempotent: true
+
+  ##############################################################################
+  # FILE-LEVEL NARRATIVE (flowing text)
+  ##############################################################################
+  narrative:
+    enabled: true
+    position: { after_block: summary }
+    line_prefix: '# '
+    border_line: '# ============================================================================='
+    template_selector:
+      by_profile:
+        role_tasks: task_like
+        tasks_root: task_like
+        role_handlers: handler_like
+        role_vars: vars_like
+        role_defaults: vars_like
+        group_vars: vars_like
+        host_vars: vars_like
+        inventory: inventory_like
+        playbook: playbook_like
+        collections_requirements: requirements_like
+        role_meta: meta_like
+        molecule: molecule_like
+        generic_yaml: generic_like
+      default: generic_like
+    alt_templates:
+      task_like: |
+        # =============================================================================
+        # File Narrative (auto-inserted)
+        # This task file orchestrates a controlled, guarded operation on {{ summary.os | default(derived.os | default('generic')) }} ({{ summary.os_scope | default(derived.os_scope | default('all')) }}) hosts. When the guard condition{{ 's' if (summary.guards | default([]) | length) > 1 else '' }} {{ (summary.guards | default([])) | join(' and ') | default('is met') }} holds, it executes the main action using {{ (summary.modules | default([])) | join(', ') | default('the appropriate modules') }}. It then verifies availability, records minimal diagnostics, and exposes concise facts for downstream logic. The procedure is designed to be idempotent and convergent; reruns should result in no changes once the desired state is reached. Operationally, this action may be disruptive and typically requires privilege escalation; plan for a short, bounded downtime {{ '(' ~ summary.downtime ~ ')' if summary.downtime is defined else '' }}.
+        # =============================================================================
+      handler_like: |
+        # =============================================================================
+        # File Narrative (auto-inserted)
+        # This file defines handlers that bring the system into the desired state after notified changes. Each handler is safe to repeat and should only apply remedial actions necessary to finalize configuration, minimizing disruption while ensuring convergence across reruns.
+        # =============================================================================
+      vars_like: |
+        # =============================================================================
+        # File Narrative (auto-inserted)
+        # This file declares variables that parameterize behavior for plays, roles, or hosts. Values here should be stable defaults or scoped overrides, favoring clarity and explicitness. Changing a key affects dependent tasks deterministically and should be accompanied by appropriate testing.
+        # =============================================================================
+      inventory_like: |
+        # =============================================================================
+        # File Narrative (auto-inserted)
+        # This inventory file structures groups and hosts for execution targeting. It aims to keep host classification transparent and maintainable, allowing plays and roles to select precise scopes without ambiguity.
+        # =============================================================================
+      requirements_like: |
+        # =============================================================================
+        # File Narrative (auto-inserted)
+        # This requirements file enumerates external role and collection dependencies. Keeping versions pinned and dependencies audited ensures reproducible automation and predictable updates.
+        # =============================================================================
+      playbook_like: |
+        # =============================================================================
+        # File Narrative (auto-inserted)
+        # This playbook coordinates roles and tasks across target hosts. It should remain declarative and readable, with clear variable inputs and guarded operations to ensure safe convergence across environments.
+        # =============================================================================
+      meta_like: |
+        # =============================================================================
+        # File Narrative (auto-inserted)
+        # This metadata file defines role dependencies and related information. Dependencies should be minimal, explicit, and versioned to avoid unexpected behavior during role composition.
+        # =============================================================================
+      molecule_like: |
+        # =============================================================================
+        # File Narrative (auto-inserted)
+        # This Molecule scenario codifies how the role is tested. It documents platforms and the provisioner, ensuring that changes are validated consistently before release.
+        # =============================================================================
+      generic_like: |
+        # =============================================================================
+        # File Narrative (auto-inserted)
+        # This YAML file contributes configuration or data consumed by the automation. It should be concise, self-explanatory, and structured to avoid ambiguity in downstream processing.
+        # =============================================================================
+    defaults:
+      narrative:
+        text: null
+    detection:
+      begin_regex: '^#\s*=+\s*$'
+      title_regex: '^#\s*File Narrative \((?i:auto-inserted)\)\s*$'
+      end_regex: '^#\s*=+\s*$'
+    insertion_rules:
+      if_missing: { insert_after_detected_block: summary }
+      if_present: update_in_place
+      replace_block_on_schema_change: true
+      ensure_blank_line_after: true
+      normalize_spacing: true
+      idempotent: true
+
+  ##############################################################################
+  # PER-TASK STRUCTURED BLOCK (key fields)
+  ##############################################################################
+  task_block:
+    enabled: true
+    position: before_each_task
+    line_prefix: '# '
+    border_line: '# ---------------------------------------------------------------------------'
+    skip:
+      name_regex_any: ['(?i)^debug$', '(?i)internal', '(?i)helper']
+      action_in: [meta]
+    template: |
+      # --- [Task {{ derived.task_id }}] {{ task.name | default('(unnamed task)') }}
+      # Intent       : {{ intent | default(derived.intent_guess | default('Describe what this task ensures')) }}
+      # Module       : {{ task.action | default('unknown') }}
+      # Key Args     : {{ (task.args | default({})) | taskargs('name, pkg, state, path, src, dest, regexp, line, mode, owner, group, service, enabled') }}
+      # When         : {{ task.when | default('always') }}
+      # Loop         : {{ task.loop | default('no') }}
+      # Register     : {{ task.register | default('none') }}
+      # Notify       : {{ task.notify | default('none') }}
+      # Tags         : {{ task.tags | default('none') }}
+      # Idempotency  : {{ idempotency | default('module idempotent or guarded by conditions') }}
+      # Side-effects : {{ side_effects | default('minimal') }}
+      # Error Hdl    : {{ error_handling | default('fail fast; rely on module return/validate') }}
+      # Expected     : {{ expected | default('converges; no repeated changes on reruns') }}
+      # ---------------------------------------------------------------------------
+    helpers:
+      filters:
+        taskargs: 'select and pretty-print a subset of common keys if present; fallback to tojson(args)'
+    heuristics:
+      intent_map:
+        apt: 'Install or update packages'
+        package: 'Ensure package state'
+        service: 'Manage service state'
+        systemd: 'Manage systemd unit'
+        copy: 'Copy file(s)'
+        template: 'Render and deploy template'
+        lineinfile: 'Edit single line with regex guard'
+        blockinfile: 'Ensure a managed config block exists'
+        ufw: 'Configure UFW firewall rules'
+        file: 'Ensure filesystem path state/permissions'
+        command: 'Run command (non‑idempotent by default)'
+        shell: 'Run shell (non‑idempotent; prefer modules)'
+    detection:
+      begin_regex: '^#\s*--- \[Task (?P<id>[0-9a-f]{8})\]'
+      end_regex: '^#\s*-{11,}\s*$'
+    insertion_rules:
+      task_identity:
+        prefer: derived.task_id
+        fallback: file.rel_path + ':' + task.index
+      if_present: update_in_place
+      if_missing: insert_before_task
+      ensure_blank_line_after: true
+      idempotent: true
+
+  ##############################################################################
+  # PER-TASK NARRATIVE (flowing text) — LAST comment before each task
+  ##############################################################################
+  task_narrative:
+    enabled: true
+    position: before_each_task
+    line_prefix: '# '
+    border_line: '# ---------------------------------------------------------------------------'
+    skip:
+      name_regex_any: ['(?i)^debug$', '(?i)internal', '(?i)helper']
+      action_in: [meta]
+    template: |
+      # --- Task Narrative [{{ derived.task_id }}] {{ task.name | default('(unnamed task)') }}
+      # {{ narrative.text | default(heuristics.compose) }}
+      # ---------------------------------------------------------------------------
+    fill_strategies:
+      narrative:
+        text:
+          source: heuristics
+          heuristics:
+            compose: >-
+              {{
+                'This task uses the ' ~ (task.action | default('specified')) ~ ' module to '
+                ~ (derived.intent_guess | default('achieve the desired state')) ~ '. '
+                ~ (
+                    (task.when)
+                    | default('It runs unconditionally')
+                    | string
+                    | replace('\\n',' ')
+                    | prepend('It executes when: ')
+                 ) ~ '. '
+                ~ (
+                    (task.loop | default(''))
+                    and ('It iterates over the provided items. ')
+                    or ''
+                 )
+                ~ (
+                    (task.register | default(''))
+                    and ('The result is stored in ' ~ task.register ~ '. ')
+                    or ''
+                 )
+                ~ (
+                    (task.notify | default(''))
+                    and (
+                      'On change it triggers: '
+                      ~ ((task.notify is string) and task.notify or (task.notify | join(', ')))
+                      ~ '. '
+                    )
+                    or ''
+                 )
+                ~ 'On success, the system converges and reruns should not report further changes.'
+              }}
+          on_existing: replace_if_schema_differs
+    detection:
+      begin_regex: '^#\s*--- Task Narrative \[(?P<id>[0-9a-f]{8})\]'
+      end_regex: '^#\s*-{11,}\s*$'
+    insertion_rules:
+      relative_order:
+        after_block: task_block
+      task_identity:
+        prefer: derived.task_id
+        fallback: file.rel_path + ':' + task.index
+      if_present: update_in_place
+      if_missing: insert_before_task
+      ensure_blank_line_after: true
+      idempotent: true
+
+################################################################################
+# CONTEXT & METRICS CONTRACTS (renderer expectations)
+################################################################################
+context_contract:
+  required: [file.rel_path]
+  optional:
+    - meta.purpose
+    - meta.notes
+    - summary.description
+    - summary.role
+    - summary.os
+    - summary.os_scope
+    - narrative.text
+
+metrics_contract:
+  optional:
+    # task-like
+    - summary.tasks_total
+    - summary.includes_total
+    - summary.handlers_total
+    - summary.imports_total
+    - summary.modules           # list[str]
+    - summary.tags              # list[str]
+    - summary.guards            # list[str]
+    - summary.handler_names     # list[str]
+    # vars-like
+    - summary.keys_total
+    - summary.top_keys          # list[str]
+    # inventory-like
+    - summary.groups_total
+    - summary.hosts_total
+    - summary.top_groups        # list[str]
+    # requirements-like
+    - summary.roles_total
+    - summary.collections_total
+    - summary.role_names        # list[str]
+    - summary.collection_names  # list[str]
+    # playbook-like
+    - summary.plays_total
+    - summary.imports_total
+    - summary.roles             # list[str]
+    - summary.hosts             # list[str]
+    # meta-like
+    - summary.dependencies_total
+    - summary.dependencies      # list[str]
+    # molecule-like
+    - summary.platforms_total
+    - summary.provisioner
+    # shared derived signals
+    - derived.intent_guess      # str
+    - derived.become            # bool
+    - derived.role              # str
+    - derived.os                # str
+    - derived.os_scope          # str
+    - derived.scenario          # str
+
+################################################################################
+# DERIVATIONS (renderer guidance)
+################################################################################
+derivations:
+  # Stable task id for idempotent per-task comments. Apply for tasks nested inside
+  # block/rescue/always as well; use the flattened index chain if available.
+  task_id: "sha256(f'{file.rel_path}:{task.index_path or task.index}:{task.name or task.action}').hexdigest()[:8]"
+
+  # Common path-based extraction
+  path_extractors:
+    role: '^roles/(?P<role>[^/]+)/'
+    os: '^(?:roles/[^/]+/tasks/|tasks/)(?P<os>[^/]+)/'
+    os_scope: '^roles/[^/]+/tasks/[^/]+/(?P<os_scope>[^/]+)/'
+    scenario: '^molecule/(?P<scenario>[^/]+)/'
+
+  # Module→intent heuristics (seed for summaries & narratives)
+  intent_map:
+    apt: 'Install or update packages'
+    package: 'Ensure package state'
+    service: 'Manage service state'
+    systemd: 'Manage systemd unit'
+    copy: 'Copy file(s)'
+    template: 'Render and deploy template'
+    lineinfile: 'Edit a line with regex guard'
+    blockinfile: 'Ensure a managed config block exists'
+    ufw: 'Configure UFW firewall rules'
+    file: 'Ensure filesystem path state/permissions'
+    command: 'Run command (non-idempotent by default)'
+    shell: 'Run shell (prefer modules)'
+
+################################################################################
+# IDENTITY, UPGRADE & SANITY
+################################################################################
+identity:
+  block_signature_comment: '# (managed-by: ansible_comment_schema@universal_header_summary_narratives_taskblocks v{{schema_version}})'
+  write_signature: true
+
+upgrade_policy:
+  header:         { strategy: reconcile_in_place }
+  summary:        { strategy: replace_if_schema_differs }
+  narrative:      { strategy: replace_if_schema_differs }
+  task_block:     { strategy: update_in_place }
+  task_narrative: { strategy: update_in_place }
+
+sanity:
+  enforce_single_header: true
+  enforce_single_summary: true
+  enforce_single_narrative: true
+  ensure_blank_line_after_blocks: true
