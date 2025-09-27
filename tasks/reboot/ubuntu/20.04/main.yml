@@ -1,25 +1,10 @@
-# =============================================================================
-# File Documentation (auto-inserted)
-# Generated: 2025-09-26T23:01:52
-# Path: tasks/reboot/ubuntu/20.04/main.yml
-# Purpose: TBD
-# Notes: This header was added automatically based on the comment schema.
-# =============================================================================
-
 # -----------------------------------------------------------------------------
-
 # Task: redirecting to "{{ tasks_dir }}/reboot/ubuntu/all/main.yml"
-
 # Description: TBD
-
 # When: n/a
-
 # Tags: n/a
-
 # Changed by: auto-commenter
-
 # -----------------------------------------------------------------------------
-
 - name: redirecting to "{{ tasks_dir }}/reboot/ubuntu/all/main.yml"  
   ansible.builtin.include_tasks: 
     file: "{{ tasks_dir }}/reboot/ubuntu/all/main.yml"
