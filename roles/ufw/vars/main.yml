@@ -1,9 +1,25 @@
 # =============================================================================
 # File Documentation (auto-inserted)
-# Generated: 2025-09-26T23:01:52
+# Generated: 2025-09-27T20:59:59Z
+# Modified: 2025-09-27T20:59:59Z
 # Path: roles/ufw/vars/main.yml
-# Purpose: TBD
-# Notes: This header was added automatically based on the comment schema.
+# Purpose: Updated to schema v1
+# Notes: -
+# =============================================================================
+
+# =============================================================================
+# File Summary (auto-inserted)
+# Overview:
+#   Scope       : {{ summary.scope | default(derived.scope | default('vars/defaults')) }}
+# Counts:
+#   Keys        : {{ summary.keys_total | default('?') }}
+# Keys (top): {{ (summary.top_keys | default([])) | join(', ') | default('n/a') }}
+# Description: {{ summary.description | default('Variable definitions applied by Ansible') }}
+# =============================================================================
+
+# =============================================================================
+# File Narrative (auto-inserted)
+# This file declares variables that parameterize behavior for plays, roles, or hosts. Values here should be stable defaults or scoped overrides, favoring clarity and explicitness. Changing a key affects dependent tasks deterministically and should be accompanied by appropriate testing.
 # =============================================================================
 
 self_role: ufw
