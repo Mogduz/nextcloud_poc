@@ -1,9 +1,28 @@
 # =============================================================================
 # File Documentation (auto-inserted)
-# Generated: 2025-09-26T23:01:52
+# Generated: 2025-09-27T20:59:58Z
+# Modified: 2025-09-27T20:59:58Z
 # Path: collections/requirements.yml
-# Purpose: TBD
-# Notes: This header was added automatically based on the comment schema.
+# Purpose: Updated to schema v1
+# Notes: -
+# =============================================================================
+
+# =============================================================================
+# File Summary (auto-inserted)
+# Overview:
+#   Type        : requirements
+# Counts:
+#   Roles       : {{ summary.roles_total | default('0') }}
+#   Collections : {{ summary.collections_total | default('0') }}
+# Sets:
+#   Role Names  : {{ (summary.role_names | default([])) | join(', ') | default('none') }}
+#   Collections : {{ (summary.collection_names | default([])) | join(', ') | default('none') }}
+# Description: {{ summary.description | default('Dependencies for roles/collections') }}
+# =============================================================================
+
+# =============================================================================
+# File Narrative (auto-inserted)
+# This requirements file enumerates external role and collection dependencies. Keeping versions pinned and dependencies audited ensures reproducible automation and predictable updates.
 # =============================================================================
 
 collections:
@@ -14,4 +33,21 @@ collections:
   # Tags: n/a
   # Changed by: auto-commenter
   # -----------------------------------------------------------------------------
+  # --- [Task 9a804cd9] {{ task.name | default('(unnamed task)') }}
+  # Intent       : {{ intent | default(derived.intent_guess | default('Describe what this task ensures')) }}
+  # Module       : {{ task.action | default('unknown') }}
+  # Key Args     : {{ (task.args | default({})) | taskargs('name, pkg, state, path, src, dest, regexp, line, mode, owner, group, service, enabled') }}
+  # When         : {{ task.when | default('always') }}
+  # Loop         : {{ task.loop | default('no') }}
+  # Register     : {{ task.register | default('none') }}
+  # Notify       : {{ task.notify | default('none') }}
+  # Tags         : {{ task.tags | default('none') }}
+  # Idempotency  : {{ idempotency | default('module idempotent or guarded by conditions') }}
+  # Side-effects : {{ side_effects | default('minimal') }}
+  # Error Hdl    : {{ error_handling | default('fail fast; rely on module return/validate') }}
+  # Expected     : {{ expected | default('converges; no repeated changes on reruns') }}
+  # ---------------------------------------------------------------------------
+  # --- Task Narrative [9a804cd9] {{ task.name | default('(unnamed task)') }}
+  # {{ narrative.text | default(heuristics.compose) }}
+  # ---------------------------------------------------------------------------
   - name: community.general
