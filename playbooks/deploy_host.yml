@@ -1,9 +1,30 @@
 # =============================================================================
 # File Documentation (auto-inserted)
-# Generated: 2025-09-26T23:01:52
+# Generated: 2025-09-27T20:59:58Z
+# Modified: 2025-09-27T20:59:58Z
 # Path: playbooks/deploy_host.yml
-# Purpose: TBD
-# Notes: This header was added automatically based on the comment schema.
+# Purpose: Updated to schema v1
+# Notes: -
+# =============================================================================
+
+# =============================================================================
+# File Summary (auto-inserted)
+# Overview:
+#   Type        : playbook
+# Counts:
+#   Plays       : {{ summary.plays_total | default('?') }}
+#   Roles       : {{ summary.roles_total | default('?') }}
+#   Imports     : {{ summary.imports_total | default('?') }}
+# Sets:
+#   Target Hosts: {{ (summary.hosts | default([])) | join(', ') | default('various') }}
+#   Roles       : {{ (summary.roles | default([])) | join(', ') | default('none') }}
+#   Tags        : {{ (summary.tags | default([])) | join(', ') | default('none') }}
+# Description: {{ summary.description | default('Top-level orchestration of tasks/roles') }}
+# =============================================================================
+
+# =============================================================================
+# File Narrative (auto-inserted)
+# This playbook coordinates roles and tasks across target hosts. It should remain declarative and readable, with clear variable inputs and guarded operations to ensure safe convergence across environments.
 # =============================================================================
 
 # -----------------------------------------------------------------------------
@@ -20,6 +41,23 @@
 
 # -----------------------------------------------------------------------------
 
+# --- [Task 883cee5d] {{ task.name | default('(unnamed task)') }}
+# Intent       : {{ intent | default(derived.intent_guess | default('Describe what this task ensures')) }}
+# Module       : {{ task.action | default('unknown') }}
+# Key Args     : {{ (task.args | default({})) | taskargs('name, pkg, state, path, src, dest, regexp, line, mode, owner, group, service, enabled') }}
+# When         : {{ task.when | default('always') }}
+# Loop         : {{ task.loop | default('no') }}
+# Register     : {{ task.register | default('none') }}
+# Notify       : {{ task.notify | default('none') }}
+# Tags         : {{ task.tags | default('none') }}
+# Idempotency  : {{ idempotency | default('module idempotent or guarded by conditions') }}
+# Side-effects : {{ side_effects | default('minimal') }}
+# Error Hdl    : {{ error_handling | default('fail fast; rely on module return/validate') }}
+# Expected     : {{ expected | default('converges; no repeated changes on reruns') }}
+# ---------------------------------------------------------------------------
+# --- Task Narrative [883cee5d] {{ task.name | default('(unnamed task)') }}
+# {{ narrative.text | default(heuristics.compose) }}
+# ---------------------------------------------------------------------------
 - name: deploy_host
   hosts: owncloud
   gather_facts: true
@@ -40,6 +78,23 @@
 
     # -----------------------------------------------------------------------------
 
+    # --- [Task 7575df54] {{ task.name | default('(unnamed task)') }}
+    # Intent       : {{ intent | default(derived.intent_guess | default('Describe what this task ensures')) }}
+    # Module       : {{ task.action | default('unknown') }}
+    # Key Args     : {{ (task.args | default({})) | taskargs('name, pkg, state, path, src, dest, regexp, line, mode, owner, group, service, enabled') }}
+    # When         : {{ task.when | default('always') }}
+    # Loop         : {{ task.loop | default('no') }}
+    # Register     : {{ task.register | default('none') }}
+    # Notify       : {{ task.notify | default('none') }}
+    # Tags         : {{ task.tags | default('none') }}
+    # Idempotency  : {{ idempotency | default('module idempotent or guarded by conditions') }}
+    # Side-effects : {{ side_effects | default('minimal') }}
+    # Error Hdl    : {{ error_handling | default('fail fast; rely on module return/validate') }}
+    # Expected     : {{ expected | default('converges; no repeated changes on reruns') }}
+    # ---------------------------------------------------------------------------
+    # --- Task Narrative [7575df54] {{ task.name | default('(unnamed task)') }}
+    # {{ narrative.text | default(heuristics.compose) }}
+    # ---------------------------------------------------------------------------
     - name: get stat for host folder
       ansible.builtin.stat:
         path: "{{ vars_dir }}/hosts/{{ inventory_hostname }}"
@@ -60,6 +115,23 @@
       
     # -----------------------------------------------------------------------------
       
+    # --- [Task a063731d] {{ task.name | default('(unnamed task)') }}
+    # Intent       : {{ intent | default(derived.intent_guess | default('Describe what this task ensures')) }}
+    # Module       : {{ task.action | default('unknown') }}
+    # Key Args     : {{ (task.args | default({})) | taskargs('name, pkg, state, path, src, dest, regexp, line, mode, owner, group, service, enabled') }}
+    # When         : {{ task.when | default('always') }}
+    # Loop         : {{ task.loop | default('no') }}
+    # Register     : {{ task.register | default('none') }}
+    # Notify       : {{ task.notify | default('none') }}
+    # Tags         : {{ task.tags | default('none') }}
+    # Idempotency  : {{ idempotency | default('module idempotent or guarded by conditions') }}
+    # Side-effects : {{ side_effects | default('minimal') }}
+    # Error Hdl    : {{ error_handling | default('fail fast; rely on module return/validate') }}
+    # Expected     : {{ expected | default('converges; no repeated changes on reruns') }}
+    # ---------------------------------------------------------------------------
+    # --- Task Narrative [a063731d] {{ task.name | default('(unnamed task)') }}
+    # {{ narrative.text | default(heuristics.compose) }}
+    # ---------------------------------------------------------------------------
     - name: skip this host if model folder is missing
       ansible.builtin.meta: end_host
       when: not local_art.stat.exists
@@ -78,6 +150,23 @@
 
     # -----------------------------------------------------------------------------
 
+    # --- [Task cf1d6d9c] {{ task.name | default('(unnamed task)') }}
+    # Intent       : {{ intent | default(derived.intent_guess | default('Describe what this task ensures')) }}
+    # Module       : {{ task.action | default('unknown') }}
+    # Key Args     : {{ (task.args | default({})) | taskargs('name, pkg, state, path, src, dest, regexp, line, mode, owner, group, service, enabled') }}
+    # When         : {{ task.when | default('always') }}
+    # Loop         : {{ task.loop | default('no') }}
+    # Register     : {{ task.register | default('none') }}
+    # Notify       : {{ task.notify | default('none') }}
+    # Tags         : {{ task.tags | default('none') }}
+    # Idempotency  : {{ idempotency | default('module idempotent or guarded by conditions') }}
+    # Side-effects : {{ side_effects | default('minimal') }}
+    # Error Hdl    : {{ error_handling | default('fail fast; rely on module return/validate') }}
+    # Expected     : {{ expected | default('converges; no repeated changes on reruns') }}
+    # ---------------------------------------------------------------------------
+    # --- Task Narrative [cf1d6d9c] {{ task.name | default('(unnamed task)') }}
+    # {{ narrative.text | default(heuristics.compose) }}
+    # ---------------------------------------------------------------------------
     - name: Gather host model files (sorted)
       ansible.builtin.set_fact:
         _host_model_files: >-
@@ -101,6 +190,23 @@
 
     # -----------------------------------------------------------------------------
 
+    # --- [Task 6b273ed5] {{ task.name | default('(unnamed task)') }}
+    # Intent       : {{ intent | default(derived.intent_guess | default('Describe what this task ensures')) }}
+    # Module       : {{ task.action | default('unknown') }}
+    # Key Args     : {{ (task.args | default({})) | taskargs('name, pkg, state, path, src, dest, regexp, line, mode, owner, group, service, enabled') }}
+    # When         : {{ task.when | default('always') }}
+    # Loop         : {{ task.loop | default('no') }}
+    # Register     : {{ task.register | default('none') }}
+    # Notify       : {{ task.notify | default('none') }}
+    # Tags         : {{ task.tags | default('none') }}
+    # Idempotency  : {{ idempotency | default('module idempotent or guarded by conditions') }}
+    # Side-effects : {{ side_effects | default('minimal') }}
+    # Error Hdl    : {{ error_handling | default('fail fast; rely on module return/validate') }}
+    # Expected     : {{ expected | default('converges; no repeated changes on reruns') }}
+    # ---------------------------------------------------------------------------
+    # --- Task Narrative [6b273ed5] {{ task.name | default('(unnamed task)') }}
+    # {{ narrative.text | default(heuristics.compose) }}
+    # ---------------------------------------------------------------------------
     - name: Load & merge 'host_cfg' from files (deep merge; append lists)
       vars:
         _cur: {}
@@ -112,6 +218,23 @@
         # Tags: n/a
         # Changed by: auto-commenter
         # -----------------------------------------------------------------------------
+        # --- [Task 89722ef8] {{ task.name | default('(unnamed task)') }}
+        # Intent       : {{ intent | default(derived.intent_guess | default('Describe what this task ensures')) }}
+        # Module       : {{ task.action | default('unknown') }}
+        # Key Args     : {{ (task.args | default({})) | taskargs('name, pkg, state, path, src, dest, regexp, line, mode, owner, group, service, enabled') }}
+        # When         : {{ task.when | default('always') }}
+        # Loop         : {{ task.loop | default('no') }}
+        # Register     : {{ task.register | default('none') }}
+        # Notify       : {{ task.notify | default('none') }}
+        # Tags         : {{ task.tags | default('none') }}
+        # Idempotency  : {{ idempotency | default('module idempotent or guarded by conditions') }}
+        # Side-effects : {{ side_effects | default('minimal') }}
+        # Error Hdl    : {{ error_handling | default('fail fast; rely on module return/validate') }}
+        # Expected     : {{ expected | default('converges; no repeated changes on reruns') }}
+        # ---------------------------------------------------------------------------
+        # --- Task Narrative [89722ef8] {{ task.name | default('(unnamed task)') }}
+        # {{ narrative.text | default(heuristics.compose) }}
+        # ---------------------------------------------------------------------------
         - name: Load one file into a namespaced var
           ansible.builtin.include_vars:
             file: "{{ item }}"
@@ -133,6 +256,23 @@
 
         # -----------------------------------------------------------------------------
 
+        # --- [Task bbfd2569] {{ task.name | default('(unnamed task)') }}
+        # Intent       : {{ intent | default(derived.intent_guess | default('Describe what this task ensures')) }}
+        # Module       : {{ task.action | default('unknown') }}
+        # Key Args     : {{ (task.args | default({})) | taskargs('name, pkg, state, path, src, dest, regexp, line, mode, owner, group, service, enabled') }}
+        # When         : {{ task.when | default('always') }}
+        # Loop         : {{ task.loop | default('no') }}
+        # Register     : {{ task.register | default('none') }}
+        # Notify       : {{ task.notify | default('none') }}
+        # Tags         : {{ task.tags | default('none') }}
+        # Idempotency  : {{ idempotency | default('module idempotent or guarded by conditions') }}
+        # Side-effects : {{ side_effects | default('minimal') }}
+        # Error Hdl    : {{ error_handling | default('fail fast; rely on module return/validate') }}
+        # Expected     : {{ expected | default('converges; no repeated changes on reruns') }}
+        # ---------------------------------------------------------------------------
+        # --- Task Narrative [bbfd2569] {{ task.name | default('(unnamed task)') }}
+        # {{ narrative.text | default(heuristics.compose) }}
+        # ---------------------------------------------------------------------------
         - name: Merge into host_cfg aggregator (only if dict)
           vars:
             _file_cur: "{{ lookup('ansible.builtin.file', item) | from_yaml | default({}, true) }}"
@@ -163,6 +303,23 @@
 
     # -----------------------------------------------------------------------------
 
+    # --- [Task 702422fb] {{ task.name | default('(unnamed task)') }}
+    # Intent       : {{ intent | default(derived.intent_guess | default('Describe what this task ensures')) }}
+    # Module       : {{ task.action | default('unknown') }}
+    # Key Args     : {{ (task.args | default({})) | taskargs('name, pkg, state, path, src, dest, regexp, line, mode, owner, group, service, enabled') }}
+    # When         : {{ task.when | default('always') }}
+    # Loop         : {{ task.loop | default('no') }}
+    # Register     : {{ task.register | default('none') }}
+    # Notify       : {{ task.notify | default('none') }}
+    # Tags         : {{ task.tags | default('none') }}
+    # Idempotency  : {{ idempotency | default('module idempotent or guarded by conditions') }}
+    # Side-effects : {{ side_effects | default('minimal') }}
+    # Error Hdl    : {{ error_handling | default('fail fast; rely on module return/validate') }}
+    # Expected     : {{ expected | default('converges; no repeated changes on reruns') }}
+    # ---------------------------------------------------------------------------
+    # --- Task Narrative [702422fb] {{ task.name | default('(unnamed task)') }}
+    # {{ narrative.text | default(heuristics.compose) }}
+    # ---------------------------------------------------------------------------
     - name: Build host_cfg_effective (deep; append lists)
       ansible.builtin.set_fact:
         host_cfg_effective: >-
@@ -185,6 +342,23 @@
 
     # -----------------------------------------------------------------------------
 
+    # --- [Task fc0cf26c] {{ task.name | default('(unnamed task)') }}
+    # Intent       : {{ intent | default(derived.intent_guess | default('Describe what this task ensures')) }}
+    # Module       : {{ task.action | default('unknown') }}
+    # Key Args     : {{ (task.args | default({})) | taskargs('name, pkg, state, path, src, dest, regexp, line, mode, owner, group, service, enabled') }}
+    # When         : {{ task.when | default('always') }}
+    # Loop         : {{ task.loop | default('no') }}
+    # Register     : {{ task.register | default('none') }}
+    # Notify       : {{ task.notify | default('none') }}
+    # Tags         : {{ task.tags | default('none') }}
+    # Idempotency  : {{ idempotency | default('module idempotent or guarded by conditions') }}
+    # Side-effects : {{ side_effects | default('minimal') }}
+    # Error Hdl    : {{ error_handling | default('fail fast; rely on module return/validate') }}
+    # Expected     : {{ expected | default('converges; no repeated changes on reruns') }}
+    # ---------------------------------------------------------------------------
+    # --- Task Narrative [fc0cf26c] {{ task.name | default('(unnamed task)') }}
+    # {{ narrative.text | default(heuristics.compose) }}
+    # ---------------------------------------------------------------------------
     - name: set host_cfg var
       ansible.builtin.set_fact:
         host_cfg: "{{ host_cfg_effective }}"
@@ -203,32 +377,58 @@
 
     # -----------------------------------------------------------------------------
 
+    # --- [Task 002f425d] {{ task.name | default('(unnamed task)') }}
+    # Intent       : {{ intent | default(derived.intent_guess | default('Describe what this task ensures')) }}
+    # Module       : {{ task.action | default('unknown') }}
+    # Key Args     : {{ (task.args | default({})) | taskargs('name, pkg, state, path, src, dest, regexp, line, mode, owner, group, service, enabled') }}
+    # When         : {{ task.when | default('always') }}
+    # Loop         : {{ task.loop | default('no') }}
+    # Register     : {{ task.register | default('none') }}
+    # Notify       : {{ task.notify | default('none') }}
+    # Tags         : {{ task.tags | default('none') }}
+    # Idempotency  : {{ idempotency | default('module idempotent or guarded by conditions') }}
+    # Side-effects : {{ side_effects | default('minimal') }}
+    # Error Hdl    : {{ error_handling | default('fail fast; rely on module return/validate') }}
+    # Expected     : {{ expected | default('converges; no repeated changes on reruns') }}
+    # ---------------------------------------------------------------------------
+    # --- Task Narrative [002f425d] {{ task.name | default('(unnamed task)') }}
+    # {{ narrative.text | default(heuristics.compose) }}
+    # ---------------------------------------------------------------------------
     - name: debug
       ansible.builtin.debug:
         var: host_cfg
 
-
     # -----------------------------------------------------------------------------
-
 
     # Task: Initialize dynamic lists
 
-
     # Description: TBD
-
 
     # When: pre_task.when | default(true)
 
-
     # Tags: n/a
-
 
     # Changed by: auto-commenter
 
-
     # -----------------------------------------------------------------------------
 
-
+    # --- [Task 5d19326c] {{ task.name | default('(unnamed task)') }}
+    # Intent       : {{ intent | default(derived.intent_guess | default('Describe what this task ensures')) }}
+    # Module       : {{ task.action | default('unknown') }}
+    # Key Args     : {{ (task.args | default({})) | taskargs('name, pkg, state, path, src, dest, regexp, line, mode, owner, group, service, enabled') }}
+    # When         : {{ task.when | default('always') }}
+    # Loop         : {{ task.loop | default('no') }}
+    # Register     : {{ task.register | default('none') }}
+    # Notify       : {{ task.notify | default('none') }}
+    # Tags         : {{ task.tags | default('none') }}
+    # Idempotency  : {{ idempotency | default('module idempotent or guarded by conditions') }}
+    # Side-effects : {{ side_effects | default('minimal') }}
+    # Error Hdl    : {{ error_handling | default('fail fast; rely on module return/validate') }}
+    # Expected     : {{ expected | default('converges; no repeated changes on reruns') }}
+    # ---------------------------------------------------------------------------
+    # --- Task Narrative [5d19326c] {{ task.name | default('(unnamed task)') }}
+    # {{ narrative.text | default(heuristics.compose) }}
+    # ---------------------------------------------------------------------------
     - name: Initialize dynamic lists
       ansible.builtin.set_fact:
         dyn_roles: []
@@ -250,6 +450,23 @@
 
     # -----------------------------------------------------------------------------
 
+    # --- [Task 3194655c] {{ task.name | default('(unnamed task)') }}
+    # Intent       : {{ intent | default(derived.intent_guess | default('Describe what this task ensures')) }}
+    # Module       : {{ task.action | default('unknown') }}
+    # Key Args     : {{ (task.args | default({})) | taskargs('name, pkg, state, path, src, dest, regexp, line, mode, owner, group, service, enabled') }}
+    # When         : {{ task.when | default('always') }}
+    # Loop         : {{ task.loop | default('no') }}
+    # Register     : {{ task.register | default('none') }}
+    # Notify       : {{ task.notify | default('none') }}
+    # Tags         : {{ task.tags | default('none') }}
+    # Idempotency  : {{ idempotency | default('module idempotent or guarded by conditions') }}
+    # Side-effects : {{ side_effects | default('minimal') }}
+    # Error Hdl    : {{ error_handling | default('fail fast; rely on module return/validate') }}
+    # Expected     : {{ expected | default('converges; no repeated changes on reruns') }}
+    # ---------------------------------------------------------------------------
+    # --- Task Narrative [3194655c] {{ task.name | default('(unnamed task)') }}
+    # {{ narrative.text | default(heuristics.compose) }}
+    # ---------------------------------------------------------------------------
     - name: Normalize pre_tasks
       ansible.builtin.set_fact:
         dyn_pre_tasks: "{{ dyn_pre_tasks + [ (item if (item is mapping) else {'name': item}) ] }}"
@@ -271,6 +488,23 @@
 
     # -----------------------------------------------------------------------------
 
+    # --- [Task ea5a525f] {{ task.name | default('(unnamed task)') }}
+    # Intent       : {{ intent | default(derived.intent_guess | default('Describe what this task ensures')) }}
+    # Module       : {{ task.action | default('unknown') }}
+    # Key Args     : {{ (task.args | default({})) | taskargs('name, pkg, state, path, src, dest, regexp, line, mode, owner, group, service, enabled') }}
+    # When         : {{ task.when | default('always') }}
+    # Loop         : {{ task.loop | default('no') }}
+    # Register     : {{ task.register | default('none') }}
+    # Notify       : {{ task.notify | default('none') }}
+    # Tags         : {{ task.tags | default('none') }}
+    # Idempotency  : {{ idempotency | default('module idempotent or guarded by conditions') }}
+    # Side-effects : {{ side_effects | default('minimal') }}
+    # Error Hdl    : {{ error_handling | default('fail fast; rely on module return/validate') }}
+    # Expected     : {{ expected | default('converges; no repeated changes on reruns') }}
+    # ---------------------------------------------------------------------------
+    # --- Task Narrative [ea5a525f] {{ task.name | default('(unnamed task)') }}
+    # {{ narrative.text | default(heuristics.compose) }}
+    # ---------------------------------------------------------------------------
     - name: Normalize roles
       ansible.builtin.set_fact:
         dyn_roles: "{{ dyn_roles + [ (item if (item is mapping) else {'name': item}) ] }}"
@@ -292,6 +526,23 @@
 
     # -----------------------------------------------------------------------------
 
+    # --- [Task 7f6cd996] {{ task.name | default('(unnamed task)') }}
+    # Intent       : {{ intent | default(derived.intent_guess | default('Describe what this task ensures')) }}
+    # Module       : {{ task.action | default('unknown') }}
+    # Key Args     : {{ (task.args | default({})) | taskargs('name, pkg, state, path, src, dest, regexp, line, mode, owner, group, service, enabled') }}
+    # When         : {{ task.when | default('always') }}
+    # Loop         : {{ task.loop | default('no') }}
+    # Register     : {{ task.register | default('none') }}
+    # Notify       : {{ task.notify | default('none') }}
+    # Tags         : {{ task.tags | default('none') }}
+    # Idempotency  : {{ idempotency | default('module idempotent or guarded by conditions') }}
+    # Side-effects : {{ side_effects | default('minimal') }}
+    # Error Hdl    : {{ error_handling | default('fail fast; rely on module return/validate') }}
+    # Expected     : {{ expected | default('converges; no repeated changes on reruns') }}
+    # ---------------------------------------------------------------------------
+    # --- Task Narrative [7f6cd996] {{ task.name | default('(unnamed task)') }}
+    # {{ narrative.text | default(heuristics.compose) }}
+    # ---------------------------------------------------------------------------
     - name: Normalize reg_tasks
       ansible.builtin.set_fact:
         dyn_reg_tasks: "{{ dyn_reg_tasks + [ (item if (item is mapping) else {'name': item}) ] }}"
@@ -313,6 +564,23 @@
 
     # -----------------------------------------------------------------------------
 
+    # --- [Task c0de00f7] {{ task.name | default('(unnamed task)') }}
+    # Intent       : {{ intent | default(derived.intent_guess | default('Describe what this task ensures')) }}
+    # Module       : {{ task.action | default('unknown') }}
+    # Key Args     : {{ (task.args | default({})) | taskargs('name, pkg, state, path, src, dest, regexp, line, mode, owner, group, service, enabled') }}
+    # When         : {{ task.when | default('always') }}
+    # Loop         : {{ task.loop | default('no') }}
+    # Register     : {{ task.register | default('none') }}
+    # Notify       : {{ task.notify | default('none') }}
+    # Tags         : {{ task.tags | default('none') }}
+    # Idempotency  : {{ idempotency | default('module idempotent or guarded by conditions') }}
+    # Side-effects : {{ side_effects | default('minimal') }}
+    # Error Hdl    : {{ error_handling | default('fail fast; rely on module return/validate') }}
+    # Expected     : {{ expected | default('converges; no repeated changes on reruns') }}
+    # ---------------------------------------------------------------------------
+    # --- Task Narrative [c0de00f7] {{ task.name | default('(unnamed task)') }}
+    # {{ narrative.text | default(heuristics.compose) }}
+    # ---------------------------------------------------------------------------
     - name: Normalize fin_tasks
       ansible.builtin.set_fact:
         dyn_fin_tasks: "{{ dyn_fin_tasks + [ (item if (item is mapping) else {'name': item}) ] }}"
@@ -334,6 +602,23 @@
 
     # -----------------------------------------------------------------------------
 
+    # --- [Task 67533027] {{ task.name | default('(unnamed task)') }}
+    # Intent       : {{ intent | default(derived.intent_guess | default('Describe what this task ensures')) }}
+    # Module       : {{ task.action | default('unknown') }}
+    # Key Args     : {{ (task.args | default({})) | taskargs('name, pkg, state, path, src, dest, regexp, line, mode, owner, group, service, enabled') }}
+    # When         : {{ task.when | default('always') }}
+    # Loop         : {{ task.loop | default('no') }}
+    # Register     : {{ task.register | default('none') }}
+    # Notify       : {{ task.notify | default('none') }}
+    # Tags         : {{ task.tags | default('none') }}
+    # Idempotency  : {{ idempotency | default('module idempotent or guarded by conditions') }}
+    # Side-effects : {{ side_effects | default('minimal') }}
+    # Error Hdl    : {{ error_handling | default('fail fast; rely on module return/validate') }}
+    # Expected     : {{ expected | default('converges; no repeated changes on reruns') }}
+    # ---------------------------------------------------------------------------
+    # --- Task Narrative [67533027] {{ task.name | default('(unnamed task)') }}
+    # {{ narrative.text | default(heuristics.compose) }}
+    # ---------------------------------------------------------------------------
     - name: debug normalized lists
       ansible.builtin.debug:
         msg: |
@@ -362,6 +647,23 @@
 
       # -----------------------------------------------------------------------------
 
+      # --- [Task 0e95c969] {{ task.name | default('(unnamed task)') }}
+      # Intent       : {{ intent | default(derived.intent_guess | default('Describe what this task ensures')) }}
+      # Module       : {{ task.action | default('unknown') }}
+      # Key Args     : {{ (task.args | default({})) | taskargs('name, pkg, state, path, src, dest, regexp, line, mode, owner, group, service, enabled') }}
+      # When         : {{ task.when | default('always') }}
+      # Loop         : {{ task.loop | default('no') }}
+      # Register     : {{ task.register | default('none') }}
+      # Notify       : {{ task.notify | default('none') }}
+      # Tags         : {{ task.tags | default('none') }}
+      # Idempotency  : {{ idempotency | default('module idempotent or guarded by conditions') }}
+      # Side-effects : {{ side_effects | default('minimal') }}
+      # Error Hdl    : {{ error_handling | default('fail fast; rely on module return/validate') }}
+      # Expected     : {{ expected | default('converges; no repeated changes on reruns') }}
+      # ---------------------------------------------------------------------------
+      # --- Task Narrative [0e95c969] {{ task.name | default('(unnamed task)') }}
+      # {{ narrative.text | default(heuristics.compose) }}
+      # ---------------------------------------------------------------------------
       - name: Run dynamic pre_tasks
         ansible.builtin.include_tasks:
           file: "{{ tasks_dir }}/run_task/{{ os_dir }}/main.yml"
@@ -387,6 +689,23 @@
 
       # -----------------------------------------------------------------------------
 
+      # --- [Task 78eb78dc] {{ task.name | default('(unnamed task)') }}
+      # Intent       : {{ intent | default(derived.intent_guess | default('Describe what this task ensures')) }}
+      # Module       : {{ task.action | default('unknown') }}
+      # Key Args     : {{ (task.args | default({})) | taskargs('name, pkg, state, path, src, dest, regexp, line, mode, owner, group, service, enabled') }}
+      # When         : {{ task.when | default('always') }}
+      # Loop         : {{ task.loop | default('no') }}
+      # Register     : {{ task.register | default('none') }}
+      # Notify       : {{ task.notify | default('none') }}
+      # Tags         : {{ task.tags | default('none') }}
+      # Idempotency  : {{ idempotency | default('module idempotent or guarded by conditions') }}
+      # Side-effects : {{ side_effects | default('minimal') }}
+      # Error Hdl    : {{ error_handling | default('fail fast; rely on module return/validate') }}
+      # Expected     : {{ expected | default('converges; no repeated changes on reruns') }}
+      # ---------------------------------------------------------------------------
+      # --- Task Narrative [78eb78dc] {{ task.name | default('(unnamed task)') }}
+      # {{ narrative.text | default(heuristics.compose) }}
+      # ---------------------------------------------------------------------------
       - name: Flush handlers (if roles/tasks notified any)
         ansible.builtin.meta: flush_handlers
 
@@ -406,6 +725,23 @@
 
     # -----------------------------------------------------------------------------
 
+    # --- [Task 0c17c19f] {{ task.name | default('(unnamed task)') }}
+    # Intent       : {{ intent | default(derived.intent_guess | default('Describe what this task ensures')) }}
+    # Module       : {{ task.action | default('unknown') }}
+    # Key Args     : {{ (task.args | default({})) | taskargs('name, pkg, state, path, src, dest, regexp, line, mode, owner, group, service, enabled') }}
+    # When         : {{ task.when | default('always') }}
+    # Loop         : {{ task.loop | default('no') }}
+    # Register     : {{ task.register | default('none') }}
+    # Notify       : {{ task.notify | default('none') }}
+    # Tags         : {{ task.tags | default('none') }}
+    # Idempotency  : {{ idempotency | default('module idempotent or guarded by conditions') }}
+    # Side-effects : {{ side_effects | default('minimal') }}
+    # Error Hdl    : {{ error_handling | default('fail fast; rely on module return/validate') }}
+    # Expected     : {{ expected | default('converges; no repeated changes on reruns') }}
+    # ---------------------------------------------------------------------------
+    # --- Task Narrative [0c17c19f] {{ task.name | default('(unnamed task)') }}
+    # {{ narrative.text | default(heuristics.compose) }}
+    # ---------------------------------------------------------------------------
     - name: Run dynamic roles
       ansible.builtin.include_role:
         name: "{{ role.name }}"
@@ -431,6 +767,23 @@
 
       # -----------------------------------------------------------------------------
 
+      # --- [Task 22dc3cdc] {{ task.name | default('(unnamed task)') }}
+      # Intent       : {{ intent | default(derived.intent_guess | default('Describe what this task ensures')) }}
+      # Module       : {{ task.action | default('unknown') }}
+      # Key Args     : {{ (task.args | default({})) | taskargs('name, pkg, state, path, src, dest, regexp, line, mode, owner, group, service, enabled') }}
+      # When         : {{ task.when | default('always') }}
+      # Loop         : {{ task.loop | default('no') }}
+      # Register     : {{ task.register | default('none') }}
+      # Notify       : {{ task.notify | default('none') }}
+      # Tags         : {{ task.tags | default('none') }}
+      # Idempotency  : {{ idempotency | default('module idempotent or guarded by conditions') }}
+      # Side-effects : {{ side_effects | default('minimal') }}
+      # Error Hdl    : {{ error_handling | default('fail fast; rely on module return/validate') }}
+      # Expected     : {{ expected | default('converges; no repeated changes on reruns') }}
+      # ---------------------------------------------------------------------------
+      # --- Task Narrative [22dc3cdc] {{ task.name | default('(unnamed task)') }}
+      # {{ narrative.text | default(heuristics.compose) }}
+      # ---------------------------------------------------------------------------
       - name: Run dynamic reg_tasks
         ansible.builtin.include_tasks:
           file: "{{ tasks_dir }}/run_task/{{ os_dir }}/main.yml"
@@ -456,6 +809,23 @@
 
       # -----------------------------------------------------------------------------
 
+      # --- [Task 7f63d4f3] {{ task.name | default('(unnamed task)') }}
+      # Intent       : {{ intent | default(derived.intent_guess | default('Describe what this task ensures')) }}
+      # Module       : {{ task.action | default('unknown') }}
+      # Key Args     : {{ (task.args | default({})) | taskargs('name, pkg, state, path, src, dest, regexp, line, mode, owner, group, service, enabled') }}
+      # When         : {{ task.when | default('always') }}
+      # Loop         : {{ task.loop | default('no') }}
+      # Register     : {{ task.register | default('none') }}
+      # Notify       : {{ task.notify | default('none') }}
+      # Tags         : {{ task.tags | default('none') }}
+      # Idempotency  : {{ idempotency | default('module idempotent or guarded by conditions') }}
+      # Side-effects : {{ side_effects | default('minimal') }}
+      # Error Hdl    : {{ error_handling | default('fail fast; rely on module return/validate') }}
+      # Expected     : {{ expected | default('converges; no repeated changes on reruns') }}
+      # ---------------------------------------------------------------------------
+      # --- Task Narrative [7f63d4f3] {{ task.name | default('(unnamed task)') }}
+      # {{ narrative.text | default(heuristics.compose) }}
+      # ---------------------------------------------------------------------------
       - name: Flush handlers (if roles/tasks notified any)
         ansible.builtin.meta: flush_handlers
 
@@ -477,6 +847,23 @@
 
       # -----------------------------------------------------------------------------
 
+      # --- [Task 1b7e99b8] {{ task.name | default('(unnamed task)') }}
+      # Intent       : {{ intent | default(derived.intent_guess | default('Describe what this task ensures')) }}
+      # Module       : {{ task.action | default('unknown') }}
+      # Key Args     : {{ (task.args | default({})) | taskargs('name, pkg, state, path, src, dest, regexp, line, mode, owner, group, service, enabled') }}
+      # When         : {{ task.when | default('always') }}
+      # Loop         : {{ task.loop | default('no') }}
+      # Register     : {{ task.register | default('none') }}
+      # Notify       : {{ task.notify | default('none') }}
+      # Tags         : {{ task.tags | default('none') }}
+      # Idempotency  : {{ idempotency | default('module idempotent or guarded by conditions') }}
+      # Side-effects : {{ side_effects | default('minimal') }}
+      # Error Hdl    : {{ error_handling | default('fail fast; rely on module return/validate') }}
+      # Expected     : {{ expected | default('converges; no repeated changes on reruns') }}
+      # ---------------------------------------------------------------------------
+      # --- Task Narrative [1b7e99b8] {{ task.name | default('(unnamed task)') }}
+      # {{ narrative.text | default(heuristics.compose) }}
+      # ---------------------------------------------------------------------------
       - name: Run dynamic fin_tasks
         ansible.builtin.include_tasks:
           file: "{{ tasks_dir }}/run_task/{{ os_dir }}/main.yml"
@@ -502,6 +889,23 @@
 
       # -----------------------------------------------------------------------------
 
+      # --- [Task b51fa84c] {{ task.name | default('(unnamed task)') }}
+      # Intent       : {{ intent | default(derived.intent_guess | default('Describe what this task ensures')) }}
+      # Module       : {{ task.action | default('unknown') }}
+      # Key Args     : {{ (task.args | default({})) | taskargs('name, pkg, state, path, src, dest, regexp, line, mode, owner, group, service, enabled') }}
+      # When         : {{ task.when | default('always') }}
+      # Loop         : {{ task.loop | default('no') }}
+      # Register     : {{ task.register | default('none') }}
+      # Notify       : {{ task.notify | default('none') }}
+      # Tags         : {{ task.tags | default('none') }}
+      # Idempotency  : {{ idempotency | default('module idempotent or guarded by conditions') }}
+      # Side-effects : {{ side_effects | default('minimal') }}
+      # Error Hdl    : {{ error_handling | default('fail fast; rely on module return/validate') }}
+      # Expected     : {{ expected | default('converges; no repeated changes on reruns') }}
+      # ---------------------------------------------------------------------------
+      # --- Task Narrative [b51fa84c] {{ task.name | default('(unnamed task)') }}
+      # {{ narrative.text | default(heuristics.compose) }}
+      # ---------------------------------------------------------------------------
       - name: Flush handlers (if roles/tasks notified any)
         ansible.builtin.meta: flush_handlers
 
