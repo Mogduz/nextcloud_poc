@@ -10,7 +10,7 @@
   # -----------------------------------------------------------------------------
   # Task: Check if reboot is necessary
   # Description: TBD
-  # When: reboot_flag.stat.exists
+  # When: enabled
   # Tags: n/a
   # Changed by: auto-commenter
   # -----------------------------------------------------------------------------
@@ -18,25 +18,34 @@
     ansible.builtin.stat:
       path: /var/run/reboot-required
     register: reboot_flag
-
+    when: enabled
   # -----------------------------------------------------------------------------
-
   # Task: Reboot (if necessary)
-
   # Description: TBD
-
-  # When: reboot_flag.stat.exists
-
+  # When: reboot_flag.stat.exists and enabled
   # Tags: n/a
-
   # Changed by: auto-commenter
-
   # -----------------------------------------------------------------------------
-
   - name: Reboot (if necessary)
     ansible.builtin.reboot:
       msg: "Reboot after kernel/lib upgrade"
-      reboot_timeout: 900
-    when: reboot_flag.stat.exists
-  
-  when: reboot_enabled | default(false) | bool
+      reboot_timeout: timeout
+    when: reboot_flag.stat.exists and enabled
+  # -----------------------------------------------------------------------------
+  # Task: Reboot (force)
+  # Description: TBD
+  # When: not reboot_flag.stat.exists and enabled and force
+  # Tags: n/a
+  # Changed by: auto-commenter
+  # -----------------------------------------------------------------------------
+  - name: Reboot (force)
+    ansible.builtin.reboot:
+      msg: "force reboot"
+      reboot_timeout: timeout
+    when: not reboot_flag.stat.exists and enabled and force
+
+  vars:
+    defaults: "{{ lookup('file', tasks_dir ~ '/reboot/defaults/main.yml') | from_yaml }}"
+    enabled: "{{ enable_reboot | default(defaults.enable_reboot) | bool }}"
+    force: "{{ force_reboot | default(defaults.force_reboot) | bool }}"
+    timeout: "{{ reboot_timeout | default(defaults.reboot_timeout) | bool }}"
