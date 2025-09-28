@@ -1,37 +1,13 @@
-
-
-
-
-
-
-
-
-
-
 - name: Detect existing git repo
   ansible.builtin.stat:
     path: "{{ repo_dir }}/.git"
   register: repo_git_dir
-
-
-
-
-
-
-
 
 - name: Update existing repo (pull)
   ansible.builtin.command: "git -C {{ base_dir }} pull"
   register: git_update
   changed_when: false
   failed_when: false
-
-
-
-
-
-
-
 
 - name: Status
   ansible.builtin.debug:
@@ -41,13 +17,6 @@
         else 'Repository already up-to-date. Nothing to do.'
       }}
   when: debug_enabled | default(true)
-
-
-
-
-
-
-
 
 - name: git stdout
   ansible.builtin.debug:
