@@ -1,170 +1,39 @@
-# =============================================================================
-# File Documentation (auto-inserted)
-# Generated: 2025-09-27T20:59:59Z
-# Modified: 2025-09-27T20:59:59Z
-# Path: tasks/install_packages/ubuntu/20.04/main.yml
-# Purpose: Updated to schema v1
-# Notes: -
-# =============================================================================
 
-# =============================================================================
-# File Summary (auto-inserted)
-# Overview:
-#   Role        : {{ summary.role | default(derived.role | default('n/a')) }}
-#   Purpose     : {{ summary.purpose | default(meta.purpose | default('TBD')) }}
-#   OS Scope    : {{ summary.os | default(derived.os | default('generic')) }} ({{ summary.os_scope | default(derived.os_scope | default('all')) }})
-# Counts:
-#   Tasks       : {{ summary.tasks_total | default('?') }}
-#   Includes    : {{ summary.includes_total | default('?') }}
-#   Handlers    : {{ summary.handlers_total | default('?') }}
-#   Imports     : {{ summary.imports_total | default('?') }}
-# Sets:
-#   Modules     : {{ (summary.modules | default([])) | join(', ') | default('none') }}
-#   Tags        : {{ (summary.tags | default([])) | join(', ') | default('none') }}
-#   Guards      : {{ (summary.guards | default([])) | join(', ') | default('none') }}
-# Flags:
-#   Become      : {{ summary.become | default(derived.become | default('false')) }}
-#   Idempotency : {{ summary.idempotency | default('convergent/guarded') }}
-# Risk:
-#   Level       : {{ summary.risk | default('medium') }}
-#   Downtime    : {{ summary.downtime | default('n/a') }}
-# Description: {{ summary.description | default('TBD') }}
-# =============================================================================
 
-# =============================================================================
-# File Narrative (auto-inserted)
-# This task file orchestrates a controlled, guarded operation on {{ summary.os | default(derived.os | default('generic')) }} ({{ summary.os_scope | default(derived.os_scope | default('all')) }}) hosts. When the guard condition{{ 's' if (summary.guards | default([]) | length) > 1 else '' }} {{ (summary.guards | default([])) | join(' and ') | default('is met') }} holds, it executes the main action using {{ (summary.modules | default([])) | join(', ') | default('the appropriate modules') }}. It then verifies availability, records minimal diagnostics, and exposes concise facts for downstream logic. The procedure is designed to be idempotent and convergent; reruns should result in no changes once the desired state is reached. Operationally, this action may be disruptive and typically requires privilege escalation; plan for a short, bounded downtime {{ '(' ~ summary.downtime ~ ')' if summary.downtime is defined else '' }}.
-# =============================================================================
 
 - block:
-  # -----------------------------------------------------------------------------
-  # Task: upgrading cache (Cache lifetime 1h )
-  # Description: TBD
-  # When: packages | default([]) | length > 0
-  # Tags: n/a
-  # Changed by: auto-commenter
-  # -----------------------------------------------------------------------------
-  # --- [Task cc0228b6] {{ task.name | default('(unnamed task)') }}
-  # Intent       : {{ intent | default(derived.intent_guess | default('Describe what this task ensures')) }}
-  # Module       : {{ task.action | default('unknown') }}
-  # Key Args     : {{ (task.args | default({})) | taskargs('name, pkg, state, path, src, dest, regexp, line, mode, owner, group, service, enabled') }}
-  # When         : {{ task.when | default('always') }}
-  # Loop         : {{ task.loop | default('no') }}
-  # Register     : {{ task.register | default('none') }}
-  # Notify       : {{ task.notify | default('none') }}
-  # Tags         : {{ task.tags | default('none') }}
-  # Idempotency  : {{ idempotency | default('module idempotent or guarded by conditions') }}
-  # Side-effects : {{ side_effects | default('minimal') }}
-  # Error Hdl    : {{ error_handling | default('fail fast; rely on module return/validate') }}
-  # Expected     : {{ expected | default('converges; no repeated changes on reruns') }}
-  # ---------------------------------------------------------------------------
-  # --- Task Narrative [cc0228b6] {{ task.name | default('(unnamed task)') }}
-  # {{ narrative.text | default(heuristics.compose) }}
-  # ---------------------------------------------------------------------------
   - name: upgrading cache (Cache lifetime 1h )
     ansible.builtin.apt:
       update_cache: true
       cache_valid_time: 3600
 
-  # -----------------------------------------------------------------------------
 
-  # Task: installing packages
 
-  # Description: TBD
 
-  # When: packages | default([]) | length > 0
 
-  # Tags: n/a
 
-  # Changed by: auto-commenter
 
-  # -----------------------------------------------------------------------------
 
-  # --- [Task e42fac1e] {{ task.name | default('(unnamed task)') }}
-  # Intent       : {{ intent | default(derived.intent_guess | default('Describe what this task ensures')) }}
-  # Module       : {{ task.action | default('unknown') }}
-  # Key Args     : {{ (task.args | default({})) | taskargs('name, pkg, state, path, src, dest, regexp, line, mode, owner, group, service, enabled') }}
-  # When         : {{ task.when | default('always') }}
-  # Loop         : {{ task.loop | default('no') }}
-  # Register     : {{ task.register | default('none') }}
-  # Notify       : {{ task.notify | default('none') }}
-  # Tags         : {{ task.tags | default('none') }}
-  # Idempotency  : {{ idempotency | default('module idempotent or guarded by conditions') }}
-  # Side-effects : {{ side_effects | default('minimal') }}
-  # Error Hdl    : {{ error_handling | default('fail fast; rely on module return/validate') }}
-  # Expected     : {{ expected | default('converges; no repeated changes on reruns') }}
-  # ---------------------------------------------------------------------------
-  # --- Task Narrative [e42fac1e] {{ task.name | default('(unnamed task)') }}
-  # {{ narrative.text | default(heuristics.compose) }}
-  # ---------------------------------------------------------------------------
   - name: installing packages
     ansible.builtin.apt:
-      name: "{{ packages }}"          
+      name: "{{ packages }}"
       autoremove: true
       autoclean: true
   when: packages | default([]) | length > 0
 
 - block:
-  # -----------------------------------------------------------------------------
-  # Task: Check if reboot is necessary
-  # Description: TBD
-  # When: reboot_flag.stat.exists
-  # Tags: n/a
-  # Changed by: auto-commenter
-  # -----------------------------------------------------------------------------
-  # --- [Task 03177ca0] {{ task.name | default('(unnamed task)') }}
-  # Intent       : {{ intent | default(derived.intent_guess | default('Describe what this task ensures')) }}
-  # Module       : {{ task.action | default('unknown') }}
-  # Key Args     : {{ (task.args | default({})) | taskargs('name, pkg, state, path, src, dest, regexp, line, mode, owner, group, service, enabled') }}
-  # When         : {{ task.when | default('always') }}
-  # Loop         : {{ task.loop | default('no') }}
-  # Register     : {{ task.register | default('none') }}
-  # Notify       : {{ task.notify | default('none') }}
-  # Tags         : {{ task.tags | default('none') }}
-  # Idempotency  : {{ idempotency | default('module idempotent or guarded by conditions') }}
-  # Side-effects : {{ side_effects | default('minimal') }}
-  # Error Hdl    : {{ error_handling | default('fail fast; rely on module return/validate') }}
-  # Expected     : {{ expected | default('converges; no repeated changes on reruns') }}
-  # ---------------------------------------------------------------------------
-  # --- Task Narrative [03177ca0] {{ task.name | default('(unnamed task)') }}
-  # {{ narrative.text | default(heuristics.compose) }}
-  # ---------------------------------------------------------------------------
   - name: Check if reboot is necessary
     ansible.builtin.stat:
       path: /var/run/reboot-required
     register: reboot_flag
 
-  # -----------------------------------------------------------------------------
 
-  # Task: Reboot (if necessary)
 
-  # Description: TBD
 
-  # When: reboot_flag.stat.exists
 
-  # Tags: n/a
 
-  # Changed by: auto-commenter
 
-  # -----------------------------------------------------------------------------
 
-  # --- [Task e4d60305] {{ task.name | default('(unnamed task)') }}
-  # Intent       : {{ intent | default(derived.intent_guess | default('Describe what this task ensures')) }}
-  # Module       : {{ task.action | default('unknown') }}
-  # Key Args     : {{ (task.args | default({})) | taskargs('name, pkg, state, path, src, dest, regexp, line, mode, owner, group, service, enabled') }}
-  # When         : {{ task.when | default('always') }}
-  # Loop         : {{ task.loop | default('no') }}
-  # Register     : {{ task.register | default('none') }}
-  # Notify       : {{ task.notify | default('none') }}
-  # Tags         : {{ task.tags | default('none') }}
-  # Idempotency  : {{ idempotency | default('module idempotent or guarded by conditions') }}
-  # Side-effects : {{ side_effects | default('minimal') }}
-  # Error Hdl    : {{ error_handling | default('fail fast; rely on module return/validate') }}
-  # Expected     : {{ expected | default('converges; no repeated changes on reruns') }}
-  # ---------------------------------------------------------------------------
-  # --- Task Narrative [e4d60305] {{ task.name | default('(unnamed task)') }}
-  # {{ narrative.text | default(heuristics.compose) }}
-  # ---------------------------------------------------------------------------
   - name: Reboot (if necessary)
     ansible.builtin.reboot:
       msg: "Reboot after kernel/lib upgrade"
