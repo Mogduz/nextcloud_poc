@@ -1,3 +1,46 @@
+# =============================================================================
+# File Documentation (auto-inserted)
+# Generated: 2025-09-28T01:58:12
+# Modified: 2025-09-28T01:58:12
+# Path: collections/requirements.yml
+# Purpose: TBD
+# Notes: This header was added automatically based on the comment schema.
+# =============================================================================
+# =============================================================================
+# File Summary (auto-inserted)
+# Overview:
+#   Type        : requirements
+# Counts:
+#   Roles       : 0
+#   Collections : 0
+# Sets:
+#   Role Names  : none
+#   Collections : none
+# Description: Dependencies for roles/collections
+# =============================================================================
+# -----------
+# File Narrative (auto-inserted)
+# This file 'collections/requirements.yml' is categorized as requirements like.
+# The added comments document intent, guard conditions, and expected convergence without changing behavior.
+# -----------
 collections:
 
+# --- [Task 41335412] community.general
+# Intent       : TBD
+# Module       : unknown
+# Key Args     : (auto-detected limited)
+# When         : always
+# Loop         : no
+# Register     : none
+# Notify       : none
+# Tags         : none
+# Idempotency  : module idempotent or guarded by conditions
+# Side-effects : minimal
+# Error Hdl    : fail fast; rely on module return/validate
+# Expected     : converges; no repeated changes on reruns
+# -----------
+# --- Task Narrative [41335412]
+# This task 'community.general' uses the 'unknown' module.
+# On success, the system converges and reruns should not report further changes.
+# -----------
   - name: community.general
