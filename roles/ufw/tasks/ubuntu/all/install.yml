@@ -1,13 +1,3 @@
-
-
-
-
-
-
-
-
-
-
 - name: install required ufw packages
   include_tasks: "{{ tasks_dir }}/install_packages/{{ os_dir }}/main.yml"
   vars:
