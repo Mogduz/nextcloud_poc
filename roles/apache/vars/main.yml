@@ -1,5 +1,2 @@
-
-
-
 apache_apt_packages:
   - apache2
