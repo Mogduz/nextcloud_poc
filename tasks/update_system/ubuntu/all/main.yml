@@ -1,5 +1,57 @@
+# =============================================================================
+# File Documentation (auto-inserted)
+# Generated: 2025-09-28T01:58:12
+# Modified: 2025-09-28T01:58:12
+# Path: tasks/update_system/ubuntu/all/main.yml
+# Purpose: TBD
+# Notes: This header was added automatically based on the comment schema.
+# =============================================================================
+# =============================================================================
+# File Summary (auto-inserted)
+# Overview:
+#   Profile     : task
+# Counts:
+#   Tasks       : 3
+#   Includes    : 0
+#   Handlers    : 0
+#   Imports     : 0
+# Sets:
+#   Modules     : DEBIAN_FRONTEND, apt, assert, autoclean, autoremove, cache_valid_time, cachetime, defaults, fail_msg, quiet, success_msg, that, update_cache, upgrade
+#   Tags        : none
+#   Guards      : none
+# Flags:
+#   Become      : false
+#   Idempotency : convergent/guarded
+# Risk:
+#   Level       : medium
+#   Downtime    : n/a
+# Description: Ansible role/task implementation
+# =============================================================================
+# -----------
+# File Narrative (auto-inserted)
+# This file 'tasks/update_system/ubuntu/all/main.yml' is categorized as task like.
+# The added comments document intent, guard conditions, and expected convergence without changing behavior.
+# -----------
 - block:
 
+# --- [Task a0e02ee8] assert required vars for update_system tasks
+# Intent       : TBD
+# Module       : ansible.builtin.assert
+# Key Args     : (auto-detected limited)
+# When         : always
+# Loop         : no
+# Register     : none
+# Notify       : none
+# Tags         : none
+# Idempotency  : module idempotent or guarded by conditions
+# Side-effects : minimal
+# Error Hdl    : fail fast; rely on module return/validate
+# Expected     : converges; no repeated changes on reruns
+# -----------
+# --- Task Narrative [a0e02ee8]
+# This task 'assert required vars for update_system tasks' uses the 'ansible.builtin.assert' module.
+# On success, the system converges and reruns should not report further changes.
+# -----------
     - name: assert required vars for update_system tasks
       ansible.builtin.assert:
         that:
@@ -19,11 +71,47 @@
         success_msg: "update_system: all mandatory vars ok"
         quiet: "{{ quiet }}"
 
+# --- [Task bbfd77cb] upgrading Cache (Cache lifetime {{ cachetime }}s)
+# Intent       : TBD
+# Module       : ansible.builtin.apt
+# Key Args     : (auto-detected limited)
+# When         : always
+# Loop         : no
+# Register     : none
+# Notify       : none
+# Tags         : none
+# Idempotency  : module idempotent or guarded by conditions
+# Side-effects : minimal
+# Error Hdl    : fail fast; rely on module return/validate
+# Expected     : converges; no repeated changes on reruns
+# -----------
+# --- Task Narrative [bbfd77cb]
+# This task 'upgrading Cache (Cache lifetime {{ cachetime }}s)' uses the 'ansible.builtin.apt' module.
+# On success, the system converges and reruns should not report further changes.
+# -----------
     - name: upgrading Cache (Cache lifetime {{ cachetime }}s)
       ansible.builtin.apt:
         update_cache: true
         cache_valid_time: "{{ cachetime }}"
 
+# --- [Task 5aa75ec3] Upgrade Packages
+# Intent       : TBD
+# Module       : ansible.builtin.apt
+# Key Args     : (auto-detected limited)
+# When         : always
+# Loop         : no
+# Register     : none
+# Notify       : none
+# Tags         : none
+# Idempotency  : module idempotent or guarded by conditions
+# Side-effects : minimal
+# Error Hdl    : fail fast; rely on module return/validate
+# Expected     : converges; no repeated changes on reruns
+# -----------
+# --- Task Narrative [5aa75ec3]
+# This task 'Upgrade Packages' uses the 'ansible.builtin.apt' module.
+# On success, the system converges and reruns should not report further changes.
+# -----------
     - name: Upgrade Packages
       ansible.builtin.apt:
         upgrade: yes
