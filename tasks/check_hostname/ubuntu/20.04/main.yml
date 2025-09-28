@@ -1,3 +1,55 @@
+# =============================================================================
+# File Documentation (auto-inserted)
+# Generated: 2025-09-28T01:58:12
+# Modified: 2025-09-28T01:58:12
+# Path: tasks/check_hostname/ubuntu/20.04/main.yml
+# Purpose: TBD
+# Notes: This header was added automatically based on the comment schema.
+# =============================================================================
+# =============================================================================
+# File Summary (auto-inserted)
+# Overview:
+#   Profile     : task
+# Counts:
+#   Tasks       : 3
+#   Includes    : 0
+#   Handlers    : 0
+#   Imports     : 0
+# Sets:
+#   Modules     : assert, fail_msg, gather_subset, setup, success_msg, that
+#   Tags        : none
+#   Guards      : none
+# Flags:
+#   Become      : false
+#   Idempotency : convergent/guarded
+# Risk:
+#   Level       : medium
+#   Downtime    : n/a
+# Description: Ansible role/task implementation
+# =============================================================================
+# -----------
+# File Narrative (auto-inserted)
+# This file 'tasks/check_hostname/ubuntu/20.04/main.yml' is categorized as task like.
+# The added comments document intent, guard conditions, and expected convergence without changing behavior.
+# -----------
+# --- [Task 5aad67b6] assert hostname var is set
+# Intent       : TBD
+# Module       : ansible.builtin.assert
+# Key Args     : (auto-detected limited)
+# When         : always
+# Loop         : no
+# Register     : none
+# Notify       : none
+# Tags         : none
+# Idempotency  : module idempotent or guarded by conditions
+# Side-effects : minimal
+# Error Hdl    : fail fast; rely on module return/validate
+# Expected     : converges; no repeated changes on reruns
+# -----------
+# --- Task Narrative [5aad67b6]
+# This task 'assert hostname var is set' uses the 'ansible.builtin.assert' module.
+# On success, the system converges and reruns should not report further changes.
+# -----------
 - name: assert hostname var is set
   ansible.builtin.assert:
       that:
@@ -6,10 +58,46 @@
       fail_msg: "BREAK: var 'hostname' is not defined or empty."
       success_msg: "hostname={{ hostname }} asseration passed"
 
+# --- [Task 2663545a] gahter network facts
+# Intent       : TBD
+# Module       : ansible.builtin.setup
+# Key Args     : (auto-detected limited)
+# When         : always
+# Loop         : no
+# Register     : none
+# Notify       : none
+# Tags         : none
+# Idempotency  : module idempotent or guarded by conditions
+# Side-effects : minimal
+# Error Hdl    : fail fast; rely on module return/validate
+# Expected     : converges; no repeated changes on reruns
+# -----------
+# --- Task Narrative [2663545a]
+# This task 'gahter network facts' uses the 'ansible.builtin.setup' module.
+# On success, the system converges and reruns should not report further changes.
+# -----------
 - name: gahter network facts
   ansible.builtin.setup:
     gather_subset: [network]
 
+# --- [Task d69efa27] Check if short name is identical (hostname can be FQDN)
+# Intent       : TBD
+# Module       : ansible.builtin.assert
+# Key Args     : (auto-detected limited)
+# When         : always
+# Loop         : no
+# Register     : none
+# Notify       : none
+# Tags         : none
+# Idempotency  : module idempotent or guarded by conditions
+# Side-effects : minimal
+# Error Hdl    : fail fast; rely on module return/validate
+# Expected     : converges; no repeated changes on reruns
+# -----------
+# --- Task Narrative [d69efa27]
+# This task 'Check if short name is identical (hostname can be FQDN)' uses the 'ansible.builtin.assert' module.
+# On success, the system converges and reruns should not report further changes.
+# -----------
 - name: Check if short name is identical (hostname can be FQDN)
   ansible.builtin.assert:
     that:
