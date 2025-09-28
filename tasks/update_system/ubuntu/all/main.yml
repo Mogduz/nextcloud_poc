@@ -1,8 +1,5 @@
-
-
-
-
 - block:
+
     - name: assert required vars for update_system tasks
       ansible.builtin.assert:
         that:
