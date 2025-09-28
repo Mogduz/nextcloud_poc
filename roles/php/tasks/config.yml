@@ -1,3 +1,56 @@
+# =============================================================================
+# File Documentation (auto-inserted)
+# Generated: 2025-09-28T01:58:12
+# Modified: 2025-09-28T01:58:12
+# Path: roles/php/tasks/config.yml
+# Purpose: TBD
+# Notes: This header was added automatically based on the comment schema.
+# =============================================================================
+# =============================================================================
+# File Summary (auto-inserted)
+# Overview:
+#   Profile     : task
+# Counts:
+#   Tasks       : 5
+#   Includes    : 0
+#   Handlers    : 0
+#   Imports     : 0
+# Sets:
+#   Modules     : backup, direction, line, lineinfile, logging, path, policy, regexp, ufw
+#   Tags        : none
+#   Guards      : none
+# Flags:
+#   Become      : true
+#   Idempotency : convergent/guarded
+# Risk:
+#   Level       : medium
+#   Downtime    : n/a
+# Description: Ansible role/task implementation
+# =============================================================================
+# -----------
+# File Narrative (auto-inserted)
+# This file 'roles/php/tasks/config.yml' is categorized as task like.
+# The added comments document intent, guard conditions, and expected convergence without changing behavior.
+# -----------
+# --- [Task 276181ba] Ensure IPv6 mode in /etc/default/ufw
+# Intent       : TBD
+# Module       : ansible.builtin.lineinfile
+# Key Args     : (auto-detected limited)
+# When         : always
+# Loop         : no
+# Register     : none
+# Notify       : Reload UFW
+# Tags         : none
+# Idempotency  : module idempotent or guarded by conditions
+# Side-effects : minimal
+# Error Hdl    : fail fast; rely on module return/validate
+# Expected     : converges; no repeated changes on reruns
+# -----------
+# --- Task Narrative [276181ba]
+# This task 'Ensure IPv6 mode in /etc/default/ufw' uses the 'ansible.builtin.lineinfile' module.
+# On change it triggers: Reload UFW.
+# On success, the system converges and reruns should not report further changes.
+# -----------
 - name: Ensure IPv6 mode in /etc/default/ufw
   become: true
   ansible.builtin.lineinfile:
@@ -7,24 +60,96 @@
     backup: true
   notify: Reload UFW
 
+# --- [Task a30a1312] Set default incoming policy
+# Intent       : TBD
+# Module       : community.general.ufw
+# Key Args     : (auto-detected limited)
+# When         : always
+# Loop         : no
+# Register     : none
+# Notify       : none
+# Tags         : none
+# Idempotency  : module idempotent or guarded by conditions
+# Side-effects : minimal
+# Error Hdl    : fail fast; rely on module return/validate
+# Expected     : converges; no repeated changes on reruns
+# -----------
+# --- Task Narrative [a30a1312]
+# This task 'Set default incoming policy' uses the 'community.general.ufw' module.
+# On success, the system converges and reruns should not report further changes.
+# -----------
 - name: Set default incoming policy
   become: true
   community.general.ufw:
     direction: incoming
     policy: "{{ ufw_default_incoming }}"
 
+# --- [Task 6380fb6d] Set default outgoing policy
+# Intent       : TBD
+# Module       : community.general.ufw
+# Key Args     : (auto-detected limited)
+# When         : always
+# Loop         : no
+# Register     : none
+# Notify       : none
+# Tags         : none
+# Idempotency  : module idempotent or guarded by conditions
+# Side-effects : minimal
+# Error Hdl    : fail fast; rely on module return/validate
+# Expected     : converges; no repeated changes on reruns
+# -----------
+# --- Task Narrative [6380fb6d]
+# This task 'Set default outgoing policy' uses the 'community.general.ufw' module.
+# On success, the system converges and reruns should not report further changes.
+# -----------
 - name: Set default outgoing policy
   become: true
   community.general.ufw:
     direction: outgoing
     policy: "{{ ufw_default_outgoing }}"
 
+# --- [Task 64b0598a] Set default routed policy
+# Intent       : TBD
+# Module       : community.general.ufw
+# Key Args     : (auto-detected limited)
+# When         : always
+# Loop         : no
+# Register     : none
+# Notify       : none
+# Tags         : none
+# Idempotency  : module idempotent or guarded by conditions
+# Side-effects : minimal
+# Error Hdl    : fail fast; rely on module return/validate
+# Expected     : converges; no repeated changes on reruns
+# -----------
+# --- Task Narrative [64b0598a]
+# This task 'Set default routed policy' uses the 'community.general.ufw' module.
+# On success, the system converges and reruns should not report further changes.
+# -----------
 - name: Set default routed policy
   become: true
   community.general.ufw:
     direction: routed
     policy: "{{ ufw_default_routed }}"
 
+# --- [Task 467c8f31] Set logging level
+# Intent       : TBD
+# Module       : community.general.ufw
+# Key Args     : (auto-detected limited)
+# When         : always
+# Loop         : no
+# Register     : none
+# Notify       : none
+# Tags         : none
+# Idempotency  : module idempotent or guarded by conditions
+# Side-effects : minimal
+# Error Hdl    : fail fast; rely on module return/validate
+# Expected     : converges; no repeated changes on reruns
+# -----------
+# --- Task Narrative [467c8f31]
+# This task 'Set logging level' uses the 'community.general.ufw' module.
+# On success, the system converges and reruns should not report further changes.
+# -----------
 - name: Set logging level
   become: true
   community.general.ufw:
