@@ -1,18 +1,9 @@
-
-
-
-
-
-
-
-
-
-
 - name: Update Repo
   hosts: localhost
   gather_facts: true
 
   tasks:
+
     - name: Updating Local Ansible Git Repo
       ansible.builtin.include_tasks:
         file: "{{ tasks_dir }}/git_pull_repo/{{ os_dir }}/main.yml"
