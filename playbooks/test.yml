@@ -1,2 +1,25 @@
+# =============================================================================
+# File Documentation (auto-inserted)
+# Generated: 2025-09-28T01:58:12
+# Modified: 2025-09-28T01:58:12
+# Path: playbooks/test.yml
+# Purpose: TBD
+# Notes: This header was added automatically based on the comment schema.
+# =============================================================================
+# =============================================================================
+# File Summary (auto-inserted)
+# Overview:
+#   Type        : playbook
+# Counts:
+#   Plays       : ?
+#   Hosts       : ?
+#   Roles       : ?
+# Description: Ansible play orchestration
+# =============================================================================
+# -----------
+# File Narrative (auto-inserted)
+# This file 'playbooks/test.yml' is categorized as playbook like.
+# The added comments document intent, guard conditions, and expected convergence without changing behavior.
+# -----------
 - import_playbook: update_repo.yml
 - import_playbook: deploy_host.yml
