@@ -1,2 +1,36 @@
+# =============================================================================
+# File Documentation (auto-inserted)
+# Generated: 2025-09-28T01:58:12
+# Modified: 2025-09-28T01:58:12
+# Path: roles/apache/vars/main.yml
+# Purpose: TBD
+# Notes: This header was added automatically based on the comment schema.
+# =============================================================================
+# =============================================================================
+# File Summary (auto-inserted)
+# Overview:
+#   Profile     : generic
+# Counts:
+#   Tasks       : 0
+#   Includes    : 0
+#   Handlers    : 0
+#   Imports     : 0
+# Sets:
+#   Modules     : none
+#   Tags        : none
+#   Guards      : none
+# Flags:
+#   Become      : false
+#   Idempotency : convergent/guarded
+# Risk:
+#   Level       : medium
+#   Downtime    : n/a
+# Description: Generic YAML configuration
+# =============================================================================
+# -----------
+# File Narrative (auto-inserted)
+# This file 'roles/apache/vars/main.yml' is categorized as generic like.
+# The added comments document intent, guard conditions, and expected convergence without changing behavior.
+# -----------
 apache_apt_packages:
   - apache2
