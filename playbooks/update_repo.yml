@@ -1,92 +1,18 @@
-# =============================================================================
-# File Documentation (auto-inserted)
-# Generated: 2025-09-27T20:59:59Z
-# Modified: 2025-09-27T20:59:59Z
-# Path: playbooks/update_repo.yml
-# Purpose: Updated to schema v1
-# Notes: -
-# =============================================================================
 
-# =============================================================================
-# File Summary (auto-inserted)
-# Overview:
-#   Type        : playbook
-# Counts:
-#   Plays       : {{ summary.plays_total | default('?') }}
-#   Roles       : {{ summary.roles_total | default('?') }}
-#   Imports     : {{ summary.imports_total | default('?') }}
-# Sets:
-#   Target Hosts: {{ (summary.hosts | default([])) | join(', ') | default('various') }}
-#   Roles       : {{ (summary.roles | default([])) | join(', ') | default('none') }}
-#   Tags        : {{ (summary.tags | default([])) | join(', ') | default('none') }}
-# Description: {{ summary.description | default('Top-level orchestration of tasks/roles') }}
-# =============================================================================
 
-# =============================================================================
-# File Narrative (auto-inserted)
-# This playbook coordinates roles and tasks across target hosts. It should remain declarative and readable, with clear variable inputs and guarded operations to ensure safe convergence across environments.
-# =============================================================================
 
-# -----------------------------------------------------------------------------
 
-# Task: Update Repo
 
-# Description: TBD
 
-# When: n/a
 
-# Tags: n/a
 
-# Changed by: auto-commenter
 
-# -----------------------------------------------------------------------------
 
-# --- [Task 5d809fb9] {{ task.name | default('(unnamed task)') }}
-# Intent       : {{ intent | default(derived.intent_guess | default('Describe what this task ensures')) }}
-# Module       : {{ task.action | default('unknown') }}
-# Key Args     : {{ (task.args | default({})) | taskargs('name, pkg, state, path, src, dest, regexp, line, mode, owner, group, service, enabled') }}
-# When         : {{ task.when | default('always') }}
-# Loop         : {{ task.loop | default('no') }}
-# Register     : {{ task.register | default('none') }}
-# Notify       : {{ task.notify | default('none') }}
-# Tags         : {{ task.tags | default('none') }}
-# Idempotency  : {{ idempotency | default('module idempotent or guarded by conditions') }}
-# Side-effects : {{ side_effects | default('minimal') }}
-# Error Hdl    : {{ error_handling | default('fail fast; rely on module return/validate') }}
-# Expected     : {{ expected | default('converges; no repeated changes on reruns') }}
-# ---------------------------------------------------------------------------
-# --- Task Narrative [5d809fb9] {{ task.name | default('(unnamed task)') }}
-# {{ narrative.text | default(heuristics.compose) }}
-# ---------------------------------------------------------------------------
 - name: Update Repo
   hosts: localhost
   gather_facts: true
 
   tasks:
-    # -----------------------------------------------------------------------------
-    # Task: Updating Local Ansible Git Repo
-    # Description: TBD
-    # When: n/a
-    # Tags: n/a
-    # Changed by: auto-commenter
-    # -----------------------------------------------------------------------------
-    # --- [Task ba81edfb] {{ task.name | default('(unnamed task)') }}
-    # Intent       : {{ intent | default(derived.intent_guess | default('Describe what this task ensures')) }}
-    # Module       : {{ task.action | default('unknown') }}
-    # Key Args     : {{ (task.args | default({})) | taskargs('name, pkg, state, path, src, dest, regexp, line, mode, owner, group, service, enabled') }}
-    # When         : {{ task.when | default('always') }}
-    # Loop         : {{ task.loop | default('no') }}
-    # Register     : {{ task.register | default('none') }}
-    # Notify       : {{ task.notify | default('none') }}
-    # Tags         : {{ task.tags | default('none') }}
-    # Idempotency  : {{ idempotency | default('module idempotent or guarded by conditions') }}
-    # Side-effects : {{ side_effects | default('minimal') }}
-    # Error Hdl    : {{ error_handling | default('fail fast; rely on module return/validate') }}
-    # Expected     : {{ expected | default('converges; no repeated changes on reruns') }}
-    # ---------------------------------------------------------------------------
-    # --- Task Narrative [ba81edfb] {{ task.name | default('(unnamed task)') }}
-    # {{ narrative.text | default(heuristics.compose) }}
-    # ---------------------------------------------------------------------------
     - name: Updating Local Ansible Git Repo
       ansible.builtin.include_tasks:
         file: "{{ tasks_dir }}/git_pull_repo/{{ os_dir }}/main.yml"
