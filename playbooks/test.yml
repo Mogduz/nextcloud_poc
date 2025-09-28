@@ -1,31 +1,5 @@
-# =============================================================================
-# File Documentation (auto-inserted)
-# Generated: 2025-09-27T20:59:58Z
-# Modified: 2025-09-27T20:59:58Z
-# Path: playbooks/test.yml
-# Purpose: Updated to schema v1
-# Notes: -
-# =============================================================================
 
-# =============================================================================
-# File Summary (auto-inserted)
-# Overview:
-#   Type        : playbook
-# Counts:
-#   Plays       : {{ summary.plays_total | default('?') }}
-#   Roles       : {{ summary.roles_total | default('?') }}
-#   Imports     : {{ summary.imports_total | default('?') }}
-# Sets:
-#   Target Hosts: {{ (summary.hosts | default([])) | join(', ') | default('various') }}
-#   Roles       : {{ (summary.roles | default([])) | join(', ') | default('none') }}
-#   Tags        : {{ (summary.tags | default([])) | join(', ') | default('none') }}
-# Description: {{ summary.description | default('Top-level orchestration of tasks/roles') }}
-# =============================================================================
 
-# =============================================================================
-# File Narrative (auto-inserted)
-# This playbook coordinates roles and tasks across target hosts. It should remain declarative and readable, with clear variable inputs and guarded operations to ensure safe convergence across environments.
-# =============================================================================
 
 - import_playbook: update_repo.yml
 - import_playbook: deploy_host.yml
