@@ -1,3 +1,27 @@
+# =============================================================================
+# File Documentation (auto-inserted)
+# Generated: 2025-09-28T01:58:12
+# Modified: 2025-09-28T01:58:12
+# Path: inventories/group_vars/all/main.yml
+# Purpose: TBD
+# Notes: This header was added automatically based on the comment schema.
+# =============================================================================
+# =============================================================================
+# File Summary (auto-inserted)
+# Overview:
+#   Type        : inventory(yaml)
+# Counts:
+#   Groups      : ?
+#   Hosts       : ?
+# Sets:
+#   Top Groups  : n/a
+# Description: Inventory groups/hosts definition
+# =============================================================================
+# -----------
+# File Narrative (auto-inserted)
+# This file 'inventories/group_vars/all/main.yml' is categorized as inventory like.
+# The added comments document intent, guard conditions, and expected convergence without changing behavior.
+# -----------
 base_dir: "{{ playbook_dir.split('/playbooks')[0] }}"
 roles_dir: "{{ base_dir }}/roles"
 
