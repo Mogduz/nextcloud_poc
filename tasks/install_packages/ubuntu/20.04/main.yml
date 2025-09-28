@@ -1,10 +1,80 @@
+# =============================================================================
+# File Documentation (auto-inserted)
+# Generated: 2025-09-28T01:58:12
+# Modified: 2025-09-28T01:58:12
+# Path: tasks/install_packages/ubuntu/20.04/main.yml
+# Purpose: TBD
+# Notes: This header was added automatically based on the comment schema.
+# =============================================================================
+# =============================================================================
+# File Summary (auto-inserted)
+# Overview:
+#   Profile     : task
+# Counts:
+#   Tasks       : 4
+#   Includes    : 0
+#   Handlers    : 0
+#   Imports     : 0
+# Sets:
+#   Modules     : apt, autoclean, autoremove, cache_valid_time, msg, path, reboot, reboot_timeout, stat, update_cache
+#   Tags        : none
+#   Guards      : when
+# Flags:
+#   Become      : false
+#   Idempotency : convergent/guarded
+# Risk:
+#   Level       : medium
+#   Downtime    : n/a
+# Description: Ansible role/task implementation
+# =============================================================================
+# -----------
+# File Narrative (auto-inserted)
+# This file 'tasks/install_packages/ubuntu/20.04/main.yml' is categorized as task like.
+# The added comments document intent, guard conditions, and expected convergence without changing behavior.
+# -----------
 - block:
 
+# --- [Task a0514b46] upgrading cache (Cache lifetime 1h )
+# Intent       : TBD
+# Module       : ansible.builtin.apt
+# Key Args     : (auto-detected limited)
+# When         : always
+# Loop         : no
+# Register     : none
+# Notify       : none
+# Tags         : none
+# Idempotency  : module idempotent or guarded by conditions
+# Side-effects : minimal
+# Error Hdl    : fail fast; rely on module return/validate
+# Expected     : converges; no repeated changes on reruns
+# -----------
+# --- Task Narrative [a0514b46]
+# This task 'upgrading cache (Cache lifetime 1h )' uses the 'ansible.builtin.apt' module.
+# On success, the system converges and reruns should not report further changes.
+# -----------
   - name: upgrading cache (Cache lifetime 1h )
     ansible.builtin.apt:
       update_cache: true
       cache_valid_time: 3600
 
+# --- [Task ccb8547d] installing packages
+# Intent       : TBD
+# Module       : ansible.builtin.apt
+# Key Args     : (auto-detected limited)
+# When         : always
+# Loop         : no
+# Register     : none
+# Notify       : none
+# Tags         : none
+# Idempotency  : module idempotent or guarded by conditions
+# Side-effects : minimal
+# Error Hdl    : fail fast; rely on module return/validate
+# Expected     : converges; no repeated changes on reruns
+# -----------
+# --- Task Narrative [ccb8547d]
+# This task 'installing packages' uses the 'ansible.builtin.apt' module.
+# On success, the system converges and reruns should not report further changes.
+# -----------
   - name: installing packages
     ansible.builtin.apt:
       name: "{{ packages }}"
@@ -14,11 +84,49 @@
 
 - block:
 
+# --- [Task e1798f3a] Check if reboot is necessary
+# Intent       : TBD
+# Module       : ansible.builtin.stat
+# Key Args     : (auto-detected limited)
+# When         : always
+# Loop         : no
+# Register     : reboot_flag
+# Notify       : none
+# Tags         : none
+# Idempotency  : module idempotent or guarded by conditions
+# Side-effects : minimal
+# Error Hdl    : fail fast; rely on module return/validate
+# Expected     : converges; no repeated changes on reruns
+# -----------
+# --- Task Narrative [e1798f3a]
+# This task 'Check if reboot is necessary' uses the 'ansible.builtin.stat' module.
+# The result is stored in reboot_flag.
+# On success, the system converges and reruns should not report further changes.
+# -----------
   - name: Check if reboot is necessary
     ansible.builtin.stat:
       path: /var/run/reboot-required
     register: reboot_flag
 
+# --- [Task e9a09752] Reboot (if necessary)
+# Intent       : TBD
+# Module       : ansible.builtin.reboot
+# Key Args     : (auto-detected limited)
+# When         : reboot_flag.stat.exists
+# Loop         : no
+# Register     : none
+# Notify       : none
+# Tags         : none
+# Idempotency  : module idempotent or guarded by conditions
+# Side-effects : minimal
+# Error Hdl    : fail fast; rely on module return/validate
+# Expected     : converges; no repeated changes on reruns
+# -----------
+# --- Task Narrative [e9a09752]
+# This task 'Reboot (if necessary)' uses the 'ansible.builtin.reboot' module.
+# It executes under condition: reboot_flag.stat.exists.
+# On success, the system converges and reruns should not report further changes.
+# -----------
   - name: Reboot (if necessary)
     ansible.builtin.reboot:
       msg: "Reboot after kernel/lib upgrade"
