@@ -1,5 +1,2 @@
-
-
-
 - import_playbook: update_repo.yml
 - import_playbook: deploy_host.yml
