@@ -1,3 +1,56 @@
+# =============================================================================
+# File Documentation (auto-inserted)
+# Generated: 2025-09-28T01:58:12
+# Modified: 2025-09-28T01:58:12
+# Path: tasks/run_task/ubuntu/all/main.yml
+# Purpose: TBD
+# Notes: This header was added automatically based on the comment schema.
+# =============================================================================
+# =============================================================================
+# File Summary (auto-inserted)
+# Overview:
+#   Profile     : task
+# Counts:
+#   Tasks       : 2
+#   Includes    : 0
+#   Handlers    : 0
+#   Imports     : 0
+# Sets:
+#   Modules     : ansible_connection, file, include_tasks, path, stat
+#   Tags        : none
+#   Guards      : when
+# Flags:
+#   Become      : false
+#   Idempotency : convergent/guarded
+# Risk:
+#   Level       : medium
+#   Downtime    : n/a
+# Description: Ansible role/task implementation
+# =============================================================================
+# -----------
+# File Narrative (auto-inserted)
+# This file 'tasks/run_task/ubuntu/all/main.yml' is categorized as task like.
+# The added comments document intent, guard conditions, and expected convergence without changing behavior.
+# -----------
+# --- [Task 0c7d9479] verify task "{{ task_name }}" exists
+# Intent       : TBD
+# Module       : ansible.builtin.stat
+# Key Args     : (auto-detected limited)
+# When         : always
+# Loop         : no
+# Register     : local_art
+# Notify       : none
+# Tags         : none
+# Idempotency  : module idempotent or guarded by conditions
+# Side-effects : minimal
+# Error Hdl    : fail fast; rely on module return/validate
+# Expected     : converges; no repeated changes on reruns
+# -----------
+# --- Task Narrative [0c7d9479]
+# This task 'verify task "{{ task_name }}" exists' uses the 'ansible.builtin.stat' module.
+# The result is stored in local_art.
+# On success, the system converges and reruns should not report further changes.
+# -----------
 - name: verify task "{{ task_name }}" exists
   ansible.builtin.stat:
     path: "{{ tasks_dir }}/{{ task_name }}/{{ os_dir }}/main.yml"
@@ -6,6 +59,25 @@
   vars:
     ansible_connection: local
 
+# --- [Task 37b650bf] run task "{{ task_name }}"
+# Intent       : TBD
+# Module       : unknown
+# Key Args     : (auto-detected limited)
+# When         : local_art.stat.exists | default(false) | bool
+# Loop         : no
+# Register     : none
+# Notify       : none
+# Tags         : none
+# Idempotency  : module idempotent or guarded by conditions
+# Side-effects : minimal
+# Error Hdl    : fail fast; rely on module return/validate
+# Expected     : converges; no repeated changes on reruns
+# -----------
+# --- Task Narrative [37b650bf]
+# This task 'run task "{{ task_name }}"' uses the 'unknown' module.
+# It executes under condition: local_art.stat.exists | default(false) | bool.
+# On success, the system converges and reruns should not report further changes.
+# -----------
 - name: run task "{{ task_name }}"
   ansible.builtin.include_tasks:
     file: "{{ local_art.stat.path }}"
