@@ -1,17 +1,109 @@
+# =============================================================================
+# File Documentation (auto-inserted)
+# Generated: 2025-09-28T01:58:12
+# Modified: 2025-09-28T01:58:12
+# Path: tasks/reboot/ubuntu/all/main.yml
+# Purpose: TBD
+# Notes: This header was added automatically based on the comment schema.
+# =============================================================================
+# =============================================================================
+# File Summary (auto-inserted)
+# Overview:
+#   Profile     : task
+# Counts:
+#   Tasks       : 3
+#   Includes    : 0
+#   Handlers    : 0
+#   Imports     : 0
+# Sets:
+#   Modules     : defaults, enabled, force, msg, path, reboot, reboot_timeout, stat, timeout
+#   Tags        : none
+#   Guards      : when
+# Flags:
+#   Become      : false
+#   Idempotency : convergent/guarded
+# Risk:
+#   Level       : medium
+#   Downtime    : n/a
+# Description: Ansible role/task implementation
+# =============================================================================
+# -----------
+# File Narrative (auto-inserted)
+# This file 'tasks/reboot/ubuntu/all/main.yml' is categorized as task like.
+# The added comments document intent, guard conditions, and expected convergence without changing behavior.
+# -----------
 - block:
 
+# --- [Task 56fafc49] Check if reboot is necessary
+# Intent       : TBD
+# Module       : ansible.builtin.stat
+# Key Args     : (auto-detected limited)
+# When         : enabled
+# Loop         : no
+# Register     : reboot_flag
+# Notify       : none
+# Tags         : none
+# Idempotency  : module idempotent or guarded by conditions
+# Side-effects : minimal
+# Error Hdl    : fail fast; rely on module return/validate
+# Expected     : converges; no repeated changes on reruns
+# -----------
+# --- Task Narrative [56fafc49]
+# This task 'Check if reboot is necessary' uses the 'ansible.builtin.stat' module.
+# It executes under condition: enabled.
+# The result is stored in reboot_flag.
+# On success, the system converges and reruns should not report further changes.
+# -----------
   - name: Check if reboot is necessary
     ansible.builtin.stat:
       path: /var/run/reboot-required
     register: reboot_flag
     when: enabled
 
+# --- [Task 68519f0f] Reboot (if necessary)
+# Intent       : TBD
+# Module       : ansible.builtin.reboot
+# Key Args     : (auto-detected limited)
+# When         : reboot_flag.stat.exists and enabled
+# Loop         : no
+# Register     : none
+# Notify       : none
+# Tags         : none
+# Idempotency  : module idempotent or guarded by conditions
+# Side-effects : minimal
+# Error Hdl    : fail fast; rely on module return/validate
+# Expected     : converges; no repeated changes on reruns
+# -----------
+# --- Task Narrative [68519f0f]
+# This task 'Reboot (if necessary)' uses the 'ansible.builtin.reboot' module.
+# It executes under condition: reboot_flag.stat.exists and enabled.
+# On success, the system converges and reruns should not report further changes.
+# -----------
   - name: Reboot (if necessary)
     ansible.builtin.reboot:
       msg: "Reboot after kernel/lib upgrade"
       reboot_timeout: timeout
     when: reboot_flag.stat.exists and enabled
 
+# --- [Task 465f6e95] Reboot (force)
+# Intent       : TBD
+# Module       : ansible.builtin.reboot
+# Key Args     : (auto-detected limited)
+# When         : not reboot_flag.stat.exists and enabled and force
+# Loop         : no
+# Register     : none
+# Notify       : none
+# Tags         : none
+# Idempotency  : module idempotent or guarded by conditions
+# Side-effects : minimal
+# Error Hdl    : fail fast; rely on module return/validate
+# Expected     : converges; no repeated changes on reruns
+# -----------
+# --- Task Narrative [465f6e95]
+# This task 'Reboot (force)' uses the 'ansible.builtin.reboot' module.
+# It executes under condition: not reboot_flag.stat.exists and enabled and force.
+# On success, the system converges and reruns should not report further changes.
+# -----------
   - name: Reboot (force)
     ansible.builtin.reboot:
       msg: "force reboot"
