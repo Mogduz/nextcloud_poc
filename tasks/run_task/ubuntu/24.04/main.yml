@@ -1,3 +1,55 @@
+# =============================================================================
+# File Documentation (auto-inserted)
+# Generated: 2025-09-28T01:58:12
+# Modified: 2025-09-28T01:58:12
+# Path: tasks/run_task/ubuntu/24.04/main.yml
+# Purpose: TBD
+# Notes: This header was added automatically based on the comment schema.
+# =============================================================================
+# =============================================================================
+# File Summary (auto-inserted)
+# Overview:
+#   Profile     : task
+# Counts:
+#   Tasks       : 1
+#   Includes    : 0
+#   Handlers    : 0
+#   Imports     : 0
+# Sets:
+#   Modules     : file, include_tasks
+#   Tags        : none
+#   Guards      : none
+# Flags:
+#   Become      : false
+#   Idempotency : convergent/guarded
+# Risk:
+#   Level       : medium
+#   Downtime    : n/a
+# Description: Ansible role/task implementation
+# =============================================================================
+# -----------
+# File Narrative (auto-inserted)
+# This file 'tasks/run_task/ubuntu/24.04/main.yml' is categorized as task like.
+# The added comments document intent, guard conditions, and expected convergence without changing behavior.
+# -----------
+# --- [Task 4fb1bff5] redirecting to "{{ tasks_dir }}/run_task/ubuntu/all/main.yml"
+# Intent       : TBD
+# Module       : unknown
+# Key Args     : (auto-detected limited)
+# When         : always
+# Loop         : no
+# Register     : none
+# Notify       : none
+# Tags         : none
+# Idempotency  : module idempotent or guarded by conditions
+# Side-effects : minimal
+# Error Hdl    : fail fast; rely on module return/validate
+# Expected     : converges; no repeated changes on reruns
+# -----------
+# --- Task Narrative [4fb1bff5]
+# This task 'redirecting to "{{ tasks_dir }}/run_task/ubuntu/all/main.yml"' uses the 'unknown' module.
+# On success, the system converges and reruns should not report further changes.
+# -----------
 - name: redirecting to "{{ tasks_dir }}/run_task/ubuntu/all/main.yml"
   ansible.builtin.include_tasks:
     file: "{{ tasks_dir }}/run_task/ubuntu/all/main.yml"
