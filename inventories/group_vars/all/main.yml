@@ -1,6 +1,6 @@
-
 base_dir: "{{ playbook_dir.split('/playbooks')[0] }}"
 roles_dir: "{{ base_dir }}/roles"
+
 vars_dir: "{{ base_dir }}/vars"
 tasks_dir: "{{ base_dir }}/tasks"
 
