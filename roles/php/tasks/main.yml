@@ -1,13 +1,101 @@
+# =============================================================================
+# File Documentation (auto-inserted)
+# Generated: 2025-09-28T01:58:12
+# Modified: 2025-09-28T01:58:12
+# Path: roles/php/tasks/main.yml
+# Purpose: TBD
+# Notes: This header was added automatically based on the comment schema.
+# =============================================================================
+# =============================================================================
+# File Summary (auto-inserted)
+# Overview:
+#   Profile     : task
+# Counts:
+#   Tasks       : 3
+#   Includes    : 0
+#   Handlers    : 0
+#   Imports     : 0
+# Sets:
+#   Modules     : debug, reboot_enabled, upgrade_reboot, var
+#   Tags        : none
+#   Guards      : none
+# Flags:
+#   Become      : false
+#   Idempotency : convergent/guarded
+# Risk:
+#   Level       : medium
+#   Downtime    : n/a
+# Description: Ansible role/task implementation
+# =============================================================================
+# -----------
+# File Narrative (auto-inserted)
+# This file 'roles/php/tasks/main.yml' is categorized as task like.
+# The added comments document intent, guard conditions, and expected convergence without changing behavior.
+# -----------
+# --- [Task c4917707] update system
+# Intent       : TBD
+# Module       : unknown
+# Key Args     : (auto-detected limited)
+# When         : always
+# Loop         : no
+# Register     : none
+# Notify       : none
+# Tags         : none
+# Idempotency  : module idempotent or guarded by conditions
+# Side-effects : minimal
+# Error Hdl    : fail fast; rely on module return/validate
+# Expected     : converges; no repeated changes on reruns
+# -----------
+# --- Task Narrative [c4917707]
+# This task 'update system' uses the 'unknown' module.
+# On success, the system converges and reruns should not report further changes.
+# -----------
 - name: update system
   include_tasks: "{{ tasks_dir }}/update_system/{{ os_dir }}/main.yml"
   vars:
     reboot_enabled: "{{ upgrade_reboot }}"
 
+# --- [Task 1ea63389] installing php packages
+# Intent       : TBD
+# Module       : unknown
+# Key Args     : (auto-detected limited)
+# When         : always
+# Loop         : no
+# Register     : none
+# Notify       : none
+# Tags         : none
+# Idempotency  : module idempotent or guarded by conditions
+# Side-effects : minimal
+# Error Hdl    : fail fast; rely on module return/validate
+# Expected     : converges; no repeated changes on reruns
+# -----------
+# --- Task Narrative [1ea63389]
+# This task 'installing php packages' uses the 'unknown' module.
+# On success, the system converges and reruns should not report further changes.
+# -----------
 - name: installing php packages
   include_tasks: "{{ roles_dir }}/{{ self_role }}/tasks/install.yml"
   vars:
     upgrade_reboot: "{{ enable_reboot }}"
 
+# --- [Task 21d44450] debug
+# Intent       : TBD
+# Module       : debug
+# Key Args     : (auto-detected limited)
+# When         : always
+# Loop         : no
+# Register     : none
+# Notify       : none
+# Tags         : none
+# Idempotency  : module idempotent or guarded by conditions
+# Side-effects : minimal
+# Error Hdl    : fail fast; rely on module return/validate
+# Expected     : converges; no repeated changes on reruns
+# -----------
+# --- Task Narrative [21d44450]
+# This task 'debug' uses the 'debug' module.
+# On success, the system converges and reruns should not report further changes.
+# -----------
 - name: debug
   debug:
     var: host_cfg
