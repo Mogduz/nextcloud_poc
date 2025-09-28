@@ -1,6 +1,3 @@
-
-
-
 self_role: ufw
 ufw_packages:
   apt:
