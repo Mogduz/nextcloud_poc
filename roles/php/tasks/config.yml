@@ -1,13 +1,3 @@
-
-
-
-
-
-
-
-
-
-
 - name: Ensure IPv6 mode in /etc/default/ufw
   become: true
   ansible.builtin.lineinfile:
@@ -17,25 +7,11 @@
     backup: true
   notify: Reload UFW
 
-
-
-
-
-
-
-
 - name: Set default incoming policy
   become: true
   community.general.ufw:
     direction: incoming
     policy: "{{ ufw_default_incoming }}"
-
-
-
-
-
-
-
 
 - name: Set default outgoing policy
   become: true
@@ -43,25 +19,11 @@
     direction: outgoing
     policy: "{{ ufw_default_outgoing }}"
 
-
-
-
-
-
-
-
 - name: Set default routed policy
   become: true
   community.general.ufw:
     direction: routed
     policy: "{{ ufw_default_routed }}"
-
-
-
-
-
-
-
 
 - name: Set logging level
   become: true
