@@ -1,8 +1,78 @@
+# =============================================================================
+# File Documentation (auto-inserted)
+# Generated: 2025-09-28T01:58:12
+# Modified: 2025-09-28T01:58:12
+# Path: roles/ufw/tasks/main.yml
+# Purpose: TBD
+# Notes: This header was added automatically based on the comment schema.
+# =============================================================================
+# =============================================================================
+# File Summary (auto-inserted)
+# Overview:
+#   Profile     : task
+# Counts:
+#   Tasks       : 2
+#   Includes    : 0
+#   Handlers    : 0
+#   Imports     : 0
+# Sets:
+#   Modules     : reboot_enabled, upgrade_reboot
+#   Tags        : none
+#   Guards      : none
+# Flags:
+#   Become      : false
+#   Idempotency : convergent/guarded
+# Risk:
+#   Level       : medium
+#   Downtime    : n/a
+# Description: Ansible role/task implementation
+# =============================================================================
+# -----------
+# File Narrative (auto-inserted)
+# This file 'roles/ufw/tasks/main.yml' is categorized as task like.
+# The added comments document intent, guard conditions, and expected convergence without changing behavior.
+# -----------
+# --- [Task f2e0553b] update system
+# Intent       : TBD
+# Module       : unknown
+# Key Args     : (auto-detected limited)
+# When         : always
+# Loop         : no
+# Register     : none
+# Notify       : none
+# Tags         : none
+# Idempotency  : module idempotent or guarded by conditions
+# Side-effects : minimal
+# Error Hdl    : fail fast; rely on module return/validate
+# Expected     : converges; no repeated changes on reruns
+# -----------
+# --- Task Narrative [f2e0553b]
+# This task 'update system' uses the 'unknown' module.
+# On success, the system converges and reruns should not report further changes.
+# -----------
 - name: update system
   include_tasks: "{{ tasks_dir }}/update_system/{{ os_dir }}/main.yml"
   vars:
     reboot_enabled: "{{ upgrade_reboot }}"
 
+# --- [Task c6c14bbc] installing ufw packages
+# Intent       : TBD
+# Module       : unknown
+# Key Args     : (auto-detected limited)
+# When         : always
+# Loop         : no
+# Register     : none
+# Notify       : none
+# Tags         : none
+# Idempotency  : module idempotent or guarded by conditions
+# Side-effects : minimal
+# Error Hdl    : fail fast; rely on module return/validate
+# Expected     : converges; no repeated changes on reruns
+# -----------
+# --- Task Narrative [c6c14bbc]
+# This task 'installing ufw packages' uses the 'unknown' module.
+# On success, the system converges and reruns should not report further changes.
+# -----------
 - name: installing ufw packages
   include_tasks: "{{ roles_dir }}/{{ self_role }}/tasks/{{ os_dir }}/install.yml"
   vars:
