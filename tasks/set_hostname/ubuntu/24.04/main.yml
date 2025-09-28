@@ -1,13 +1,3 @@
-
-
-
-
-
-
-
-
-
-
 - name: redirecting to "{{ tasks_dir }}/set_hostname/ubuntu/all/main.yml"
   ansible.builtin.include_tasks:
     file: "{{ tasks_dir }}/set_hostname/ubuntu/all/main.yml"
