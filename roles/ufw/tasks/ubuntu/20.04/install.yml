@@ -1,13 +1,3 @@
-
-
-
-
-
-
-
-
-
-
 - name: redirecting to "{{ roles_dir }}/{{ self_role }}/tasks/ubuntu/all/install.yml"
   ansible.builtin.include_tasks:
     file: "{{ roles_dir }}/{{ self_role }}/tasks/ubuntu/all/install.yml"
