@@ -1,6 +1,3 @@
-
-
-
 self_role: php
 php_apt_packages:
   - libapache2-mod-php
