@@ -1,11 +1,100 @@
+# =============================================================================
+# File Documentation (auto-inserted)
+# Generated: 2025-09-28T01:58:12
+# Modified: 2025-09-28T01:58:12
+# Path: tasks/set_hostname/ubuntu/all/main.yml
+# Purpose: TBD
+# Notes: This header was added automatically based on the comment schema.
+# =============================================================================
+# =============================================================================
+# File Summary (auto-inserted)
+# Overview:
+#   Profile     : task
+# Counts:
+#   Tasks       : 3
+#   Includes    : 0
+#   Handlers    : 0
+#   Imports     : 0
+# Sets:
+#   Modules     : hostname, new_hostname, set_fact
+#   Tags        : none
+#   Guards      : when
+# Flags:
+#   Become      : false
+#   Idempotency : convergent/guarded
+# Risk:
+#   Level       : medium
+#   Downtime    : n/a
+# Description: Ansible role/task implementation
+# =============================================================================
+# -----------
+# File Narrative (auto-inserted)
+# This file 'tasks/set_hostname/ubuntu/all/main.yml' is categorized as task like.
+# The added comments document intent, guard conditions, and expected convergence without changing behavior.
+# -----------
+# --- [Task 3ac5fd06] set hostname var
+# Intent       : TBD
+# Module       : ansible.builtin.set_fact
+# Key Args     : (auto-detected limited)
+# When         : always
+# Loop         : no
+# Register     : none
+# Notify       : none
+# Tags         : none
+# Idempotency  : module idempotent or guarded by conditions
+# Side-effects : minimal
+# Error Hdl    : fail fast; rely on module return/validate
+# Expected     : converges; no repeated changes on reruns
+# -----------
+# --- Task Narrative [3ac5fd06]
+# This task 'set hostname var' uses the 'ansible.builtin.set_fact' module.
+# On success, the system converges and reruns should not report further changes.
+# -----------
 - name: set hostname var
   ansible.builtin.set_fact:
     new_hostname: "{{ host_cfg.hostname | default('unnamed', true) }}"
 
+# --- [Task ce6a645b] Set hostname
+# Intent       : TBD
+# Module       : ansible.builtin.hostname
+# Key Args     : (auto-detected limited)
+# When         : always
+# Loop         : no
+# Register     : none
+# Notify       : none
+# Tags         : none
+# Idempotency  : module idempotent or guarded by conditions
+# Side-effects : minimal
+# Error Hdl    : fail fast; rely on module return/validate
+# Expected     : converges; no repeated changes on reruns
+# -----------
+# --- Task Narrative [ce6a645b]
+# This task 'Set hostname' uses the 'ansible.builtin.hostname' module.
+# On success, the system converges and reruns should not report further changes.
+# -----------
 - name: Set hostname
   ansible.builtin.hostname:
     name: "{{ new_hostname }}"
 
+# --- [Task 4d06d238] Check Hostname
+# Intent       : TBD
+# Module       : unknown
+# Key Args     : (auto-detected limited)
+# When         : (
+# Loop         : no
+# Register     : none
+# Notify       : none
+# Tags         : none
+# Idempotency  : module idempotent or guarded by conditions
+# Side-effects : minimal
+# Error Hdl    : fail fast; rely on module return/validate
+# Expected     : converges; no repeated changes on reruns
+# -----------
+# --- Task Narrative [4d06d238]
+# This task 'Check Hostname' uses the 'unknown' module.
+# It executes under condition: (.
+# On success, the system converges and reruns should not report further changes.
+# -----------
 - name: Check Hostname
   include_tasks: "{{ tasks_dir }}/check_hostname/{{ os_dir }}/main.yml"
   vars:
