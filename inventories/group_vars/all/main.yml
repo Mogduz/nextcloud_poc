@@ -1,20 +1,11 @@
-# =============================================================================
-# File Documentation (auto-inserted)
-# Generated: 2025-09-26T23:01:52
-# Path: inventories/group_vars/all/main.yml
-# Purpose: TBD
-# Notes: This header was added automatically based on the comment schema.
-# =============================================================================
 
 base_dir: "{{ playbook_dir.split('/playbooks')[0] }}"
 roles_dir: "{{ base_dir }}/roles"
-#roles_path: "{{ base_dir }}/roles"
 vars_dir: "{{ base_dir }}/vars"
 tasks_dir: "{{ base_dir }}/tasks"
 
 os_dir: "{{ (ansible_facts['distribution'] | lower) }}/{{ (ansible_facts['distribution_version']) }}"
 
-# git stuff for pulling
 repo_url: "https://github.com/Mogduz/nextcloud_poc.git"
 repo_dir: "{{ base_dir }}"
 branch: "main"
