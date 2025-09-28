@@ -1,14 +1,105 @@
+# =============================================================================
+# File Documentation (auto-inserted)
+# Generated: 2025-09-28T01:58:12
+# Modified: 2025-09-28T01:58:12
+# Path: tasks/git_pull_repo/ubuntu/24.04/main.yml
+# Purpose: TBD
+# Notes: This header was added automatically based on the comment schema.
+# =============================================================================
+# =============================================================================
+# File Summary (auto-inserted)
+# Overview:
+#   Profile     : task
+# Counts:
+#   Tasks       : 4
+#   Includes    : 0
+#   Handlers    : 0
+#   Imports     : 0
+# Sets:
+#   Modules     : command, debug, msg, path, stat, var
+#   Tags        : none
+#   Guards      : when
+# Flags:
+#   Become      : false
+#   Idempotency : convergent/guarded
+# Risk:
+#   Level       : medium
+#   Downtime    : n/a
+# Description: Ansible role/task implementation
+# =============================================================================
+# -----------
+# File Narrative (auto-inserted)
+# This file 'tasks/git_pull_repo/ubuntu/24.04/main.yml' is categorized as task like.
+# The added comments document intent, guard conditions, and expected convergence without changing behavior.
+# -----------
+# --- [Task 649b9179] Detect existing git repo
+# Intent       : TBD
+# Module       : ansible.builtin.stat
+# Key Args     : (auto-detected limited)
+# When         : always
+# Loop         : no
+# Register     : repo_git_dir
+# Notify       : none
+# Tags         : none
+# Idempotency  : module idempotent or guarded by conditions
+# Side-effects : minimal
+# Error Hdl    : fail fast; rely on module return/validate
+# Expected     : converges; no repeated changes on reruns
+# -----------
+# --- Task Narrative [649b9179]
+# This task 'Detect existing git repo' uses the 'ansible.builtin.stat' module.
+# The result is stored in repo_git_dir.
+# On success, the system converges and reruns should not report further changes.
+# -----------
 - name: Detect existing git repo
   ansible.builtin.stat:
     path: "{{ repo_dir }}/.git"
   register: repo_git_dir
 
+# --- [Task ed9a8cde] Update existing repo (pull)
+# Intent       : TBD
+# Module       : ansible.builtin.command
+# Key Args     : (auto-detected limited)
+# When         : always
+# Loop         : no
+# Register     : git_update
+# Notify       : none
+# Tags         : none
+# Idempotency  : module idempotent or guarded by conditions
+# Side-effects : minimal
+# Error Hdl    : fail fast; rely on module return/validate
+# Expected     : converges; no repeated changes on reruns
+# -----------
+# --- Task Narrative [ed9a8cde]
+# This task 'Update existing repo (pull)' uses the 'ansible.builtin.command' module.
+# The result is stored in git_update.
+# On success, the system converges and reruns should not report further changes.
+# -----------
 - name: Update existing repo (pull)
   ansible.builtin.command: "git -C {{ base_dir }} pull"
   register: git_update
   changed_when: false
   failed_when: false
 
+# --- [Task 7d78bc56] Status
+# Intent       : TBD
+# Module       : ansible.builtin.debug
+# Key Args     : (auto-detected limited)
+# When         : debug_enabled | default(true)
+# Loop         : no
+# Register     : none
+# Notify       : none
+# Tags         : none
+# Idempotency  : module idempotent or guarded by conditions
+# Side-effects : minimal
+# Error Hdl    : fail fast; rely on module return/validate
+# Expected     : converges; no repeated changes on reruns
+# -----------
+# --- Task Narrative [7d78bc56]
+# This task 'Status' uses the 'ansible.builtin.debug' module.
+# It executes under condition: debug_enabled | default(true).
+# On success, the system converges and reruns should not report further changes.
+# -----------
 - name: Status
   ansible.builtin.debug:
     msg: >-
@@ -18,6 +109,25 @@
       }}
   when: debug_enabled | default(true)
 
+# --- [Task 800b96d0] git stdout
+# Intent       : TBD
+# Module       : ansible.builtin.debug
+# Key Args     : (auto-detected limited)
+# When         : debug_enabled | default(true)
+# Loop         : no
+# Register     : none
+# Notify       : none
+# Tags         : none
+# Idempotency  : module idempotent or guarded by conditions
+# Side-effects : minimal
+# Error Hdl    : fail fast; rely on module return/validate
+# Expected     : converges; no repeated changes on reruns
+# -----------
+# --- Task Narrative [800b96d0]
+# This task 'git stdout' uses the 'ansible.builtin.debug' module.
+# It executes under condition: debug_enabled | default(true).
+# On success, the system converges and reruns should not report further changes.
+# -----------
 - name: git stdout
   ansible.builtin.debug:
     var: git_update.stdout_lines
