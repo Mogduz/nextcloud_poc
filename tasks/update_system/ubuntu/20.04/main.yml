@@ -1,7 +1,3 @@
-
-
-
-
 - name: redirecting to "{{ tasks_dir }}/update_system/ubuntu/all/main.yml"
   ansible.builtin.include_tasks:
     file: "{{ tasks_dir }}/update_system/ubuntu/all/main.yml"
