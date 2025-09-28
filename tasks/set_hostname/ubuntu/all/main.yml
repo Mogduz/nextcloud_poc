@@ -1,34 +1,10 @@
-
-
-
-
-
-
-
-
-
-
 - name: set hostname var
   ansible.builtin.set_fact:
     new_hostname: "{{ host_cfg.hostname | default('unnamed', true) }}"
 
-
-
-
-
-
-
-
 - name: Set hostname
   ansible.builtin.hostname:
     name: "{{ new_hostname }}"
-
-
-
-
-
-
-
 
 - name: Check Hostname
   include_tasks: "{{ tasks_dir }}/check_hostname/{{ os_dir }}/main.yml"
