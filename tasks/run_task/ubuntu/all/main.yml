@@ -1,72 +1,13 @@
-# =============================================================================
-# File Documentation (auto-inserted)
-# Generated: 2025-09-27T20:59:59Z
-# Modified: 2025-09-27T20:59:59Z
-# Path: tasks/run_task/ubuntu/all/main.yml
-# Purpose: Updated to schema v1
-# Notes: -
-# =============================================================================
 
-# =============================================================================
-# File Summary (auto-inserted)
-# Overview:
-#   Role        : {{ summary.role | default(derived.role | default('n/a')) }}
-#   Purpose     : {{ summary.purpose | default(meta.purpose | default('TBD')) }}
-#   OS Scope    : {{ summary.os | default(derived.os | default('generic')) }} ({{ summary.os_scope | default(derived.os_scope | default('all')) }})
-# Counts:
-#   Tasks       : {{ summary.tasks_total | default('?') }}
-#   Includes    : {{ summary.includes_total | default('?') }}
-#   Handlers    : {{ summary.handlers_total | default('?') }}
-#   Imports     : {{ summary.imports_total | default('?') }}
-# Sets:
-#   Modules     : {{ (summary.modules | default([])) | join(', ') | default('none') }}
-#   Tags        : {{ (summary.tags | default([])) | join(', ') | default('none') }}
-#   Guards      : {{ (summary.guards | default([])) | join(', ') | default('none') }}
-# Flags:
-#   Become      : {{ summary.become | default(derived.become | default('false')) }}
-#   Idempotency : {{ summary.idempotency | default('convergent/guarded') }}
-# Risk:
-#   Level       : {{ summary.risk | default('medium') }}
-#   Downtime    : {{ summary.downtime | default('n/a') }}
-# Description: {{ summary.description | default('TBD') }}
-# =============================================================================
 
-# =============================================================================
-# File Narrative (auto-inserted)
-# This task file orchestrates a controlled, guarded operation on {{ summary.os | default(derived.os | default('generic')) }} ({{ summary.os_scope | default(derived.os_scope | default('all')) }}) hosts. When the guard condition{{ 's' if (summary.guards | default([]) | length) > 1 else '' }} {{ (summary.guards | default([])) | join(' and ') | default('is met') }} holds, it executes the main action using {{ (summary.modules | default([])) | join(', ') | default('the appropriate modules') }}. It then verifies availability, records minimal diagnostics, and exposes concise facts for downstream logic. The procedure is designed to be idempotent and convergent; reruns should result in no changes once the desired state is reached. Operationally, this action may be disruptive and typically requires privilege escalation; plan for a short, bounded downtime {{ '(' ~ summary.downtime ~ ')' if summary.downtime is defined else '' }}.
-# =============================================================================
 
-# -----------------------------------------------------------------------------
 
-# Task: verify task "{{ task_name }}" exists
 
-# Description: TBD
 
-# When: local_art.stat.exists | default(false) | bool
 
-# Tags: n/a
 
-# Changed by: auto-commenter
 
-# -----------------------------------------------------------------------------
 
-# --- [Task c1b86510] {{ task.name | default('(unnamed task)') }}
-# Intent       : {{ intent | default(derived.intent_guess | default('Describe what this task ensures')) }}
-# Module       : {{ task.action | default('unknown') }}
-# Key Args     : {{ (task.args | default({})) | taskargs('name, pkg, state, path, src, dest, regexp, line, mode, owner, group, service, enabled') }}
-# When         : {{ task.when | default('always') }}
-# Loop         : {{ task.loop | default('no') }}
-# Register     : {{ task.register | default('none') }}
-# Notify       : {{ task.notify | default('none') }}
-# Tags         : {{ task.tags | default('none') }}
-# Idempotency  : {{ idempotency | default('module idempotent or guarded by conditions') }}
-# Side-effects : {{ side_effects | default('minimal') }}
-# Error Hdl    : {{ error_handling | default('fail fast; rely on module return/validate') }}
-# Expected     : {{ expected | default('converges; no repeated changes on reruns') }}
-# ---------------------------------------------------------------------------
-# --- Task Narrative [c1b86510] {{ task.name | default('(unnamed task)') }}
-# {{ narrative.text | default(heuristics.compose) }}
-# ---------------------------------------------------------------------------
 - name: verify task "{{ task_name }}" exists
   ansible.builtin.stat:
     path: "{{ tasks_dir }}/{{ task_name }}/{{ os_dir }}/main.yml"
@@ -75,38 +16,14 @@
   vars:
     ansible_connection: local
 
-# -----------------------------------------------------------------------------
 
-# Task: run task "{{ task_name }}"
 
-# Description: TBD
 
-# When: local_art.stat.exists | default(false) | bool
 
-# Tags: n/a
 
-# Changed by: auto-commenter
 
-# -----------------------------------------------------------------------------
 
-# --- [Task 05439014] {{ task.name | default('(unnamed task)') }}
-# Intent       : {{ intent | default(derived.intent_guess | default('Describe what this task ensures')) }}
-# Module       : {{ task.action | default('unknown') }}
-# Key Args     : {{ (task.args | default({})) | taskargs('name, pkg, state, path, src, dest, regexp, line, mode, owner, group, service, enabled') }}
-# When         : {{ task.when | default('always') }}
-# Loop         : {{ task.loop | default('no') }}
-# Register     : {{ task.register | default('none') }}
-# Notify       : {{ task.notify | default('none') }}
-# Tags         : {{ task.tags | default('none') }}
-# Idempotency  : {{ idempotency | default('module idempotent or guarded by conditions') }}
-# Side-effects : {{ side_effects | default('minimal') }}
-# Error Hdl    : {{ error_handling | default('fail fast; rely on module return/validate') }}
-# Expected     : {{ expected | default('converges; no repeated changes on reruns') }}
-# ---------------------------------------------------------------------------
-# --- Task Narrative [05439014] {{ task.name | default('(unnamed task)') }}
-# {{ narrative.text | default(heuristics.compose) }}
-# ---------------------------------------------------------------------------
-- name: run task "{{ task_name }}" 
-  ansible.builtin.include_tasks: 
+- name: run task "{{ task_name }}"
+  ansible.builtin.include_tasks:
     file: "{{ local_art.stat.path }}"
   when: local_art.stat.exists | default(false) | bool
